@@ -1,0 +1,72 @@
+TopShop
+10-7-2018
+
+Team Name: ?
+
+Team Members: Ha(Product Owner), Alfred(Initial Scrum Master), Vy, Brianna, Jordan, Lior.
+
+Description: TopShop is a SaaS software for the automotive repair industry.
+
+Problem to solve: The US automotive repair industry has $67bn in annual sales. The majority of the
+auto repair facilities uses outdated processes and/or software to manage their day to day 
+operations. There is no single company that dominates this market. We aim to be that company
+by offering a superior product that: streamline processes, improve efficiency, increase sales,
+improve customer interaction and experiences, and reduce waste.
+
+Initial vision for the software:
+
+The typical interaction for a customer that wants to have their vehicle fixed or serviced.
+
+The customer needs repair/service on their vehicle. They find a shop bring in their vehicle. They
+are greeted by a service advisor. The service advisor will get the customer's information, and
+determines what the customer wants to have done to the vehicle. They either type this in a software
+or hand write on a paper form. Once finished the customer is given a preliminary estimate paperwork
+detailing what is to be done and what the cost will be. Customer then leaves or wait while the car
+gets worked on. If the car needs additional repairs or recommendations, the service advisor will
+phone the customer explaining the additional recommendations, and gets their approval. Once the vehicle
+is finished, the service advisor will notify the customer. Customer comes back to the shop,
+pays for repairs, receives receipt and paperwork for what was done to vehicle. Customer leaves.
+
+Problem to be solved: Each typical repair interaction will use about 5 pages of paper. Having
+everything online reduces waste of paper and time hand writing/printing everything. When notifying customer
+about additional repairs, most of the time they will not remember all that is said on the phone and
+with no proof will be skeptical about recomendations. The software will send the customer an email
+with details about the recommendations with picture/video proofs thereby enhancing customer
+interaction. Customer will have option to approve or decline repairs within the email.
+Once the vehicle is picked up, the service paperwork is typically thrown in the glovebox or somewhere
+else and forgotten about. Until one day they need it and it's nowhere to be found. With our software
+the service information is always available online for the customer to view/download/print.
+
+The typical interaction between the service advisor and auto technician.
+
+Once the customer is written up and leaves the car for repair. The service advisor will print the
+repair order and bring it to a technician. The technician then looks over the repair order and then
+finds the vehicle. They will perform a test drive for inspection/verifying complaint. They will then
+fill out the inspection form, with recommendations for the repairs/services and go to the parts
+department to get prices. They then go and find the service advisor, have a conversation about what's
+needed, and begin work on the vehicle. Meanwhile the service advisor will be contacting the customer
+with updates to their vehicle. Once the service advisor gets the ok/decline from the customer, they
+will go back to the shop area to notify the technician on what's approved and what is not. If the
+technician needs additional parts they will have to go to the parts department again to get additional
+items to complete the service to vehicle. Once the vehicle is finished, the technician completes the
+paperwork and bring it to the service advisor. The service advisor will then call the customer to
+let them know the vehicle is finished. The service advisor will then type/write up a final copy for
+the customer.
+
+Problem to be solved: Each interaction between the service advisor and technician uses about 5 to 10
+pieces of paper typically. Service advisor and technician spends time walking back and forth to
+interact with each other. Technician also spends time walking back and forth to interact with the
+parts department. Having the software do everything online almost eliminates the time needed to walk
+back and forth. Technician spends less time doing things that are not actually repairing the vehicle
+results in higher productivity.
+
+High Level Goals:
+  - Account creation for automotive repair shops.
+  - Each shop account will be able to create logins for service advisors and technicians.
+  - Create customer entry
+  - Create vehicle entry, tie vehicle to a customer
+  - Repair order form
+  - Vehicle inspection form
+  - Repair/Inspection form will tie to vehicle
+  - Recommendation link/email to customer with option to accept/decline addition repairs
+  - Final paperwork of repairs, link or email to customer

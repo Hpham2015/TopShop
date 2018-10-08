@@ -70,3 +70,6 @@ High Level Goals:
   - Repair/Inspection form will tie to vehicle
   - Recommendation link/email to customer with option to accept/decline addition repairs
   - Final paperwork of repairs, link or email to customer
+  - Dashboard interface for service advisor
+  - Dashboard interface for technician
+  - Dashboard interface for manager

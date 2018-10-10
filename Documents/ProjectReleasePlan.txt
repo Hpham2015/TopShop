@@ -1,75 +1,82 @@
-TopShop
-10-7-2018
+Release Plan
 
-Team Name: ?
+Product Name: TopShop
+Team Member Names: Ha Pham, Alfred Ly, Vy Pham, Brianna Atayan, Lior Peled, Jordan Hui
+Release Name: MVP(Minimum Viable Product) 1.0
+Release Date: Dec 1, 2018
+Revision Number: 1
+Revision Date: October 9, 2018
 
-Team Members: Ha(Product Owner), Alfred(Initial Scrum Master), Vy, Brianna, Jordan, Lior.
 
-Description: TopShop is a SaaS software for the automotive repair industry.
+High Level Goals
 
-Problem to solve: The US automotive repair industry has $67bn in annual sales. The majority of the
-auto repair facilities uses outdated processes and/or software to manage their day to day 
-operations. There is no single company that dominates this market. We aim to be that company
-by offering a superior product that: streamline processes, improve efficiency, increase sales,
-improve customer interaction and experiences, and reduce waste.
+Learn technologies needed: html, css, javascript, bootstrap, node, express, mongodb.
+Have a functioning Repair Order page.
+Have a functioning Vehicle Inspection page.
+Have a form to create a new customer.
+Have a form to create a new vehicle that ties to a customer.
+Styling all the forms to look good and incorporating React Components.
+Have a final paperwork of repairs to give to customer as a web page and/or email.
+Have a way of advising customer of additional repair recommendations as a web page and/or email.
+Have a dashboard interface for the service advisor.
+Have a dashboard interface for the service technician.
+Have a dashboard interface for the service manager.
+Have a main sign up page for clients.
+Have a landing page to show off our product.
+Interface/pages for parts.
+Analytical tools for management(revenue, performance, trends).
+Portal for customers to view all their data.
 
-Initial vision for the software:
 
-The typical interaction for a customer that wants to have their vehicle fixed or serviced.
 
-The customer needs repair/service on their vehicle. They find a shop bring in their vehicle. They
-are greeted by a service advisor. The service advisor will get the customer's information, and
-determines what the customer wants to have done to the vehicle. They either type this in a software
-or hand write on a paper form. Once finished the customer is given a preliminary estimate paperwork
-detailing what is to be done and what the cost will be. Customer then leaves or wait while the car
-gets worked on. If the car needs additional repairs or recommendations, the service advisor will
-phone the customer explaining the additional recommendations, and gets their approval. Once the vehicle
-is finished, the service advisor will notify the customer. Customer comes back to the shop,
-pays for repairs, receives receipt and paperwork for what was done to vehicle. Customer leaves.
 
-Problem to be solved: Each typical repair interaction will use about 5 pages of paper. Having
-everything online reduces waste of paper and time hand writing/printing everything. When notifying customer
-about additional repairs, most of the time they will not remember all that is said on the phone and
-with no proof will be skeptical about recomendations. The software will send the customer an email
-with details about the recommendations with picture/video proofs thereby enhancing customer
-interaction. Customer will have option to approve or decline repairs within the email.
-Once the vehicle is picked up, the service paperwork is typically thrown in the glovebox or somewhere
-else and forgotten about. Until one day they need it and it's nowhere to be found. With our software
-the service information is always available online for the customer to view/download/print.
 
-The typical interaction between the service advisor and auto technician.
 
-Once the customer is written up and leaves the car for repair. The service advisor will print the
-repair order and bring it to a technician. The technician then looks over the repair order and then
-finds the vehicle. They will perform a test drive for inspection/verifying complaint. They will then
-fill out the inspection form, with recommendations for the repairs/services and go to the parts
-department to get prices. They then go and find the service advisor, have a conversation about what's
-needed, and begin work on the vehicle. Meanwhile the service advisor will be contacting the customer
-with updates to their vehicle. Once the service advisor gets the ok/decline from the customer, they
-will go back to the shop area to notify the technician on what's approved and what is not. If the
-technician needs additional parts they will have to go to the parts department again to get additional
-items to complete the service to vehicle. Once the vehicle is finished, the technician completes the
-paperwork and bring it to the service advisor. The service advisor will then call the customer to
-let them know the vehicle is finished. The service advisor will then type/write up a final copy for
-the customer.
 
-Problem to be solved: Each interaction between the service advisor and technician uses about 5 to 10
-pieces of paper typically. Service advisor and technician spends time walking back and forth to
-interact with each other. Technician also spends time walking back and forth to interact with the
-parts department. Having the software do everything online almost eliminates the time needed to walk
-back and forth. Technician spends less time doing things that are not actually repairing the vehicle
-results in higher productivity.
 
-High Level Goals:
-  - Account creation for automotive repair shops.
-  - Each shop account will be able to create logins for service advisors and technicians.
-  - Create customer entry
-  - Create vehicle entry, tie vehicle to a customer
-  - Repair order form
-  - Vehicle inspection form
-  - Repair/Inspection form will tie to vehicle
-  - Recommendation link/email to customer with option to accept/decline addition repairs
-  - Final paperwork of repairs, link or email to customer
-  - Dashboard interface for service advisor
-  - Dashboard interface for technician
-  - Dashboard interface for manager
+
+
+
+User stories for release
+
+Sprint 1
+
+3 - As a team member i will need to learn technologies needed: html, css, javascript, bootstrap, node, express, mongodb in order to work on our application.
+3 - As a service advisor I need a repair form to enter in repairs needed, itemized list of parts and cost. 
+3 - As a service technician I need a repair form to know what the vehicle needs and also a CCR(complaint, cause, recommendation) area for me to enter my findings.
+3 - As a service technician I need a vehicle inspection form to indicate my findings on the vehicle and recommend additional repairs as necessary.
+2 - As a service advisor I need a form to enter in customer information.
+2 - As a service advisor I need a form to enter in the customer’s vehicle information.
+
+Sprint 2
+
+5 - As a service advisor I need a repair order form that looks good and is easy to use.
+5 - As a service technician I need a vehicle inspection form that looks good and is easy to use.
+
+Sprint 3
+
+3 - As a customer I need a final paperwork of repairs done to my car that looks good and is given to me as a web page and/or email so I won’t lose it and will be able to access it easily at any time.
+4 - As a service advisor I want a way to communicate with the customer for additional repairs by link/email to let them know what is going on with their vehicle. They will be able to accept or decline repairs
+3 - As the product owner I want the application to look polished so I can show my superiors and/or potential clients.
+
+
+
+Sprint 4
+
+3 - As a service advisor I want a dashboard interface to create/update repair order forms.
+3 - As a technician, I want a dashboard interface to retrieve repair orders that are available.
+3 - As a manager for the shop I want a dashboard to create accounts for my advisors and technicians.
+
+
+2 - As a client of TopShop I want to create my own account for the business.
+3 - As the product owner I want a nice landing page to advertise TopShop.
+
+Product Backlog
+
+Interface/pages for parts.
+Analytical tools for management(revenue, performance, trends).
+Portal for customers to view all their data.
+
+Project Presentation
+
+See presentation file on github.

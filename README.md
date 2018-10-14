@@ -1,1 +1,1 @@
-# TopShop
+# TopShop is a SaaS web application for automotive repair businesses.

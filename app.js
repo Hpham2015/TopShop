@@ -76,6 +76,9 @@ var customerObj = mongoose.model("customer", customerSchema);
 
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
+  mongoose.model("customerInputForm").find(function (err, input){
+    res.send(input);
+  });
 });
 
 app.post("/customerInputForm", function(req, res){

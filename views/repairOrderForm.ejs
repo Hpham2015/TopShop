@@ -1,9 +1,84 @@
 <% include partials/header %>
+<script>
+  function addFields(){
+    // Number of inputs to create
+    var number = document.getElementById("member").value;
+    // Container <div> where dynamic content will be placed
+    var container = document.getElementById("container");
+    // Clear previous contents of the container
+    while (container.hasChildNodes()) {
+      container.removeChild(container.lastChild);
+    }
+    let sumParts = 0;
+    for (i=0;i<number;i++){
+      // Append a node with a random text
+      container.appendChild(document.createTextNode("Part " + (i+1)));
+      container.appendChild(document.createElement("br"));
+      // Create an <input> element, set its type and name attributes
+      container.appendChild(document.createTextNode("Description: "))
+      var input = document.createElement("input");
+      input.type = "text";
+      input.name = "member" + i;
+      container.appendChild(input);
+      container.appendChild(document.createElement("br"));
+      
+      container.appendChild(document.createTextNode("Quantity: "))
+      input = document.createElement("input");
+      input.type = "number";
+      input.name = "member" + i;
+      container.appendChild(input);
+      container.appendChild(document.createElement("br"));
+      
+      container.appendChild(document.createTextNode("Price: "))
+      input = document.createElement("input");
+      input.type = "number";
+      input.name = "member" + i;
+      container.appendChild(input);
+      container.appendChild(document.createElement("br"));
+      
+      // Append a line break 
+      container.appendChild(document.createElement("br"));
+    }
+  }
+</script>
 
-
-
-This is the repair order form.
-
-
-
+<div class="ui main text container segment">
+  <div class="ui huge header">Repair Order Form</div>
+  <form class="ui form" action="/blogs" method="POST">
+    
+    <div class="field">
+      <label>Customer Info</label>
+      <input type="text" name="blog[title]" placeholder="title">
+    </div>
+    
+    <div class="field">
+      <label>Vehicle Info</label>
+      <input type="text" name="blog[image]" placeholder="image">
+    </div>
+    
+    <div class="field">
+      <label>Job ID:</label>
+      <input type="text" name="blog[title]" placeholder="title">
+    </div>
+    
+    <div class="field">
+      <label>Job Name</label>
+      <input type="text" name="blog[title]" placeholder="title">
+    </div>
+    
+    <div class="field">
+      <label>Job Price</label>
+      <input type="number" name="blog[title]" placeholder="title">
+    </div>
+    
+    <div>
+      <input type="text" id="member" name="member" value="">Number of Parts: <br />
+      <a href="#" id="filldetails" onclick="addFields()">Fill Details</a>
+      <div id="container"></div>
+    </div>
+    
+    
+    <input class="ui grey button" type="submit">
+  </form>
+</div>
 <% include partials/footer %>

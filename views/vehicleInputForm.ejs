@@ -1,9 +1,25 @@
 <% include partials/header %>
 
-
-
-This is the form to create a new vehicle.
-
-
+    <form class="ui form" action="/vehicleInputForm" method="POST">
+  
+        <br> Vehicle Entry Form <br>
+    
+        <input id="VIN" type="text" name="VIN" placeholder="VIN #" value="">
+        <input id="make" type="text" name="make" placeholder="Make" value="">
+        <input id="model" type="text" name="model" placeholder="Model" value="">
+        <input id="year" type="number" name="year" placeholder="Year" value="">
+        <input id="color" type="text" name="color" placeholder="Color" value="">
+        <input id="type" type="text" name="type" placeholder="Type" value="">
+        <input id="productionDate" type="date" name="productionDate" placeholder="Production Date" value="">
+        <input id="inserviceDate" type="date" name="inserviceDate" placeholder="Inservice Date" value="">
+        <br> Last Service Information <br>
+        <input id="lastServiceDate" type="date" name="lastServiceDate" placeholder="Date of Last Service" value="">
+        <input id="lastServiceOdom" type="number" name="lastServiceOdom" placeholder="Odometer" value="">
+        <input id="lastServiceDailyMiles" type="number" name="lastServiceDailyMiles" placeholder="Daily Average Miles" value="">
+        <input id="lastServiceMonthlyMiles" type="number" name="lastServiceMonthlyMiles" placeholder="Monthly Average Miles" value="">
+         
+        <input type="submit">
+    
+    </form>
 
 <% include partials/footer %>

@@ -1,20 +1,44 @@
 var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
-app.use(express.static("public"));
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
+app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.urlencoded()); // to support URL-encoded bodies
 
 app.set("view engine", "ejs");
 
-var url = "mongodb://localhost:27017/TopShop";
-
+var url = "mongodb://localhost:27017/test";
 /** CONNECT **/
 mongoose.connect(url);
 
 var Schema = mongoose.Schema;
 
+var lastServiceSchema = new Schema({
+  date: Date,
+  odometer: Number,
+  dailyAverageMiles: Number,
+  monthlyAverageMiles: Number
+});
+
+var vehicleSchema = new Schema({
+  VIN: String,
+  make: String,
+  model: String,
+  year: Number,
+  color: String,
+  type: String,
+  productionDate: Date,
+  inserviceDate: Date,
+  lastService: lastServiceSchema
+});
+
 // sets up customer entry form schema
 var customerSchema = new Schema({
-  customerID: Number,
+  customerID: String,
   firstName: String,
   lastName: String,
   address: String,
@@ -23,26 +47,11 @@ var customerSchema = new Schema({
   zip: Number,
   email: String,
   cell: String,
-  work: String
-});
-// sets up vehicle entry form schema
-var vehicleSchema = new Schema({
-  customerID: Number,
-  make: String,
-  model: String,
-  year: Number,
-  color: String,
-  type: String,
-  productionDate: Date,
-  inserviceDate: Date,
-  lastSrvc: {
-    date: Date,
-    odom: Number,
-    dailyAvg: Number,
-    monthAvg: Number
-  }
+  work: String,
+  vehicles: [vehicleSchema]
 });
 
+// sets up vehicle entry form schema
 var partSchema = new Schema({
   partID: String,
   partDescription: String,
@@ -51,8 +60,8 @@ var partSchema = new Schema({
 });
 
 var jobSchema = new Schema({
+  jobID: mongoose.Schema.Types.ObjectId,
   jobOrder: Number,
-  jobID: String,
   jobName: String,
   laborCost: Number,
   parts: [partSchema],
@@ -72,31 +81,70 @@ app.get("/", function(req, res){
 });
 
 // adds new customer to DB
-var customerObj = mongoose.model("customer", customerSchema);
+var customerModel = mongoose.model("customer", customerSchema);
 
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
-  mongoose.model("customerInputForm").find(function (err, input){
-    res.send(input);
-  });
+  // mongoose.model("customerInputForm").find(function(err, input){
+  //   res.send(input);
+  // });
 });
 
 app.post("/customerInputForm", function(req, res){
-  var newCustomerObj = req.customer;
-  console.log(req.customer);
+
+  var customerModelInstance = new customerModel({
+    customerID: Number(req.body.customerID),
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    address: req.body.city,
+    state: req.body.state,
+    zip: Number(req.body.zip),
+    email: req.body.email,
+    cell: req.body.cell,
+    work: req.body.work
+  });
+  // customerModel.create(customerModelInstance, function(err) {
+  //   if (err) {
+  //     console.log(err);
+  //   }
+  // });
+  console.log(customerModelInstance);
+  // console.log(customerModel.count());  
   res.redirect("/customerInputForm");
 });
 
 // adds new vehicle to DB
-var vehicleObj = mongoose.model("vehicle", vehicleSchema);
+var lastServiceModel = mongoose.model("lastService", lastServiceSchema);
+var vehicleModel = mongoose.model("vehicle", vehicleSchema);
 
-app.post("/vehicleInputForm", function(req, res){
-  var newVehicleObj = req.vehicle;
-  res.redirect("/vehicleInputForm");
-});
 app.get("/vehicleInputForm", function(req, res){
   res.render("vehicleInputForm");
 });
+
+app.post("/vehicleInputForm", function(req, res){
+  
+  var lastServiceModelInstance = new lastServiceModel({
+    date: req.body.lastServiceDate,
+    odometer: Number(req.body.lastServiceOdom),
+    dailyAverageMiles: Number(req.body.lastServiceDailyMiles),
+    monthlyAverageMiles: Number(req.body.lastServiceMonthlyMiles)
+  });
+  
+  var vehicleModelInstance = new vehicleModel({
+    VIN: Number(req.body.VIN),
+    make: req.body.make,
+    model: req.body.mode,
+    year: Number(req.body.year),
+    color: req.body.color,
+    type: req.body.type,
+    productionDate: req.body.productionDate,
+    inserviceDate: req.body.inserviceDate,
+    lastService: lastServiceModelInstance
+  });
+  console.log(vehicleModelInstance);
+  res.redirect("/vehicleInputForm");
+});
+
 
 app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");

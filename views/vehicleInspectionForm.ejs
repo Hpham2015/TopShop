@@ -1,8 +1,19 @@
-<% include partials/header %>
-
-
-This is the Vehicle Inspection Form.
-
-
-
-<% include partials/footer %>
+<form class="ui form" action="/vehicleInspectionForm" method="POST">
+    
+        <br> Vehicle Entry Form <br>
+        
+        <input type="text" name="Name" placeholder="Name">
+        
+        <input type="number" name="Mileage" placeholder="Mileage">
+        
+        <input type="text" name="Year_Make_Model" placeholder="Year Make Model">
+        
+        <input type="number" name="VIN" placeholder="VIN">
+        
+        <input type="text" name="License" placeholder="License">
+        
+        <input type="text" name="email" placeholder="email">
+        
+        <input type="submit">
+        
+</form> 

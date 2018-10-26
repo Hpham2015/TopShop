@@ -48,7 +48,83 @@ var customerSchema = new Schema({
   email: String,
   cell: String,
   work: String,
+  // VIN: String,
   vehicles: [vehicleSchema]
+});
+
+var inspectionReportSchema = new Schema({
+  vehicleInfo: vehicleSchema,
+  INTERIOR_EXTERIOR: {
+    Exterior_Body: {type: Number, min: 0, max: 3},
+    WindShield_Glass: {type: Number, min: 0, max: 3},
+    Wipers: {type: Number, min: 0, max: 3},
+    Exterior_Lights: {type: Number, min:0, max: 3},
+    Interior_Lights: {type: Number, min: 0, max: 3},
+    AC_Operation: {type: Number, min: 0, max: 3},
+    Heating: {type: Number, min: 0, max: 3},
+    Other: String
+  },
+  UNDERHOOD: {
+    Engine_Oil: {type: Number, min: 0, max: 3},
+    Brake_Fluid: {type: Number, min: 0, max: 3},
+    Power_Steering_Fluid: {type: Number, min: 0, max: 3},
+    Washer_Fluid: {type: Number, min: 0, max: 3},
+    Belts_and_Hoses: {type: Number, min: 0, max: 3},
+    Antifreeze_Coolant: {type: Number, min: 0, max: 3},
+    Air_Filter: {type: Number, min: 0, max: 3},
+    Cabin_Filter: {type: Number, min: 0, max: 3},
+    Fuel_Filter: {type: Number, min: 0, max: 3},
+    Spark_Plugs_Wires: {type: Number, min: 0, max: 3},
+    Other: String,
+    Battery_Charge: {type: Number, min: 0, max: 3},
+    Battery_Condition: {type: Number, min: 0, max: 3},
+    Cables_Connections: {type: Number, min: 0, max: 3}
+  },
+  UNDER_VEHICLE: {
+    Brakes_Pads_Shoes: {type: Number, min: 0, max: 3},
+    Brake_Lines_Hoses: {type: Number, min: 0, max: 3},
+    Steering_System: {type: Number, min: 0, max: 3},
+    Shocks_Struts: {type: Number, min: 0, max: 3},
+    Driveline_Axles_CV_Shaft: {type: Number, min: 0, max: 3},
+    Exhaust_System: {type: Number, min: 0, max: 3},
+    Fuel_Lines_Hoses: {type: Number, min: 0, max: 3},
+    Other: String
+  },
+  TIRES: {
+    Tread_Depth: {type: Number, min: 0, max: 3},
+    LF: {type: Number, min: 0, max: 3},
+    RF: {type: Number, min: 0, max: 3},
+    LR: {type: Number, min: 0, max: 3},
+    RR: {type: Number, min: 0, max: 3},
+    Wear_Pattern_Damage: {
+      LF: {type: Number, min: 0, max: 3},
+      RF: {type: Number, min: 0, max: 3},
+      LR: {type: Number, min: 0, max: 3},
+      RR: {type: Number, min: 0, max: 3},
+    },
+    Air_Pressure: {
+      TPMS_Warning_System: Boolean,
+      Front: {
+        LF: {type: Number, min: 0},
+        RF: {type: Number, min: 0},
+        OEM_Spec: Number
+      },
+      Back: {
+        LR: {type: Number, min: 0},
+        RR: {type: Number, min: 0},
+        OEM_Spec: Number
+      }
+    },
+    Tire_Check_OE_Interval_Suggests: {
+      Allignment: Boolean,
+      Balance: Boolean,
+      Rotation: Boolean,
+      New_Tire: Boolean
+    }
+  },
+  Comments: String,
+  Inspected_by: String,
+  Inspected_on: Date
 });
 
 // sets up vehicle entry form schema
@@ -56,11 +132,11 @@ var partSchema = new Schema({
   partID: String,
   partDescription: String,
   quantity: Number,
-  partPrice: Number
+  partCost: Number
 });
 
 var jobSchema = new Schema({
-  jobID: mongoose.Schema.Types.ObjectId,
+  jobID: String,
   jobOrder: Number,
   jobName: String,
   laborCost: Number,
@@ -72,6 +148,8 @@ var jobSchema = new Schema({
 var repairOrderSchema = new Schema({
   customerInfo: customerSchema,
   vehicleInfo: vehicleSchema,
+  inspectionReport: inspectionReportSchema,
+  jobs: [jobSchema],
   totalCost: Number, // all job costs
   disclaimer: String
 });
@@ -79,6 +157,10 @@ var repairOrderSchema = new Schema({
 app.get("/", function(req, res){
   res.render("landing");
 });
+
+// adds new vehicle to DB
+var lastServiceModel = mongoose.model("lastService", lastServiceSchema);
+var vehicleModel = mongoose.model("vehicle", vehicleSchema);
 
 // adds new customer to DB
 var customerModel = mongoose.model("customer", customerSchema);
@@ -93,7 +175,7 @@ app.get("/customerInputForm", function(req, res){
 app.post("/customerInputForm", function(req, res){
 
   var customerModelInstance = new customerModel({
-    customerID: Number(req.body.customerID),
+    customerID: req.body.customerID,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     address: req.body.city,
@@ -101,21 +183,35 @@ app.post("/customerInputForm", function(req, res){
     zip: Number(req.body.zip),
     email: req.body.email,
     cell: req.body.cell,
-    work: req.body.work
+    work: req.body.work,
   });
+  
+  var vin = req.body.VIN;
+  var query = vehicleModel.findOne({VIN: vin}, function (err, vehicleModel) {
+    if (err) {
+      res.send(err);
+    }
+    console.log(vehicleModel);
+    customerModelInstance.vehicles.push(vehicleModel);
+    
+    console.log(customerModelInstance);
+    
+    customerModelInstance.save(function (err) {
+      if (err) console.log(err);
+    });
+    
+  });
+  // customerModelInstance.vehicle.push(query);
   // customerModel.create(customerModelInstance, function(err) {
   //   if (err) {
   //     console.log(err);
   //   }
   // });
-  console.log(customerModelInstance);
   // console.log(customerModel.count());  
   res.redirect("/customerInputForm");
 });
 
-// adds new vehicle to DB
-var lastServiceModel = mongoose.model("lastService", lastServiceSchema);
-var vehicleModel = mongoose.model("vehicle", vehicleSchema);
+
 
 app.get("/vehicleInputForm", function(req, res){
   res.render("vehicleInputForm");
@@ -131,9 +227,9 @@ app.post("/vehicleInputForm", function(req, res){
   });
   
   var vehicleModelInstance = new vehicleModel({
-    VIN: Number(req.body.VIN),
+    VIN: req.body.VIN,
     make: req.body.make,
-    model: req.body.mode,
+    model: req.body.model,
     year: Number(req.body.year),
     color: req.body.color,
     type: req.body.type,
@@ -142,6 +238,9 @@ app.post("/vehicleInputForm", function(req, res){
     lastService: lastServiceModelInstance
   });
   console.log(vehicleModelInstance);
+  vehicleModelInstance.save(function (err) {
+    if (err) console.log(err);
+  });
   res.redirect("/vehicleInputForm");
 });
 
@@ -150,10 +249,23 @@ app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
 });
 
+app.post("/repairOrderForm", function(req, res) {
+    
+});
+
 app.get("/vehicleInspectionForm", function(req, res){
   res.render("vehicleInspectionForm");
+});
+
+app.post("/vehicleInspectionForm", function(req, res) {
+    
 });
 
 app.listen(process.env.PORT, process.env.IP, function(){
   console.log("Server started.");
 })
+
+function testFind() {
+  console.log("here");
+  // vehicleModel.find({'make': "Toyota"}, "make model");
+}

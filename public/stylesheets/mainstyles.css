@@ -25,3 +25,9 @@ div.dropdown-menu.show .dropdown-item{
 .dropdown-menu{
   padding: 0;
 }
+
+
+.container{
+  margin: 30px;
+  padding: 10px;
+}

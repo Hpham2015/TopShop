@@ -2,6 +2,7 @@
 var express = require("express");
 var app = express();
 
+<<<<<<< HEAD
 //mongoose connection
 var mongoose = require('mongoose');
 var mongoURL = 'mongodb://localhost:27017/myDB';
@@ -97,6 +98,8 @@ var VehicleInspectionSchema = new Schema({
 });
 var vehicleInspectionForm = mongoose.model("vehicleInspectionForm",VehicleInspectionSchema);
 
+=======
+>>>>>>> 3f72478ed751228690aa7a27ae98962b888d9a94
 
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");

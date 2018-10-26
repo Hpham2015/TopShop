@@ -97,6 +97,8 @@ var VehicleInspectionSchema = new Schema({
 });
 var vehicleInspectionForm = mongoose.model("vehicleInspectionForm",VehicleInspectionSchema);
 
+
+app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 //rendering stuff

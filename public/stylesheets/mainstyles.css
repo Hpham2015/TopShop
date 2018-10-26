@@ -1,0 +1,33 @@
+body {
+  background-color: #FFFFFF;
+}
+
+/*Set Navbar fonts*/
+.navbar-dark .navbar-nav .nav-link{
+    color: #B5AA5E!important;
+}
+
+.navbar-dark .navbar-brand {
+    color: #B5AA5E!important;
+}
+
+
+/*Set navbar drop down menu color and text and padding*/
+.navbar-dark{
+  background-color: #22201D!important;
+}
+
+div.dropdown-menu.show .dropdown-item{
+  background-color: #22201D;
+  color: #B5AA5E;
+}
+
+.dropdown-menu{
+  padding: 0;
+}
+
+
+.container{
+  margin: 30px;
+  padding: 10px;
+}

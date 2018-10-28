@@ -27,6 +27,7 @@ body {
 /*}*/
 
 
+/* Start of styling for vehicle inspection form */
 .container {
   margin: 30px;
   padding: 10px;
@@ -62,3 +63,5 @@ body {
   margin-bottom: 5px;
   padding: 10px;
 }
+
+/* End of styling for vehicle inspection form */

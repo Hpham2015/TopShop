@@ -1,33 +1,64 @@
 body {
-  background-color: #FFFFFF;
+  padding-bottom: 60px;
 }
 
 /*Set Navbar fonts*/
-.navbar-dark .navbar-nav .nav-link{
-    color: #B5AA5E!important;
-}
+/*.navbar-dark .navbar-nav .nav-link{*/
+/*    color: #B5AA5E!important;*/
+/*}*/
 
-.navbar-dark .navbar-brand {
-    color: #B5AA5E!important;
-}
+/*.navbar-dark .navbar-brand {*/
+/*    color: #B5AA5E!important;*/
+/*}*/
 
 
 /*Set navbar drop down menu color and text and padding*/
-.navbar-dark{
-  background-color: #22201D!important;
-}
+/*.navbar-dark {*/
+/*  background-color: #22201D!important;*/
+/*}*/
 
-div.dropdown-menu.show .dropdown-item{
-  background-color: #22201D;
-  color: #B5AA5E;
-}
+/*div.dropdown-menu.show .dropdown-item {*/
+/*  background-color: #22201D;*/
+/*  color: #B5AA5E;*/
+/*}*/
 
-.dropdown-menu{
-  padding: 0;
-}
+/*.dropdown-menu {*/
+/*  padding: 0;*/
+/*}*/
 
 
-.container{
+.container {
   margin: 30px;
+  padding: 10px;
+}
+
+#colorStatus {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.status {
+  width: 80px;
+  height: 40px;
+}
+
+.description {
+  padding-top: 5px;
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.btn-selection-group {
+  padding-bottom: 10px;
+}
+
+.group-label{
+  padding-left: 6px;
+  padding-top: 6px;
+}
+
+.inspection-group{
+  margin-bottom: 5px;
   padding: 10px;
 }

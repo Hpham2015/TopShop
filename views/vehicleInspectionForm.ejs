@@ -1,19 +1,817 @@
-<form class="ui form" action="/vehicleInspectionForm" method="POST">
+
+<% include partials/header %>
+
+<!--Container for whole Inspection Report-->
+<div class="container-fluid">
+  
+  <div class="jumbotron jumbotron-fluid border border-dark rounded">
+    <div class="container-fluid">
+      <h1 class="display-4 text-center">Vehicle Inspection Report</h1>
+    </div>
+  </div>
+  
+  <!--Name, Mileage, Year, Make, Model-->
+  <div class="row"> 
+      
+    <div class="col-5">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Customer Name:</span>
+        </div>
+        <input type="text" aria-label="Customer Name" class="form-control" readonly>
+      </div>
+    </div>
+      
+    <div class="col-5">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Year/Model/Make:</span>
+        </div>
+        <input type="text" aria-label="Year/Model/Make" class="form-control" readonly>
+      </div>
+    </div>
+      
+    <div class="col-sm">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Mileage:</span>
+        </div>
+        <input type="number" aria-label="Mileage" class="form-control" readonly>
+      </div>
+    </div>
     
-        <br> Vehicle Entry Form <br>
-        
-        <input type="text" name="Name" placeholder="Name">
-        
-        <input type="number" name="Mileage" placeholder="Mileage">
-        
-        <input type="text" name="Year_Make_Model" placeholder="Year Make Model">
-        
-        <input type="number" name="VIN" placeholder="VIN">
-        
-        <input type="text" name="License" placeholder="License">
-        
-        <input type="text" name="email" placeholder="email">
-        
-        <input type="submit">
-        
-</form> 
+  </div>
+  <!-- End of - Name, Mileage, Year, Make, Model-->
+  
+  <!--Vin, License, Email-->
+  <div class="row"> 
+      
+    <div class="col-5">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">VIN:</span>
+        </div>
+        <input type="text" aria-label="VIN" class="form-control" readonly>
+      </div>
+    </div>
+    
+    <div class="col-sm">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">License:</span>
+        </div>
+        <input type="text" aria-label="License" class="form-control" readonly>
+      </div>
+    </div>
+      
+    <div class="col-sm">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Email:</span>
+        </div>
+        <input type="text" aria-label="Email" class="form-control" readonly>
+      </div>
+    </div>
+    
+  </div>
+  <!-- End of - Vin, License, Email-->
+  
+  <!--Status-->
+  <div id="colorStatus" class="row">
+    <div class="col-sm">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <button type="button" class="btn btn-lg btn-success status rounded"></button>
+          <span class="input-group-text">CHECKED AND OK</span>
+        </div>
+      </div>
+    </div>
+      
+    <div class="col-sm">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <button type="button" class="btn btn-lg btn-warning status rounded"></button>
+          <span class="input-group-text">MAY REQUIRE ATTENTION</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-sm">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <button type="button" class="btn btn-lg btn-danger status rounded"></button>
+          <span class="input-group-text">REQUIRES IMMEDIATE ATTENTION</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End of - Status-->
+  
+  <!--Start of Form for Input-->
+  <form>
+    
+    
+    <!--Start of Interior/Exterior Input group-->
+    <div class="inspection-group border border-dark rounded" id="interiorExterior">
+      <h3 class="group-label">INTERIOR/EXTERIOR</h3>
+      <div class="row">
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="exterior-body" id="exterior-body1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="exterior-body" id="exterior-body2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="exterior-body" id="exterior-body3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Exterior Body</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="windshield-glass" id="windshield-glass1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="windshield-glass" id="windshield-glass2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="windshield-glass" id="windshield-glass3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Windshield / Glass</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="wipers" id="wipers1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="wipers" id="wipers2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="wipers" id="wipers3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Wipers</h6></span>
+      </div>
+      </div>
+      <!--End of column group-->
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="exterior-lights" id="exterior-lights1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="exterior-lights" id="exterior-lights2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="exterior-lights" id="exterior-lights3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Exterior Lights</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="interior-lights" id="interior-lights1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="interior-lights" id="interior-lights2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="interior-lights" id="interior-lights3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Interior Lights</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="ac-operation" id="ac-operation1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="ac-operation" id="ac-operation2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="ac-operation" id="ac-operation3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>AC Operation</h6></span>
+      </div>
+      </div>
+      <!--End of column group-->
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="heating" id="heating1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="heating" id="heating2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="heating" id="heating3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Heating</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="interior-exterior-other" id="interior-exterior-other1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="interior-exterior-other" id="interior-exterior-other2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="interior-exterior-other" id="interior-exterior-other3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Other</h6></span>
+      </div>
+      </div>
+      <!--End of column group-->
+
+      </div>
+    </div>
+    <!--End of Interior/Exterior Input group-->
+
+
+
+    <!--Start of Underhood Input group-->
+    <div class="inspection-group border border-dark rounded" id="interiorExterior">
+      <h3 class="group-label">UNDERHOOD</h3>
+      <div class="row">
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="engine-oil" id="engine-oil1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="engine-oil" id="engine-oil2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="engine-oil" id="engine-oil3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Engine Oil</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="brake-fluid" id="brake-fluid1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="brake-fluid" id="brake-fluid2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="brake-fluid" id="brake-fluid3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Brake Fluid</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="ps-fluid" id="ps-fluid1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="ps-fluid" id="ps-fluid2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="ps-fluid" id="ps-fluid3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Power Steering Fluid</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="washer-fluid" id="washer-fluid1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="washer-fluid" id="washer-fluid2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="washer-fluid" id="washer-fluid3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Washer Fluid</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="belts-hoses" id="belts-hoses1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="belts-hoses" id="belts-hoses2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="belts-hoses" id="belts-hoses3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Belts & Hoses</h6></span>
+      </div>
+      
+      </div>
+      <!--End of column group-->
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="coolant" id="coolant1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="coolant" id="coolant2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="coolant" id="coolant3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Coolant</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="air-filter" id="air-filter1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="air-filter" id="air-filter2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="air-filter" id="air-filter3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Air Filter</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="cabin-filter" id="cabin-filter1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="cabin-filter" id="cabin-filter2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="cabin-filter" id="cabin-filter3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Cabin Filter</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="fuel-filter" id="fuel-filter1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="fuel-filter" id="fuel-filter2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="fuel-filter" id="fuel-filter3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Fuel Filter</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="sparkplugs" id="sparkplugs1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="sparkplugs" id="sparkplugs2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="sparkplugs" id="sparkplugs3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Sparkplugs / Wires</h6></span>
+      </div>
+      </div>
+      <!--End of column group-->
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="battery-charge" id="battery-charge1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="battery-charge" id="battery-charge2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="battery-charge" id="battery-charge3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Battery Charge</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="battery-condition" id="battery-condition1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="battery-condition" id="battery-condition2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="battery-condition" id="battery-condition3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Battery Condition</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="wiring" id="wiring1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="wiring" id="wiring2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="wiring" id="wiring3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Wiring</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="under-hood-other" id="under-hood-other1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="under-hood-other" id="under-hood-other2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="under-hood-other" id="under-hood-other3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Other</h6></span>
+      </div>
+      </div>
+      <!--End of column group-->
+
+      </div>
+    </div>
+    <!--End of Underhood Input group-->
+
+
+    <!--Start of Under Vehicle Input group-->
+    <div class="inspection-group border border-dark rounded" id="interiorExterior">
+      <h3 class="group-label">UNDER VEHICLE</h3>
+      <div class="row">
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="brakes" id="brakes1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="brakes" id="brakes2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="brakes" id="brakes3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Brakes (Pads/Shoes)</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="brake-line" id="brake-line1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="brake-line" id="brake-line2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="brake-line" id="brake-line3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Brake Lines/Hoses</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="steering-system" id="steering-system1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="steering-system" id="steering-system2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="steering-system" id="steering-system3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Steering System</h6></span>
+      </div>
+      </div>
+      <!--End of column group-->
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="shocks" id="shocks1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="shocks" id="shocks2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="shocks" id="shocks3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Shocks / Struts</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="driveline" id="driveline1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="driveline" id="driveline2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="driveline" id="driveline3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Driveline (Axles / CV Shaft)</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="exhaust" id="exhaust1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="exhaust" id="exhaust2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="exhaust" id="exhaust3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Exhaust System</h6></span>
+      </div>
+      </div>
+      <!--End of column group-->
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="fuel-lines" id="fuel-lines1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="fuel-lines" id="fuel-lines2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="fuel-lines" id="fuel-lines3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Fuel Lines</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="under-vehicle-other" id="under-vehicle-other1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="under-vehicle-other" id="under-vehicle-other2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="under-vehicle-other" id="under-vehicle-other3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>Other</h6></span>
+      </div>
+      </div>
+      <!--End of column group-->
+
+      </div>
+    </div>
+    <!--End of Under Vehicle Input group-->
+
+
+    <!--Start of Tires Input group-->
+    <div class="inspection-group border border-dark rounded" id="interiorExterior">
+      <h3 class="group-label">TIRES</h3>
+      <div class="row">
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="lf-tread-depth" id="lf-tread-depth1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="lf-tread-depth" id="lf-tread-depth2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="lf-tread-depth" id="lf-tread-depth3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>LF Tread Depth</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="rf-tread-depth" id="rf-tread-depth1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="rf-tread-depth" id="rf-tread-depth2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="rf-tread-depth" id="rf-tread-depth3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>RF Tread Depth</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="lr-tread-depth" id="lr-tread-depth1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="lr-tread-depth" id="lr-tread-depth2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="lr-tread-depth" id="lr-tread-depth3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>LR Tread Depth</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="rr-tread-depth" id="rr-tread-depth1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="rr-tread-depth" id="rr-tread-depth2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="rr-tread-depth" id="rr-tread-depth3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>RR Tread Depth</h6></span>
+      </div>
+      </div>
+      <!--End of column group-->
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">LF Tread Depth</span>
+          </div>
+          <input type="number" name="lf-tread" min="0" max="20" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">/ 32"</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">RF Tread Depth</span>
+          </div>
+          <input type="number" name="rf-tread" min="0" max="20" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">/ 32"</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">LR Tread Depth</span>
+          </div>
+          <input type="number" name="lr-tread" min="0" max="20" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">/ 32"</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">RR Tread Depth</span>
+          </div>
+          <input type="number" name="rr-tread" min="0" max="20" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">/ 32"</span>
+          </div>
+        </div>
+      </div>
+      <!--End of column group-->
+
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="lf-wear" id="lf-wear1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="lf-wear" id="lf-wear2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="lf-wear" id="lf-wear3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>LF Wear/Damage</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="rf-wear" id="rf-wear1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="rf-wear" id="rf-wear2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="rf-wear" id="rf-wear3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>RF Wear/Damage</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="lr-wear" id="lr-wear1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="lr-wear" id="lr-wear2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="lr-wear" id="lr-wear3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>LR Wear/Damage</h6></span>
+      </div>
+      
+      <div class="btn-selection-group btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="status btn btn-outline-success rounded ml-2">
+          <input type="radio" name="rr-wear" id="rr-wear1" autocomplete="off" value="ok" required>
+        </label>
+        <label class="status btn btn-outline-warning rounded ml-2">
+          <input type="radio" name="rr-wear" id="rr-wear2" autocomplete="off" value="warning">
+        </label>
+        <label class="status btn btn-outline-danger rounded ml-2">
+          <input type="radio" name="rr-wear" id="rr-wear3" autocomplete="off" value="danger">
+        </label>
+        <span class="description"><h6>RR Wear/Damage</h6></span>
+      </div>
+      </div>
+      <!--End of column group-->
+      
+      <!--Start of column group-->
+      <div class="col-sm">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">LF Pressure</span>
+          </div>
+          <input type="number" name="lf-psi" min="30" max="60" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">PSI</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">RF Pressure</span>
+          </div>
+          <input type="number" name="rf-psi" min="30" max="60" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">PSI</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">LR Pressure</span>
+          </div>
+          <input type="number" name="lr-psi" min="30" max="60" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">PSI</span>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">RR Pressure</span>
+          </div>
+          <input type="number" name="rr-psi" min="30" max="60" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" required>
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">PSI</span>
+          </div>
+        </div>
+      </div>
+      <!--End of column group-->
+
+      </div>
+    </div>
+    <!--End of Tires Input group-->
+
+    <!--Start of Comments Input group-->
+    <div class="inspection-group border border-dark rounded" id="interiorExterior">
+      <h3 class="group-label">COMMENTS / RECOMMENDATIONS</h3>
+      
+      <div class="input-group">
+        <!--<div class="input-group-prepend">-->
+        <!--  <span class="input-group-text">Results</span>-->
+        <!--</div>-->
+        <textarea class="form-control" aria-label="With textarea" required>...</textarea>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-lg mt-2">Inspection Complete</button>
+    </div>
+    <!--End of Comments Input group-->
+    
+  </form>
+  <!--End of Form for Input-->
+  
+  <div class="row">
+    <div class="col-sm">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Inspected By:</span>
+        </div>
+        <input type="text" name="" aria-label="Technician Name" class="form-control" readonly>
+      </div>
+    </div>
+    <div class="col-sm">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Date:</span>
+        </div>
+        <input type="text" name="" aria-label="Technician Name" class="form-control" readonly>
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+<!-- End of - Container for whole Inspection Report-->
+
+<% include partials/footer %>

@@ -9,6 +9,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
+
+app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 var url = "mongodb://localhost:27017/test";
@@ -158,12 +160,15 @@ app.get("/", function(req, res){
   res.render("landing");
 });
 
-// adds new vehicle to DB
+// Create models
 var lastServiceModel = mongoose.model("lastService", lastServiceSchema);
 var vehicleModel = mongoose.model("vehicle", vehicleSchema);
-
-// adds new customer to DB
 var customerModel = mongoose.model("customer", customerSchema);
+var inspectionReportModel = mongoose.model("inspectionReport", inspectionReportSchema);
+var partModel = mongoose.model("part", partSchema);
+var jobModel = mongoose.model("job", jobSchema);
+var repairOrderModel = mongoose.model("repairOrder", repairOrderSchema);
+
 
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
@@ -201,17 +206,8 @@ app.post("/customerInputForm", function(req, res){
     });
     
   });
-  // customerModelInstance.vehicle.push(query);
-  // customerModel.create(customerModelInstance, function(err) {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  // });
-  // console.log(customerModel.count());  
   res.redirect("/customerInputForm");
 });
-
-
 
 app.get("/vehicleInputForm", function(req, res){
   res.render("vehicleInputForm");
@@ -249,8 +245,33 @@ app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
 });
 
+function findCustomer(id, first, last) {
+  customerModel.find({customerID: id, firstName: first, lastName: last}, function(err, data) {
+    if (err) console.log(err);
+    console.log("got here");
+    console.log(data);
+  });
+}
+
 app.post("/repairOrderForm", function(req, res) {
+  
+  customerModel.find({customerID: req.body.customerID, firstName: req.body.customerFirstName, 
+                          lastName: req.body.customerLastName}, function(err, data) {
+    if (err) console.log(err);
+    console.log("got here");
+    console.log(data);
+  });
+    var partInstance = new partModel({
+      
+    });
     
+    var jobInstance = new jobModel({
+      
+    });
+    
+    var repairOrderInstance = new repairOrderModel({
+      
+    });
 });
 
 app.get("/vehicleInspectionForm", function(req, res){

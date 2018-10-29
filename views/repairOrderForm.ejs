@@ -1,16 +1,17 @@
 <% include partials/header %>
+
 <script>
-  function addPartFields(numberID, containerID) {
-    // document.write("here");
+  function addFields(){
     // Number of inputs to create
-    var number = document.getElementById(numberID).value;
+    var number = document.getElementById("member").value;
     // Container <div> where dynamic content will be placed
-    var container = document.getElementById(containerID);
+    var container = document.getElementById("container");
     // Clear previous contents of the container
     while (container.hasChildNodes()) {
       container.removeChild(container.lastChild);
     }
-    for (var i = 0; i < number; i++){
+    let sumParts = 0;
+    for (i=0;i<number;i++){
       // Append a node with a random text
       container.appendChild(document.createTextNode("Part " + (i+1)));
       container.appendChild(document.createElement("br"));
@@ -40,94 +41,55 @@
       container.appendChild(document.createElement("br"));
     }
   }
-  
-  function addJobFields(label, id, type, name, placeholder, value) {
-    var div = document.createElement("div");
-    div.class = "field";
-    div.id = "job";
-    jobContainer.appendChild(div);
-    var l = document.createElement("label");
-    var p = document.createElement("p");
-    p.appendChild(document.createTextNode(label));
-    l.appendChild(p);
-    div.appendChild(l);
-    var input = document.createElement("input");
-    input.id = id;
-    input.type = type;
-    input.name = name;
-    input.placeholder = placeholder;
-    input.value = value;
-    div.appendChild(input);
-    return div;
-  }
-  
-  function addJobs() {
-    var n = document.getElementById("numberOfJobs").value;
-    var jobContainer = document.getElementById("jobContainer");
-    while (jobContainer.hasChildNodes()) {
-      jobContainer.removeChild(jobContainer.lastChild);
-    }
-    jobContainer.appendChild(document.createElement("br"));
-    for (var i = 0; i < n; i++) {
-      jobContainer.appendChild(addJobFields("Job ID: ", "jobID-" + (i + 1), "text", "jobID-" + (i + 1), "Job ID", ""));
-      jobContainer.appendChild(addJobFields("Job Name: ", "jobName-" + (i + 1), "text", "jobName-" + (i + 1), "Job Name", ""));
-      jobContainer.appendChild(addJobFields("Job Cost: ", "jobCost-" + (i + 1), "number", "jobCost-" + (i + 1), "Cost", 0));
-      var div = addJobFields("Number of parts: ", "numberOfParts-" + (i + 1), "number", "numberOfParts-" + (i + 1), "", 0);
-      var a = document.createElement("a");
-      a.href = "#";
-      a.id = "addParts";
-      // var str = "addPartFields(numberOfParts-" + (i + 1) + ", jobID-" + (i + 1) + ")";
-      a.onclick = function() {
-        console.log("numberOfParts-" + (i));
-        addPartFields("numberOfParts-" + (i + 1), "jobID-" + (i + 1));
-      }
-      a.appendChild(document.createTextNode("Add parts"));
-      div.appendChild(a);
-      jobContainer.appendChild(div);
-      
-      var div2 = document.createElement("div");
-      div2.id = "partContainer" + (i + 1);
-      jobContainer.appendChild(div2);
-      
-      jobContainer.appendChild(document.createElement("br"));
-      jobContainer.appendChild(document.createElement("br"));
-    }
-  }
 </script>
 
 <div class="ui main text container segment">
   <div class="ui huge header">Repair Order Form</div>
-  <form class="ui form" action="/blogs" method="POST">
+  <form class="ui form" action="/repairOrderForm" method="POST">
     
     <div class="field">
       <label>Customer Info</label>
-      <input id="customerInfo" type="text" name="customerInfo" placeholder="customer">
+      <input id="customerID"type="text" name="customerID" placeholder="customer ID" value="">
+      <input id="firstName"type="text" name="customerFirstName" placeholder="First Name" value="">
+      <input id="lastName" type="text" name="customerLastName" placeholder="Last Name" value="">
+      <input type="button" name="submitCustomerSearch" value="Find Customer" 
+        onclick="findCustomer(document.getElementById("customerID").value, 
+          document.getElementById("firstName").value,
+          document.getElementById("lastName").value)">
     </div>
     
     <div class="field">
       <label>Vehicle Info</label>
-      <input id="vehicleInfo" type="text" name="vehicleInfo" placeholder="vehicle">
+      <input type="text" name="vehicleInfo" placeholder="vehicle" value="">
     </div>
-    
-    <br>
     
     <div class="field">
-      <label># of Jobs</label>
-      <input id="numberOfJobs" type="number" name="numberOfJobs" placeholder="number of job" value="">
-      <a href="#" id="filldetails" onclick="addJobs()">Add jobs</a>
-      <div id="jobContainer">
-        
-      </div>
+      <label>Job ID:</label>
+      <input type="text" name="jobID" placeholder="title" value="">
     </div>
     
-    <br>
+    <div class="field">
+      <label>Job Name</label>
+      <input type="text" name="jobName" placeholder="title" value="">
+    </div>
+        
+    <div>
+      <input type="text" id="member" name="member" value="">Number of Parts: <br />
+      <a href="#" id="filldetails" onclick="addFields()">Fill Details</a>
+      <div id="container"></div>
+    </div>
     
-    <!--<div>-->
-    <!--  <input type="text" id="member" name="member" value="">Number of Parts: <br />-->
-    <!--  <a href="#" id="filldetails" onclick="addFields()">Fill Details</a>-->
-    <!--  <div id="container"></div>-->
-    <!--</div>-->
+    <div class="field">
+      <label>Job Total</label>
+      <input type="number" name="laborCost" placeholder="title" value="">
+    </div>
+    
+    <div class="field">
+      <label>Labor </label>
+      <input type="number" name="jobPrice" placeholder="title" value="">
+    </div>
 
+    
     
     <input class="ui grey button" type="submit">
   </form>

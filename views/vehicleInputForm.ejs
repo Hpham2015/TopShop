@@ -1,25 +1,44 @@
 <% include partials/header %>
 
-    <form class="ui form" action="/vehicleInputForm" method="POST">
+
+
+<div class="container border border-dark rounded mx-auto">
   
-        <br> Vehicle Entry Form <br>
-    
-        <input id="VIN" type="text" name="VIN" placeholder="VIN #" value="">
-        <input id="make" type="text" name="make" placeholder="Make" value="">
-        <input id="model" type="text" name="model" placeholder="Model" value="">
-        <input id="year" type="number" name="year" placeholder="Year" value="">
-        <input id="color" type="text" name="color" placeholder="Color" value="">
-        <input id="type" type="text" name="type" placeholder="Type" value="">
-        <input id="productionDate" type="date" name="productionDate" placeholder="Production Date" value="">
-        <input id="inserviceDate" type="date" name="inserviceDate" placeholder="Inservice Date" value="">
-        <br> Last Service Information <br>
-        <input id="lastServiceDate" type="date" name="lastServiceDate" placeholder="Date of Last Service" value="">
-        <input id="lastServiceOdom" type="number" name="lastServiceOdom" placeholder="Odometer" value="">
-        <input id="lastServiceDailyMiles" type="number" name="lastServiceDailyMiles" placeholder="Daily Average Miles" value="">
-        <input id="lastServiceMonthlyMiles" type="number" name="lastServiceMonthlyMiles" placeholder="Monthly Average Miles" value="">
-         
-        <input type="submit">
-    
-    </form>
+  <form class="vehiclecreationform" action="/createvehicle" method="POST">
+    <div class="form-group">
+      <label for="Make">Make</label>
+      <input type="text" class="form-control" name="make" placeholder="Ex. Honda" required>
+    </div>
+    <div class="form-group">
+      <label for="Model">Model</label>
+      <input type="text" class="form-control" name="model" placeholder="Ex. S2000" required>
+    </div>
+    <div class="form-group">
+      <label for="Year">Year</label>
+      <input type="number" class="form-control" name="year" placeholder="Ex. 2007" min="1970" max="2020" required>
+    </div>
+    <div class="form-group">
+      <label for="Color">Color</label>
+      <input type="text" class="form-control" name="color" placeholder="Ex. Red" required>
+    </div>
+    <div class="form-group">
+      <label for="License">License Plate</label>
+      <input type="text" class="form-control" name="license" placeholder="Ex. 2SOONJR" 
+        style="text-transform:uppercase" required>
+    </div>
+    <div class="form-group">
+      <label for="Vehicle Identification Number">Vehicle Identification Number</label>
+      <input type="text" class="form-control" name="vin" placeholder="Ex. 1C6RR7GT2DS631484" style="text-transform:uppercase" 
+        minlength="17" maxlength="17" required>
+    </div>
+    <div class="form-group">
+      <label for="Current Mileage">Current Mileage</label>
+      <input type="number" class="form-control" name="mileage" placeholder="Ex. 11025" required>
+    </div>
+    <button class="btn btn-primary" type="submit">Create Vehicle</button>
+  </form>
+
+</div>
+
 
 <% include partials/footer %>

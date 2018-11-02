@@ -104,9 +104,10 @@ app.post('/vehicleInspectionForm', function(req,res) {
   newVehicleInspectionForm.TIRES.Air_Pressure.Front.RF = req.body["rf-psi"];
   newVehicleInspectionForm.TIRES.Air_Pressure.Back.LR = req.body["lr-psi"];
   newVehicleInspectionForm.TIRES.Air_Pressure.Back.RR = req.body["rr-psi"];
+  newVehicleInspectionForm.Comments = req.body["comments"];
   
   newVehicleInspectionForm.save(function(error) {
-    res.send(req.body);
+    res.render("landing");
     if (error) {
       console.error(error);
     }

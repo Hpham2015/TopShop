@@ -1,22 +1,126 @@
-<% include ./partials/header %>
+<% include partials/header %>
+<div class="container border border-dark rounded mx-auto">
+
+<form class="needs-validation" novalidate>
+  <div class="form-row">
+    
+    <div class="col-md-4 mb-3">
+      <label for="validationCustomUsername">Customer ID</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroupPrepend">ID</span>
+        </div>
+        <input type="text" class="form-control" id="customerID" placeholder="FJ39HG13KQ" 
+        style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" required>
+        <div class="invalid-feedback">
+          Please choose a customer ID.
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+      <label for="validationCustom01">First name</label>
+      <input type="text" class="form-control" id="firstname" placeholder="John"  required>
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label for="validationCustom02">Last name</label>
+      <input type="text" class="form-control" id="lastname" placeholder="Smith"  required>
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+    </div>
+    
+  </div>
+  
+  <div class="form-row">
+    <div class="col-md-6 mb-3">
+      <label for="validationCustom03">Street</label>
+      <input type="text" class="form-control" id="street" placeholder="1342 Baseline Rd" required>
+      <div class="invalid-feedback">
+        Please provide a valid street.
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="validationCustom03">City</label>
+      <input type="text" class="form-control" id="City" placeholder="Santa Cruz" required>
+      <div class="invalid-feedback">
+        Please provide a valid city.
+      </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+      <label for="validationCustom04">State</label>
+      <input type="text" class="form-control" id="State" placeholder="CA" 
+      minlength="2" maxlength="2" required>
+      <div class="invalid-feedback">
+        Please provide a valid state.
+      </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+      <label for="Zip">Zip</label>
+      <input type="number" minlength="5" maxlength="5" class="form-control" id="zip" placeholder="95060" required>
+      <div class="invalid-feedback">
+        Please provide a valid zip.
+      </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" placeholder="johnsmith@email.com" required>
+      <div class="invalid-feedback">
+        Please provide a valid email.
+      </div>
+    </div>    
+    
+    <div class="col-md-3 mb-3">
+      <label for="Cell">Cell Phone</label>
+      <input type="tel" minlength="10" maxlength="10" class="form-control" id="cell" placeholder="8312435594" required>
+      <div class="invalid-feedback">
+        Please provide a valid Cell number.
+      </div>
+    </div>    
+    
+    <div class="col-md-3 mb-3">
+      <label for="Work">Work Phone</label>
+      <input type="tel" minlength="10" maxlength="10" class="form-control" id="work" placeholder="8312435594" required>
+      <div class="invalid-feedback">
+        Please provide a valid Work number.
+      </div>
+    </div>    
+    
+  </div>
+  
+  
+  <button class="btn btn-primary" type="submit">Create Customer</button>
+</form>
+
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
 
 
-    <form action="/customerInputForm" method="POST">
-        
-        <br> Customer Entry Form <br>
-        
-        <input id="customerID" type="text" name="customerID" placeholder="Customer ID" value="">
-        <input id="firstName" type="text" name="firstName" placeholder="First Name" value="">
-        <input id="lastName" type="text" name="lastName" placeholder="Last Name" value="">
-        <input id="addres" type="text" name="address" placeholder="Address" value="">
-        <input id="city" type="text" name="city" placeholder="City" value="">
-        <input id="state"type="text" name="state" placeholder="State" value="">
-        <input id="zip" type="number" name="zip" placeholder="Zip Code" value="">
-        <input id="email" type="email" name="email" placeholder="Email" value="">
-        <input id="cell" type="tel" name="cell" placeholder="Cell Phone Number" value="">
-        <input id="work" type="tel" name="work" placeholder="Work Phone Number" value="">
-        <input id="VIN" type="text" name="VIN" placeholder="VIN" value="">
-        <input type="submit">
-    </form> 
-
-<% include ./partials/footer %>
+</div>
+<% include partials/footer %>

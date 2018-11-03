@@ -209,11 +209,11 @@ app.post("/customerInputForm", function(req, res){
   res.redirect("/customerInputForm");
 });
 
-app.get("/vehicleInputForm", function(req, res){
+app.get("/vehicleInputForm", function(req, res) {
   res.render("vehicleInputForm");
 });
 
-app.post("/vehicleInputForm", function(req, res){
+app.post("/vehicleInputForm", function(req, res) {
   
   var lastServiceModelInstance = new lastServiceModel({
     date: req.body.lastServiceDate,

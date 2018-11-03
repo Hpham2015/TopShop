@@ -1,5 +1,6 @@
 <% include partials/header %>
 
+<<<<<<< HEAD
 <script>
   function addFields(){
     // Number of inputs to create
@@ -95,3 +96,271 @@
   </form>
 </div>
 <% include partials/footer %>
+=======
+<!-- Technition ID & Name -->
+<div class="container-fluid">
+    
+  <div class="jumbotron jumbotron-fluid border border-dark rounded">
+    <div class="container-fluid">
+      <h1 class="display-4 text-center">Repair Order Form</h1>
+    </div>
+  </div>
+  
+<!--Form starts here -->
+<form>
+  
+  <!--Section for Customer Info-->
+  <div class="container border border-dark rounded mx-auto">
+    <h3 class="group-label">Repair Order Form #</h3>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <input type="number" class="form-control" id="repair_order_number" minlength="5" maxlength="5" placeholder="84895" required>      
+      </div>
+    </div>
+
+    <h3 class="group-label">Customer Info</h3>  
+    
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="CustomerID">Customer ID</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupPrepend">ID</span>
+          </div>
+          <input type="text" class="form-control" id="customerID" placeholder="FJ39HG13KQ" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="FirstName">First name</label>
+        <input type="text" class="form-control" id="firstname" placeholder="John"  readonly>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="LastName">Last name</label>
+        <input type="text" class="form-control" id="lastname" placeholder="Smith"  readonly>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-3 mb-3">
+        <label for="Street">Street</label>
+        <input type="text" class="form-control" id="Street" placeholder="1342 Baseline Rd" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="City">City</label>
+        <input type="text" class="form-control" id="City" placeholder="Santa Cruz" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="State">State</label>
+        <input type="text" class="form-control" id="State" placeholder="CA" 
+        minlength="2" maxlength="2" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="Zip">Zip</label>
+        <input type="number" minlength="5" maxlength="5" class="form-control" id="zip" placeholder="95060" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="johnsmith@email.com" readonly>
+      </div>    
+      <div class="col-md-3 mb-3">
+        <label for="Cell">Cell Phone</label>
+        <input type="tel" minlength="10" maxlength="10" class="form-control" id="cell" placeholder="8312435594" readonly>
+      </div>    
+      <div class="col-md-3 mb-3">
+        <label for="Work">Work Phone</label>
+        <input type="tel" minlength="10" maxlength="10" class="form-control" id="work" placeholder="8312435594" readonly>
+      </div>    
+    </div>
+    
+<!-- Section for Vehicle Info -->
+    <h3 class="group-label">Vehicle Info</h3>    
+      <div class="form-row">
+        <div class="col-md-3 mb-3">
+          <label for="Year/Model/Make">Year/Model/Make</label>
+            <input type="text" aria-label="Year/Model/Mak" class="form-control" readonly>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="Mileage">Mileage</label>
+            <input type="text" aria-label="Mileage" class="form-control" readonly>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="VIN">VIN</label>
+            <input type="text" aria-label="VIN" class="form-control" readonly>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="License">License</label>
+            <input type="text" aria-label="License" class="form-control" readonly>
+        </div>
+      </div>
+      
+<!-- Section for Mechanic Info -->
+    <h3 class="group-label">Mechanic Info</h3>    
+      <div class="form-row">
+        <div class="col-md-4 mb-3">
+          <label for="CustomerID">Mechanic ID</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupPrepend">ID</span>
+            </div>
+            <input type="text" class="form-control" id="customerID" placeholder="ER96JBFI74" 
+            style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="FirstName">First name</label>
+          <input type="text" class="form-control" id="firstname" placeholder="Jane"  readonly>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="LastName">Last name</label>
+          <input type="text" class="form-control" id="lastname" placeholder="Doe"  readonly>
+        </div>
+      </div>
+    <a class="btn btn-primary btn-lg mt-2" href="/vehicleInspectionForm" role="button">Vehicle Inspection Form</a>
+  </div>
+  
+<!-- Actual Repair Order Form -->
+  <div class="container border border-dark rounded mx-auto"> 
+    <h3 class="group-label">Repairs</h3>    
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th style="width:5%" scope="col">#</th>
+            <th style="width:20%" scope="col">Repair Type</th>
+            <th style="width:45%" scope="col">Repair</th>
+            <th style="width:15%" scope="col">Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>
+            <h6><strong><br></strong></h6>
+              <select class="custom-select" id="job_1_repair_type" required>
+                <option value="">Choose...</option>
+                <option value="Customer Pay">Customer Pay</option>  
+                <option value="Warranty">Warranty</option>    
+                <option value="Internal">Internal</option>  
+              </select>
+            </td>
+              <td> 
+              <h6><strong>Complaint</strong></h6>
+              <textarea class="form-control" aria-label="With textarea" required></textarea> 
+              <br>
+              <h6><strong>Cause</strong></h6>
+              <textarea class="form-control" aria-label="With textarea" required></textarea>
+              <br>
+              <h6><strong>Resolution</strong></h6>
+              <textarea class="form-control" aria-label="With textarea" required></textarea>
+              </td>  <!-- Need to add ID to be saved -->
+            <td>  
+              <h6><strong><br></strong></h6>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroupPrepend">$</span>
+                </div>
+                <input type="text" class="form-control" onchange="add_number()" value="0" id="job_1_cost"  required>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td> 
+            <h6><strong><br></strong></h6>
+            <select class="custom-select" id="job_2_repair_type" required>
+                <option value="">Choose...</option>
+                <option value="Customer Pay">Customer Pay</option>  
+                <option value="Warranty">Warranty</option>    
+                <option value="Internal">Internal</option>  
+              </select>
+            </td>
+            <td> 
+              <h6><strong>Complaint</strong></h6>
+              <textarea class="form-control" aria-label="With textarea" required></textarea> 
+              <br>
+              <h6><strong>Cause</strong></h6>
+              <textarea class="form-control" aria-label="With textarea" required></textarea>
+              <br>
+              <h6><strong>Resolution</strong></h6>
+              <textarea class="form-control" aria-label="With textarea" required></textarea>
+              </td>  <!-- Need to add ID to be saved -->
+            <td>
+              <h6><strong><br></strong></h6>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroupPrepend">$</span>
+                </div>
+                <input type="text" class="form-control" onchange="add_number()" value="0" id="job_2_cost"  required>
+              </div>            
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td> 
+            <h6><strong><br></strong></h6>
+            <select class="custom-select" id="job_3_repair_type" required>
+                <option value="">Choose...</option>
+                <option value="Customer Pay">Customer Pay</option>  
+                <option value="Warranty">Warranty</option>    
+                <option value="Internal">Internal</option>  
+              </select>
+            </td>
+              <td>
+              <h6><strong>Complaint</strong></h6>
+              <textarea class="form-control" aria-label="With textarea" required></textarea> 
+              <br>
+              <h6><strong>Cause</strong></h6>
+              <textarea class="form-control" aria-label="With textarea" required></textarea>
+              <br>
+              <h6><strong>Resolution</strong></h6>
+              <textarea class="form-control" aria-label="With textarea" required></textarea>
+              </td>  <!-- Need to add ID to be saved -->
+            <td>  
+              <h6><strong><br></strong></h6>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroupPrepend">$</span>
+                </div>
+                <input type="text" class="form-control" onchange="add_number()" value="0" id="job_3_cost"  required>
+              </div>           
+              </td>
+          </tr>
+        </tbody>
+      </table>
+          
+          <div align="right">
+            <div class="input-group input-group-lg">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-lg">Total Cost:</span>
+                <span class="input-group-text" id="inputGroup-sizing-lg">$</span>
+              </div>
+              <input type="text" class="form-control" id="total_cost" readonly>
+            </div>
+          </div>
+        
+        <br>
+    <button type="submit" class="btn btn-primary btn-lg mt-2">Submit Repair Order</button>
+    
+<!-- Form Ends Here -->
+  </form>
+  </div>
+</div>
+<% include partials/footer %>
+
+<script>
+  function add_number() {
+    var fst_init = parseFloat(document.getElementById("job_1_cost").value);
+    var snd_init = parseFloat(document.getElementById("job_2_cost").value);
+    var thd_init = parseFloat(document.getElementById("job_3_cost").value);
+    var fst = (Math.round(fst_init* 100)/100);//.toFixed(2);
+    var snd = (Math.round(snd_init* 100)/100);//.toFixed(2);
+    var thd = (Math.round(thd_init* 100)/100);//.toFixed(2);
+    var result = fst + snd + thd;
+    document.getElementById("total_cost").value = result.toFixed(2);
+    document.getElementById("job_1_cost").value = fst.toFixed(2);
+    document.getElementById("job_2_cost").value = snd.toFixed(2);
+    document.getElementById("job_3_cost").value = thd.toFixed(2);
+    
+  }  
+  
+</script>
+>>>>>>> master

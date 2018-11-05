@@ -12,8 +12,7 @@ app.use(express.urlencoded()); // to support URL-encoded bodies
 
 
 //mongoose connection
-var mongoose = require('mongoose');
-var mongoURL = 'mongodb://localhost:27017/myDB';
+var mongoURL = 'mongodb://localhost:27017/mydb';
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -28,11 +27,6 @@ var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.
 
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
-
-<<<<<<< HEAD
-var url = "mongodb://localhost:27017/test";
-/** CONNECT **/
-mongoose.connect(url);
 
 var Schema = mongoose.Schema;
 
@@ -146,36 +140,29 @@ var inspectionReportSchema = new Schema({
   Inspected_on: Date
 });
 
-// sets up vehicle entry form schema
-var partSchema = new Schema({
-  partID: String,
-  partDescription: String,
-  quantity: Number,
-  partCost: Number
-});
-
 var jobSchema = new Schema({
-  jobID: String,
-  jobOrder: Number,
-  jobName: String,
-  laborCost: Number,
-  parts: [partSchema],
-  totalPartCost: Number, // all part costs
-  totalJobCost: Number  // all part costs + labor cost
+  repairType: String,
+  complaint: String,
+  cause: String,
+  resolution: String,
+  cost: String
 })
 
 var repairOrderSchema = new Schema({
-  customerInfo: customerSchema,
-  vehicleInfo: vehicleSchema,
-  inspectionReport: inspectionReportSchema,
+  repairOrderNumber: String,
+  customerID: String,
+  VIN: String,
+  inspectionReport: inspectionReportSchema, // Can we assign each inspection report an ID?
+  mechanicID: String,
+  mechanicFirstName: String,
+  mechanicLastName: String,
   jobs: [jobSchema],
-  totalCost: Number, // all job costs
-  disclaimer: String
+  totalCost: String
 });
 
-=======
+// =======
 //rendering stuff
->>>>>>> master
+// >>>>>>> master
 app.get("/", function(req, res){
   res.render("landing");
 });
@@ -185,7 +172,6 @@ var lastServiceModel = mongoose.model("lastService", lastServiceSchema);
 var vehicleModel = mongoose.model("vehicle", vehicleSchema);
 var customerModel = mongoose.model("customer", customerSchema);
 var inspectionReportModel = mongoose.model("inspectionReport", inspectionReportSchema);
-var partModel = mongoose.model("part", partSchema);
 var jobModel = mongoose.model("job", jobSchema);
 var repairOrderModel = mongoose.model("repairOrder", repairOrderSchema);
 
@@ -265,33 +251,81 @@ app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
 });
 
-function findCustomer(id, first, last) {
-  customerModel.find({customerID: id, firstName: first, lastName: last}, function(err, data) {
-    if (err) console.log(err);
-    console.log("got here");
-    console.log(data);
-  });
-}
-
 app.post("/repairOrderForm", function(req, res) {
   
-  customerModel.find({customerID: req.body.customerID, firstName: req.body.customerFirstName, 
-                          lastName: req.body.customerLastName}, function(err, data) {
-    if (err) console.log(err);
-    console.log("got here");
-    console.log(data);
+  // customerModel.find({customerID: req.body.customerID, firstName: req.body.customerFirstName, 
+  //                         lastName: req.body.customerLastName}, function(err, data) {
+  //   if (err) console.log(err);
+  //   console.log(data);
+  // });
+  
+//   var jobSchema = new Schema({
+//   repairType: String,
+//   complaint: String,
+//   cause: String,
+//   resolution: String,
+//   cost: String
+// })
+
+// var repairOrderSchema = new Schema({
+//   repairOrderNumber: String,
+//   customerID: String,
+//   VIN: String,
+//   inspectionReport: inspectionReportSchema, // Can we assign each inspection report an ID?
+//   mechanicID: String,
+//   mechanicFirstName: String,
+//   mechanicLastName: String,
+//   jobs: [jobSchema],
+//   totalCost: String
+// });  
+  var repairOrderInstance = new repairOrderModel({
+    repairOrderNumber: req.body.repair_order_number,
+    customerID: req.body.customerID,
+    VIN: req.body.VIN,
+    
+    mechanicID: req.body.mechanicID,
+    mechanicFirstName: req.body.mechanicFirstName,
+    mechanicLastName: req.body.mechanicLastName,
+    
+    totalCost: req.body.total_cost
   });
-    var partInstance = new partModel({
-      
-    });
-    
-    var jobInstance = new jobModel({
-      
-    });
-    
-    var repairOrderInstance = new repairOrderModel({
-      
-    });
+  repairOrderInstance.jobs.push({
+    repairType: req.body.job_1_repair_type,
+    complaint: req.body.job_1_complaint,
+    cause: req.body.job_1_cause,
+    resolution: req.body.job_1_resolution,
+    cost: req.body.job_1_cost
+  });
+  // job_instance_1.save(function (err) {
+  //   if (err) console.log(err);
+  // });
+  
+  repairOrderInstance.jobs.push({
+    repairType: req.body.job_2_repair_type,
+    complaint: req.body.job_2_complaint,
+    cause: req.body.job_2_cause,
+    resolution: req.body.job_2_resolution,
+    cost: req.body.job_2_cost
+  });
+  // job_instance_2.save(function (err) {
+  //   if (err) console.log(err);
+  // });
+  
+  repairOrderInstance.jobs.push({
+    repairType: req.body.job_3_repair_type,
+    complaint: req.body.job_3_complaint,
+    cause: req.body.job_3_cause,
+    resolution: req.body.job_3_resolution,
+    cost: req.body.job_3_cost
+  });
+  // job_instance_3.save(function (err) {
+  //   if (err) console.log(err);
+  // });
+  
+  repairOrderInstance.save(function (err) {
+    if (err) console.log(err);
+  });
+  res.redirect("/repairOrderForm");
 });
 
 app.get("/vehicleInspectionForm", function(req, res){
@@ -304,15 +338,15 @@ app.post("/vehicleInspectionForm", function(req, res) {
 
 app.listen(process.env.PORT, process.env.IP, function(){
   console.log("Server started.");
-<<<<<<< HEAD
+// <<<<<<< HEAD
 })
 
 function testFind() {
   console.log("here");
   // vehicleModel.find({'make': "Toyota"}, "make model");
 }
-=======
-});
+// =======
+// });
 
 //listens to vehicleInspectionForm
 app.post('/vehicleInspectionForm', function(req,res) {
@@ -381,4 +415,4 @@ app.post('/vehicleInspectionForm', function(req,res) {
   });
   
 });
->>>>>>> master
+// >>>>>>> master

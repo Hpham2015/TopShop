@@ -8,11 +8,9 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 app.use(express.json());       // to support JSON-encoded bodies
-app.use(express.urlencoded()); // to support URL-encoded bodies
-
 
 //mongoose connection
-var mongoURL = 'mongodb://localhost:27017/mydb';
+var mongoURL = 'mongodb://localhost:27017/myDB';
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

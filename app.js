@@ -28,93 +28,22 @@ app.set("view engine", "ejs");
 
 var Schema = mongoose.Schema;
 
-var lastServiceSchema = new Schema({
-  date: Date,
-  odometer: Number,
-  dailyAverageMiles: Number,
-  monthlyAverageMiles: Number
-});
-
-var vehicleSchema = new Schema({
-  VIN: String,
-  make: String,
-  model: String,
-  year: Number,
-  color: String,
-  type: String,
-  productionDate: Date,
-  inserviceDate: Date,
-  lastService: lastServiceSchema
-});
-
-// sets up customer entry form schema
-var customerSchema = new Schema({
-  customerID: String,
-  firstName: String,
-  lastName: String,
-  address: String,
-  city: String,
-  state: String,
-  zip: Number,
-  email: String,
-  cell: String,
-  work: String,
-  // VIN: String,
-  vehicles: [vehicleSchema]
-});
-
-
 // =======
 //rendering stuff
-// >>>>>>> master
 app.get("/", function(req, res){
   res.render("landing");
 });
 
 // Create models
-var lastServiceModel = mongoose.model("lastService", lastServiceSchema);
-var vehicleModel = mongoose.model("vehicle", vehicleSchema);
-var customerModel = mongoose.model("customer", customerSchema);
 var jobModel = require("./models/JobSchema.js");
 var repairOrderModel = require("./models/RepairOrderFormSchema.js");
 
 
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
-  // mongoose.model("customerInputForm").find(function(err, input){
-  //   res.send(input);
-  // });
 });
 
 app.post("/customerInputForm", function(req, res){
-
-  var customerModelInstance = new customerModel({
-    customerID: req.body.customerID,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    address: req.body.city,
-    state: req.body.state,
-    zip: Number(req.body.zip),
-    email: req.body.email,
-    cell: req.body.cell,
-    work: req.body.work,
-  });
-  
-  var vin = req.body.VIN;
-  var query = vehicleModel.findOne({VIN: vin}, function (err, vehicleModel) {
-    if (err) {
-      res.send(err);
-    }
-    console.log(vehicleModel);
-    customerModelInstance.vehicles.push(vehicleModel);
-    
-    console.log(customerModelInstance);
-    
-    customerModelInstance.save(function (err) {
-      if (err) console.log(err);
-    });
-    
-  });
   res.redirect("/customerInputForm");
 });
 
@@ -123,29 +52,6 @@ app.get("/vehicleInputForm", function(req, res) {
 });
 
 app.post("/vehicleInputForm", function(req, res) {
-  
-  var lastServiceModelInstance = new lastServiceModel({
-    date: req.body.lastServiceDate,
-    odometer: Number(req.body.lastServiceOdom),
-    dailyAverageMiles: Number(req.body.lastServiceDailyMiles),
-    monthlyAverageMiles: Number(req.body.lastServiceMonthlyMiles)
-  });
-  
-  var vehicleModelInstance = new vehicleModel({
-    VIN: req.body.VIN,
-    make: req.body.make,
-    model: req.body.model,
-    year: Number(req.body.year),
-    color: req.body.color,
-    type: req.body.type,
-    productionDate: req.body.productionDate,
-    inserviceDate: req.body.inserviceDate,
-    lastService: lastServiceModelInstance
-  });
-  console.log(vehicleModelInstance);
-  vehicleModelInstance.save(function (err) {
-    if (err) console.log(err);
-  });
   res.redirect("/vehicleInputForm");
 });
 
@@ -155,32 +61,7 @@ app.get("/repairOrderForm", function(req, res){
 });
 
 app.post("/repairOrderForm", function(req, res) {
-  
-  // customerModel.find({customerID: req.body.customerID, firstName: req.body.customerFirstName, 
-  //                         lastName: req.body.customerLastName}, function(err, data) {
-  //   if (err) console.log(err);
-  //   console.log(data);
-  // });
-  
-//   var jobSchema = new Schema({
-//   repairType: String,
-//   complaint: String,
-//   cause: String,
-//   resolution: String,
-//   cost: String
-// })
-
-// var repairOrderSchema = new Schema({
-//   repairOrderNumber: String,
-//   customerID: String,
-//   VIN: String,
-//   inspectionReport: inspectionReportSchema, // Can we assign each inspection report an ID?
-//   mechanicID: String,
-//   mechanicFirstName: String,
-//   mechanicLastName: String,
-//   jobs: [jobSchema],
-//   totalCost: String
-// });  
+ 
   var repairOrderInstance = new repairOrderModel({
     repairOrderNumber: req.body.repair_order_number,
     customerID: req.body.customerID,
@@ -199,9 +80,6 @@ app.post("/repairOrderForm", function(req, res) {
     resolution: req.body.job_1_resolution,
     cost: req.body.job_1_cost
   });
-  // job_instance_1.save(function (err) {
-  //   if (err) console.log(err);
-  // });
   
   repairOrderInstance.jobs.push({
     repairType: req.body.job_2_repair_type,
@@ -210,9 +88,6 @@ app.post("/repairOrderForm", function(req, res) {
     resolution: req.body.job_2_resolution,
     cost: req.body.job_2_cost
   });
-  // job_instance_2.save(function (err) {
-  //   if (err) console.log(err);
-  // });
   
   repairOrderInstance.jobs.push({
     repairType: req.body.job_3_repair_type,
@@ -221,35 +96,12 @@ app.post("/repairOrderForm", function(req, res) {
     resolution: req.body.job_3_resolution,
     cost: req.body.job_3_cost
   });
-  // job_instance_3.save(function (err) {
-  //   if (err) console.log(err);
-  // });
   
   repairOrderInstance.save(function (err) {
     if (err) console.log(err);
   });
   res.redirect("/repairOrderForm");
 });
-
-app.get("/vehicleInspectionForm", function(req, res){
-  res.render("vehicleInspectionForm");
-});
-
-app.post("/vehicleInspectionForm", function(req, res) {
-    
-});
-
-app.listen(process.env.PORT, process.env.IP, function(){
-  console.log("Server started.");
-// <<<<<<< HEAD
-})
-
-function testFind() {
-  console.log("here");
-  // vehicleModel.find({'make': "Toyota"}, "make model");
-}
-// =======
-// });
 
 //listens to vehicleInspectionForm
 app.post('/vehicleInspectionForm', function(req,res) {
@@ -318,4 +170,3 @@ app.post('/vehicleInspectionForm', function(req,res) {
   });
   
 });
-// >>>>>>> master

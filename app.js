@@ -20,7 +20,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//Schema
+// SCHEMA
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
 
 app.use(express.static(__dirname + "/public"));
@@ -28,8 +28,6 @@ app.set("view engine", "ejs");
 
 var Schema = mongoose.Schema;
 
-// =======
-//rendering stuff
 app.get("/", function(req, res){
   res.render("landing");
 });
@@ -169,4 +167,10 @@ app.post('/vehicleInspectionForm', function(req,res) {
     }
   });
   
+});
+
+// Keep this at the bottom of the page.
+// Whoever is not on aws cloud 9, your ports will be different.
+app.listen(process.env.PORT, process.env.IP, function(){
+  console.log("Server started.");
 });

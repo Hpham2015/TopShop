@@ -101,7 +101,12 @@ app.post("/repairOrderForm", function(req, res) {
   res.redirect("/repairOrderForm");
 });
 
+
 //listens to vehicleInspectionForm
+app.get("/vehicleInspectionForm", function(req, res) {
+  res.render("vehicleInspectionForm");
+});
+
 app.post('/vehicleInspectionForm', function(req,res) {
   
   var newVehicleInspectionForm = new VehicleInspectionFormSchema({
@@ -167,6 +172,48 @@ app.post('/vehicleInspectionForm', function(req,res) {
     }
   });
   
+});
+
+
+// Dashboard
+app.get("/dashboard", function(req, res) {
+  res.render("dashboard");
+});
+
+
+// Customer Page
+
+var Customer = {
+    customerID: 123456,
+    firstName: "John", 
+    lastName: "Wick",
+    street: "666 Nonya Business",
+    city: "New York",
+    state: "NY",
+    zip: 45672,
+    email: "johnwick@youdieded.com",
+    cellPhone: 1234561234,
+    workPhone: 7891231475,
+    vehicles: [
+      { 
+        year: 2007,
+        make: "Honda",
+        model: "S2000",
+        color: "Red",
+        id: 3513513
+      },
+      { 
+        year: 2015,
+        make: "Lexus",
+        model: "IS350",
+        color: "Gray",
+        id: 1351351
+      }
+    ]
+};
+
+app.get("/customerPage", function(req, res) {
+  res.render("customerPage", {Customer:Customer});
 });
 
 // Keep this at the bottom of the page.

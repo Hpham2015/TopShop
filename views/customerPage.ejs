@@ -1,3 +1,87 @@
 <% include partials/header %>
 
+<div class="container-fluid">
+  
+  <div class="jumbotron jumbotron-fluid border border-dark rounded">
+    <div class="container-fluid">
+      <h1 class="display-4 text-center">Customer Information</h1>
+    </div>
+  </div>
+  
+  <!--Section for Customer Info-->
+  <div class="container border border-dark rounded mx-auto">
+
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="CustomerID">Customer ID</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupPrepend">ID</span>
+          </div>
+          <input name="customerID" type="text" class="form-control" id="customerID" value="<%= Customer.customerID %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="FirstName">First name</label>
+        <input  name="firstName" type="text" class="form-control" id="firstname" value="<%= Customer.firstName %>" readonly>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="LastName">Last name</label>
+        <input name="firstName" type="text" class="form-control" id="lastname" value="<%= Customer.lastName %>" readonly>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-3 mb-3">
+        <label for="Street">Street</label>
+        <input name="street" type="text" class="form-control" id="Street" value="<%= Customer.street %>" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="City">City</label>
+        <input name="city" type="text" class="form-control" id="City" value="<%= Customer.city %>" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="State">State</label>
+        <input name-"state" type="text" class="form-control" id="State" value="<%= Customer.state %>"
+        minlength="2" maxlength="2" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="Zip">Zip</label>
+        <input name="zip" type="number" minlength="5" maxlength="5" class="form-control" id="zip" value="<%= Customer.zip %>" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="email">Email</label>
+        <input name="email" type="email" class="form-control" id="email" value="<%= Customer.email %>" readonly>
+      </div>    
+      <div class="col-md-3 mb-3">
+        <label for="Cell">Cell Phone</label>
+        <input name="cell" type="tel" minlength="10" maxlength="10" class="form-control" id="cell" value="<%= Customer.cellPhone %>" readonly>
+      </div>    
+      <div class="col-md-3 mb-3">
+        <label for="Work">Work Phone</label>
+        <input name="work" type="tel" minlength="10" maxlength="10" class="form-control" id="work" value="<%= Customer.workPhone %>" readonly>
+      </div>    
+    </div>
+    
+    
+    <div class="container border border-dark rounded mx-auto">
+      <div class="font-weight-bold">Vehicles</div>
+      <br>
+      
+      <div class="container">
+        <% Customer.vehicles.forEach(function(vehicle){ %>
+          <div class="row">
+            <div class="col"><%= vehicle.year %></div>
+            <div class="col"><%= vehicle.make %></div>
+            <div class="col"><%= vehicle.model %></div>
+            <div class="col"><%= vehicle.color %></div>
+            <a class="col" href="/vehiclePage/<%= vehicle.id %>">Vehicle Page</a>
+          </div>
+        <% }); %>
+      </div>
+      
+    </div>
+
+</div>
+
 <% include partials/footer %>

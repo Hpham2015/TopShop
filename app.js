@@ -1,10 +1,15 @@
 //express
 var express = require("express");
 var app = express();
-
+var mongoose = require("mongoose");
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
+app.use(express.json());       // to support JSON-encoded bodies
 
 //mongoose connection
-var mongoose = require('mongoose');
 var mongoURL = 'mongodb://localhost:27017/myDB';
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
@@ -21,27 +26,80 @@ var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
-// ROUTES
+var Schema = mongoose.Schema;
+
 app.get("/", function(req, res){
   res.render("landing");
 });
+
+// Create models
+var jobModel = require("./models/JobSchema.js");
+var repairOrderModel = require("./models/RepairOrderFormSchema.js");
+
 
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
 });
 
+app.post("/customerInputForm", function(req, res){
+  res.redirect("/customerInputForm");
+});
+
+app.get("/vehicleInputForm", function(req, res) {
+  res.render("vehicleInputForm");
+});
+
+app.post("/vehicleInputForm", function(req, res) {
+  res.redirect("/vehicleInputForm");
+});
+
+
 app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
 });
 
-app.get("/vehicleInputForm", function(req, res){
-  res.render("vehicleInputForm");
+app.post("/repairOrderForm", function(req, res) {
+ 
+  var repairOrderInstance = new repairOrderModel({
+    repairOrderNumber: req.body.repair_order_number,
+    customerID: req.body.customerID,
+    VIN: req.body.VIN,
+    
+    mechanicID: req.body.mechanicID,
+    mechanicFirstName: req.body.mechanicFirstName,
+    mechanicLastName: req.body.mechanicLastName,
+    
+    totalCost: req.body.total_cost
+  });
+  repairOrderInstance.jobs.push({
+    repairType: req.body.job_1_repair_type,
+    complaint: req.body.job_1_complaint,
+    cause: req.body.job_1_cause,
+    resolution: req.body.job_1_resolution,
+    cost: req.body.job_1_cost
+  });
+  
+  repairOrderInstance.jobs.push({
+    repairType: req.body.job_2_repair_type,
+    complaint: req.body.job_2_complaint,
+    cause: req.body.job_2_cause,
+    resolution: req.body.job_2_resolution,
+    cost: req.body.job_2_cost
+  });
+  
+  repairOrderInstance.jobs.push({
+    repairType: req.body.job_3_repair_type,
+    complaint: req.body.job_3_complaint,
+    cause: req.body.job_3_cause,
+    resolution: req.body.job_3_resolution,
+    cost: req.body.job_3_cost
+  });
+  
+  repairOrderInstance.save(function (err) {
+    if (err) console.log(err);
+  });
+  res.redirect("/repairOrderForm");
 });
-
-app.get("/vehicleInspectionForm", function(req, res){
-  res.render("vehicleInspectionForm");
-});
-
 
 //listens to vehicleInspectionForm
 app.post('/vehicleInspectionForm', function(req,res) {

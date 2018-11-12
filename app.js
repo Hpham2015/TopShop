@@ -53,9 +53,12 @@ app.post("/vehicleInputForm", function(req, res) {
   res.redirect("/vehicleInputForm");
 });
 
-
 app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
+});
+
+app.get("/searchPage", function(req, res){
+  res.render("searchPage");
 });
 
 app.post("/repairOrderForm", function(req, res) {

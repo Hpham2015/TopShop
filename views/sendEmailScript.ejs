@@ -1,0 +1,14 @@
+<body>
+    
+    <script>
+        function sendEmail() {
+            var email = document.getElementById('email').value;
+            var customer = document.getElementById('firstName').value + " " + document.getElementById('lastName').value;
+            var car = document.getElementById('year').value + " " + document.getElementById('make').value + " " + document.getElementById('model').value;
+            var subject = "Your recent service for your " + car;
+            var body = "Hello " + customer + ",<br>Attached to this email contains the repair order form, vehicle inspection form, and final paperwork for your " + car + ". ";
+            
+            document.write('<a href="mailto:' + email + '?subject=' + subject + '&body' + body + '"></a>')
+        }
+    </script>
+</body>

@@ -1,32 +1,63 @@
+//express
 var express = require("express");
 var app = express();
-var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
+var mongoose = require("mongoose");
+var bodyParser = require('body-parser')
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 app.use(express.json());       // to support JSON-encoded bodies
-app.use(express.urlencoded()); // to support URL-encoded bodies
 
-// connects to MongoDB server
-var mongoURL = 'mongodb://localhost:27017/myDB';
+//mongoose connection
+var mongoURL = 'mongodb://localhost:27017/TopShop';
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-require('/models');
+//allows us to read data from page by looking at body
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
-app.use(express.static("public"));
-app.use(bodyParser.urlencoded({extended: true}));
 
+var Schema = mongoose.Schema;
+
+console.log("here");
+
+app.get("/", function(req, res){
+  res.render("landing");
+});
+
+// initializes vehicle and last service object models
+var lastServiceObj = require('./models/lastServiceSchema.js');
+var vehicleObj = require('./models/vehicleSchema.js');
 // initializes customer object model
 var customerObj = require('./models/customerSchema.js');
-// initializes vehicle and last service object models
-var vehicleObj = require('./models/vehicleSchema.js');
-var lastServiceObj = require('./models/lastServiceSchema.js');
 
+console.log("here");
+
+
+
+app.get("/customerInputForm", function(req, res){
+  res.render("customerInputForm");
+});
+
+app.get("/repairOrderForm", function(req, res){
+  res.render("repairOrderForm");
+});
+
+app.get("/vehicleInputForm", function(req, res){
+  res.render("vehicleInputForm");
+});
+
+app.get("/vehicleInspectionForm", function(req, res){
+  res.render("vehicleInspectionForm");
+});
+
+console.log("here");
 // adds new customer to DB
 app.post("/customerInputForm", function(req, res){
   var newCustomerObj = new customerObj({
@@ -58,7 +89,7 @@ app.post("/customerInputForm", function(req, res){
   }
 });
 
-});
+}); });
 
 // adds new vehicle to DB
 app.post("/vehicleInputForm", function(req, res){
@@ -106,37 +137,10 @@ function searchVehicle(make, model, year, license) {
   });
 }
 
-// takes input from search form to search for items, then returns JSON with info to form
-app.post("/displaySearch", function(req, res) {
-  
-});
-
-app.use(express.static(__dirname + "/public"));
-app.set("view engine", "ejs");
-
-app.get("/", function(req, res){
-  res.render("landing");
-});
-
-app.get("/customerInputForm", function(req, res){
-  res.render("customerInputForm");
-});
-
-app.get("/repairOrderForm", function(req, res){
-  res.render("repairOrderForm");
-});
-
-app.get("/vehicleInputForm", function(req, res){
-  res.render("vehicleInputForm");
-});
-
-app.get("/vehicleInspectionForm", function(req, res){
-  res.render("vehicleInspectionForm");
-});
+console.log("here");
 
 // Whoever is not on aws cloud 9, your ports will be different.
 app.listen(process.env.PORT, process.env.IP, function(){
   console.log("Server started.");
 });
 
-});

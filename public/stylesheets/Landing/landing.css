@@ -1,7 +1,7 @@
 #logo
 {
-    width:5vw;
-    height:13vh;
+    width:65px;
+    height:70px;
     mix-blend-mode: multiply;
     filter: brightness(1.65);
     
@@ -10,7 +10,8 @@
 {
    
     margin-bottom:30vh !important;
-    height: 90vh;
+    height: 500px;
+    z-index: 0;
 }
 #myVideo
 {
@@ -32,6 +33,7 @@
     width:66.66%;
     height:100%;
     text-align:center;
+    z-index: 2;
     
 }
 
@@ -44,8 +46,8 @@ border-width: 3px;
 background-color: rgba(70,70,70,0.95);
 color: rgba(220,220,220,0.95);
 box-shadow: 0 .25em 0.25em rgba(0,0,0,0.65);
-transition: text-shadow 15s linear;
-transition: box-shadow 0.5s linear;
+transition: box-shadow 0.5s linear!important;
+z-index: 2;
 
 }
 button:focus
@@ -53,17 +55,65 @@ button:focus
     outline:none;
 }
 .glow:hover{
-    color:rgba(0,255,255,0.65);
+    color:rgba(150,255,255,0.75);
     box-shadow: none;
-    text-shadow: 0 0 15px rgba(0,255,255,0.65) !important;
+    text-shadow: 0 0 25px rgba(0,255,255,0.75) !important;
     background-color: rgba(40,40,40,0.95);
+    
 }
 
 .overlay {
-    background: rgba(0,0,0,0);
-  
-  top: 0; right: 0; bottom: 0; left: 0;
+   background: rgba(0,0,0,0);
+  position: absolute;
+  top: 0; right: 0; bottom: 240; left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
+  margin-top:105px;
+  margin-bottom: 165px;
+  
+}
+
+.fadeIn
+{
+    color:white;
+   opacity: 0.0;
+   animation: appear 3s;
+   animation-fill-mode: forwards; 
+  
+}
+@keyframes appear {
+  /* You could think of as "step 1" */
+  from{
+      opacity:0;
+  }
+  to{
+      opacity:1;
+  }
+}
+
+.fadeOut
+{
+    color:white;
+   opacity: 1.0;
+   animation: disappear 3s;
+   animation-fill-mode: forwards;
+}@keyframes disappear {
+  /* You could think of as "step 1" */
+  from{
+      opacity:1;
+  }
+  to{
+      opacity:0;
+  }
+}
+.out{
+    opacity:0;
+}
+#introducing
+{
+    font-size:50px;
+    z-index:1;
+    right:50px;
 }

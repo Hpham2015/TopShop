@@ -22,7 +22,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // SCHEMA
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
+<<<<<<< HEAD
 
+=======
+>>>>>>> b472bea29a55fa4a621f3cdc2bc8a9a3062f347d
 
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
@@ -34,15 +37,25 @@ app.get("/", function(req, res){
   res.render("landing");
 });
 
+<<<<<<< HEAD
 // Create models
 var jobModel = require("./models/JobSchema.js");
 var repairOrderModel = require("./models/RepairOrderFormSchema.js");
 
+=======
+>>>>>>> b472bea29a55fa4a621f3cdc2bc8a9a3062f347d
 // initializes vehicle and last service object models
 var lastServiceObj = require('./models/lastServiceSchema.js');
 var vehicleObj = require('./models/vehicleSchema.js');
 // initializes customer object model
 var customerObj = require('./models/customerSchema.js');
+<<<<<<< HEAD
+=======
+// Create models
+var jobModel = require("./models/JobSchema.js");
+var repairOrderModel = require("./models/RepairOrderFormSchema.js");
+
+>>>>>>> b472bea29a55fa4a621f3cdc2bc8a9a3062f347d
 
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
@@ -117,6 +130,7 @@ app.get("/vehicleInspectionForm", function(req, res) {
   res.render("vehicleInspectionForm");
 });
 
+<<<<<<< HEAD
 app.post('/vehicleInspectionForm', function(req,res) {
   
   var newVehicleInspectionForm = new VehicleInspectionFormSchema({
@@ -227,6 +241,8 @@ app.get("/customerPage", function(req, res) {
 });
 
 // Keep this at the bottom of the page.
+=======
+>>>>>>> b472bea29a55fa4a621f3cdc2bc8a9a3062f347d
 // adds new customer to DB
 app.post("/customerInputForm", function(req, res){
   var newCustomerObj = new customerObj({
@@ -311,4 +327,7 @@ app.listen(process.env.PORT, process.env.IP, function(){
   console.log("Server started.");
 });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> b472bea29a55fa4a621f3cdc2bc8a9a3062f347d

@@ -98,9 +98,15 @@ app.post("/repairOrderForm", function(req, res) {
     cost: req.body.job_3_cost
   });
   
-  repairOrderInstance.save(function (err) {
-    if (err) console.log(err);
-  });
+  repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+    repairOrderInstance, {upsert: true}, function(err, doc) {
+      if (err) console.log("Repair Order Form existed");
+      else console.log("Successfully added");
+    });
+  
+  // repairOrderInstance.save(function (err) {
+  //   if (err) console.log(err);
+  // });
   res.redirect("/repairOrderForm");
 });
 
@@ -217,6 +223,44 @@ var Customer = {
 
 app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
+});
+
+app.get("/searchPage", function(req, res) {
+  res.render("searchPage");
+});
+
+app.post("/searchPage", function(req, res) {
+  var action = req.body.action;
+  if (action == "searchByCustomerName") {
+    var firstName = req.body.customerFirstName;
+    var lastName = req.body.customerLastName;
+  }
+  else if (action == "searchByCustomerEmail") {
+    var email = req.body.customerEmail;
+  }
+  else if (action == "searchByCustomerID") {
+    var id = req.body.customerID;
+  }
+  else if (action == "searchByVIN") {
+    var vin = req.body.vin;
+  }
+  else if (action == "searchByLicense") {
+    var license = req.body.license;
+  }
+  else if (action == "searchByRepairOrderNumber"){
+    var key = req.body.repairOrderNumber;
+    repairOrderModel.find({repairOrderNumber: key}, function(err, doc) {
+      if (err) console.log(err);
+      else {
+        console.log(doc);
+      }
+    });
+    
+    
+  } else {
+    // nothing
+  }
+  res.redirect("/searchPage");
 });
 
 // Keep this at the bottom of the page.

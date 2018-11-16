@@ -9,91 +9,91 @@
 
     <div class="container border border-dark rounded mx-auto">
         <h3>Search by Customer Information</h3>
-            <form>
+            <form method="POST" action="/searchPage">
                 <div class="form-row align-items-center">
                     <div class="col-md-8 mb-3">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="First Name" required>
-                            <input type="text" class="form-control" placeholder="Last Name" required>
+                            <input name="customerFirstName" type="text" class="form-control" placeholder="First Name" value="" required>
+                            <input name="customerLastName" type="text" class="form-control" placeholder="Last Name" value="" required>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="input-group mb-3">
-                            <button class="btn btn-primary" type="submit" id="CustomerName">Search By Customer Name</button>
+                            <button class="btn btn-primary" name="action" value="searchByCustomerName" type="submit" id="CustomerName">Search By Customer Name</button>
                         </div>
                     </div>                    
                 </div>
             </form>
-            <form>
+            <form method="POST" action="/searchPage">
                 <div class="form-row align-items-center">
                     <div class="col-md-8 mb-3">
                         <div class="input-group mb-3">
-                            <input type="email" class="form-control" placeholder="example@example.com" required>
+                            <input name="customerEmail" type="email" class="form-control" placeholder="example@example.com" value="" required>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="input-group mb-3">
-                            <button class="btn btn-primary" type="submit" id="Email">Search By Customer Email</button>
+                            <button class="btn btn-primary" name="action" value="searchByCustomerEmail" type="submit" id="Email">Search By Customer Email</button>
                         </div>
                     </div>                    
                 </div>
             </form>
-            <form>
+            <form method="POST" action="/searchPage">
                 <div class="form-row align-items-center">
                     <div class="col-md-8 mb-3">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Customer ID" minlength="10" maxlength="10" required>
+                            <input name="customerID" type="text" class="form-control" placeholder="Customer ID" minlength="10" maxlength="10" value="" required>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="input-group mb-3">
-                            <button class="btn btn-primary" type="submit" id="CustomerID">Search By Customer ID</button>
+                            <button class="btn btn-primary" name="action" value="searchByCustomerID" type="submit" id="CustomerID">Search By Customer ID</button>
                         </div>
                     </div>                    
                 </div>
             </form>
             
         <h3>Search by Vehicle Information</h3>
-            <form>
+            <form method="POST" action="/searchPage">
                 <div class="form-row align-items-center">
                     <div class="col-md-8 mb-3">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" minlength="17" maxlength="17" placeholder="VIN" required>
+                            <input name="vin" type="text" class="form-control" minlength="17" maxlength="17" placeholder="VIN" value="" required>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="input-group mb-3">
-                            <button class="btn btn-primary" type="submit" id="VIN">Search By Vehicle Identification Number</button>
+                            <button class="btn btn-primary" name="action" value="searchByVIN" type="submit" id="VIN">Search By Vehicle Identification Number</button>
                         </div>
                     </div>                    
                 </div>
             </form>
-            <form>
+            <form method="POST" action="/searchPage">
                 <div class="form-row align-items-center">
                     <div class="col-md-8 mb-3">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" minlength="7" maxlength="7" placeholder="License" required>
+                            <input name="license" type="text" class="form-control" minlength="7" maxlength="7" placeholder="License" value="" required>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="input-group mb-3">
-                            <button class="btn btn-primary" type="submit" id="License">Search By License</button>
+                            <button class="btn btn-primary" name="action" value="searchByLicense" type="submit" id="License">Search By License</button>
                         </div>
                     </div>                    
                 </div>
             </form>
 
         <h3>Search by Repair Order Number</h3>
-            <form>
+            <form method="POST" action="/searchPage">
                 <div class="form-row align-items-center">
                     <div class="col-md-8 mb-3">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" minlength="10" maxlength="10" placeholder="Repair Order Number" required>
+                            <input name="repairOrderNumber" type="text" class="form-control" minlength="5" maxlength="10" placeholder="Repair Order Number" value="" required>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
                         <div class="input-group mb-3">
-                                <button class="btn btn-primary" type="submit" id="RepairOrderNumber">Search By Repair Order Number</button>
+                                <button class="btn btn-primary" name="action" value="searchByRepairOrderNumber" type="submit" id="RepairOrderNumber">Search By Repair Order Number</button>
                         </div>
                     </div>                    
                 </div>

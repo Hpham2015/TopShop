@@ -308,6 +308,39 @@ function searchVehicle(make, model, year, license) {
   });
 }
 
+// Vehicle Page
+var Vehicle = {
+    make: "Honda",
+    model: "S2000",
+    year: "2007",
+    color: "Red",
+    license: "2SUNEJR",
+    vin: "1G3NL52TX1C221106",
+    mileage: 112024,
+    lastService: "12-4-2017",
+    RO: [
+      { 
+        number: 123457,
+        date: "12-4-2017",
+        desc: "Oil Change",
+        totalCost: "$49.99",
+        mileage: 110000
+      },
+      { 
+        number: 123457,
+        date: "9-4-2017",
+        desc: "Oil Change",
+        totalCost: "$49.99",
+        mileage: 105000
+      }
+    ]
+};
+
+app.get("/vehiclePage", function(req, res) {
+  res.render("vehiclePage", {Vehicle:Vehicle});
+});
+
+
 // Whoever is not on aws cloud 9, your ports will be different.
 app.listen(process.env.PORT, process.env.IP, function(){
   console.log("Server started.");

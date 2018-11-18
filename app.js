@@ -1,11 +1,12 @@
 //express
 var express = require("express");
 var app = express();
+
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser')
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
+  extended: false
 })); 
 app.use(express.json());       // to support JSON-encoded bodies
 
@@ -15,47 +16,82 @@ mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-//allows us to read data from page by looking at body
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+var Schema = mongoose.Schema;
 
 // SCHEMA
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
-<<<<<<< HEAD
-
-=======
->>>>>>> b472bea29a55fa4a621f3cdc2bc8a9a3062f347d
-
-app.use(express.static(__dirname + "/public"));
-app.set("view engine", "ejs");
-
-var Schema = mongoose.Schema;
-
+// Create models
+var jobModel = require("./models/JobSchema.js");
+var repairOrderModel = require("./models/RepairOrderFormSchema.js");
 
 app.get("/", function(req, res){
   res.render("landing");
 });
 
-<<<<<<< HEAD
-// Create models
-var jobModel = require("./models/JobSchema.js");
-var repairOrderModel = require("./models/RepairOrderFormSchema.js");
-
-=======
->>>>>>> b472bea29a55fa4a621f3cdc2bc8a9a3062f347d
 // initializes vehicle and last service object models
-var lastServiceObj = require('./models/lastServiceSchema.js');
-var vehicleObj = require('./models/vehicleSchema.js');
-// initializes customer object model
-var customerObj = require('./models/customerSchema.js');
-<<<<<<< HEAD
-=======
-// Create models
-var jobModel = require("./models/JobSchema.js");
-var repairOrderModel = require("./models/RepairOrderFormSchema.js");
+var vehicleObj = mongoose.model("vehicle", vehicleSchema);
+var lastServiceObj = mongoose.model("lastService", lastServiceSchema);
 
->>>>>>> b472bea29a55fa4a621f3cdc2bc8a9a3062f347d
+
+// initializes customer object model
+var customerObj = mongoose.model("customer", customerSchema);
+
+// adds new customer to DB
+app.post("/customerInputForm", function(req, res){
+  var newCustomerObj = new customerObj({
+    customerID: req.body.customerID,
+    firstName: req.body.firstname,
+    lastName: req.body.lastname,
+    address: req.body.street,
+    city: req.body.City,
+    state: req.body.State,
+    zip: Number(req.body.zip),
+    email: req.body.email,
+    cell: req.body.cell,
+    work: req.body.work
+  });
+  
+  console.log(newCustomerObj);
+  
+  newCustomerObj.save(function(err) {
+    if (err) {
+      console.log(err);
+  } else {
+    res.redirect("/customerInputForm");
+  }
+});
+
+});
+
+// adds new vehicle to DB
+app.post("/vehicleInputForm", function(req, res){
+  var lastServiceModelInstance = new lastServiceObj({
+    date: req.body.lastServiceDate,
+    odometer: Number(req.body.lastServiceOdom),
+    dailyAverageMiles: Number(req.body.lastServiceDailyMiles),
+    monthlyAverageMiles: Number(req.body.lastServiceMonthlyMiles)
+  });
+  
+  var newVehicleObj = new vehicleObj({
+    VIN: req.body.VIN,
+    make: req.body.make,
+    model: req.body.model,
+    year: Number(req.body.year),
+    color: req.body.color,
+    type: req.body.type,
+    productionDate: req.body.productionDate,
+    inserviceDate: req.body.inserviceDate,
+    lastService: lastServiceModelInstance
+  });
+  vehicleObj.create(newVehicleObj, function(err, newlyCreated) {
+    if (err) {
+      console.log(err);
+  } else {
+    res.redirect("/vehicleInputForm");
+  }
+});
+
+});
 
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
@@ -130,7 +166,6 @@ app.get("/vehicleInspectionForm", function(req, res) {
   res.render("vehicleInspectionForm");
 });
 
-<<<<<<< HEAD
 app.post('/vehicleInspectionForm', function(req,res) {
   
   var newVehicleInspectionForm = new VehicleInspectionFormSchema({
@@ -240,9 +275,6 @@ app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
 
-// Keep this at the bottom of the page.
-=======
->>>>>>> b472bea29a55fa4a621f3cdc2bc8a9a3062f347d
 // adds new customer to DB
 app.post("/customerInputForm", function(req, res){
   var newCustomerObj = new customerObj({
@@ -326,8 +358,3 @@ function searchVehicle(make, model, year, license) {
 app.listen(process.env.PORT, process.env.IP, function(){
   console.log("Server started.");
 });
-
-<<<<<<< HEAD
-
-=======
->>>>>>> b472bea29a55fa4a621f3cdc2bc8a9a3062f347d

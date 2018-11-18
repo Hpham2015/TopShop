@@ -107,7 +107,7 @@
   <!-- End of - Status-->
   
   <!--Start of Form for Input-->
-  <form>
+  <form class="ui form" action="vehicleInspectionForm" method="POST">
     
     
     <!--Start of Interior/Exterior Input group-->
@@ -780,10 +780,12 @@
         <!--<div class="input-group-prepend">-->
         <!--  <span class="input-group-text">Results</span>-->
         <!--</div>-->
-        <textarea class="form-control" aria-label="With textarea" required>...</textarea>
+        <textarea name="comments" class="form-control" aria-label="With textarea" required>...</textarea>
       </div>
       
-      <button type="submit" class="btn btn-primary btn-lg mt-2">Inspection Complete</button>
+      <button type="submit" class="btn btn-primary btn">Submit</button>
+      <button class="btn btn-primary" type="button">Update Vehicle Inspection</button>
+      <button class="btn btn-primary" type="button">Delete Vehicle Inspection</button>
     </div>
     <!--End of Comments Input group-->
     

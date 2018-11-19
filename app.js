@@ -35,7 +35,9 @@ app.get("/", function(req, res){
 // Create models
 var jobModel = require("./models/JobSchema.js");
 var repairOrderModel = require("./models/RepairOrderFormSchema.js");
-
+var customerModel = require('./models/customerSchema.js');
+var lastServiceModel = require('./models/lastServiceSchema.js');
+var vehicleModel = require('./models/vehicleSchema.js');
 
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
@@ -176,7 +178,68 @@ app.post('/vehicleInspectionForm', function(req,res) {
   });
   
 });
+// adds new customer to DB
+app.post("/customerInputForm", function(req, res){
+  var newCustomerObj = new customerModel({
+    customerID: req.body.customerID,
+    firstName: req.body.firstname,
+    lastName: req.body.lastname,
+    address: req.body.street,
+    city: req.body.City,
+    state: req.body.State,
+    zip: Number(req.body.zip),
+    email: req.body.email,
+    cell: req.body.cell,
+    work: req.body.work
+  });
+  
+  var vin = req.body.VIN;
+  var query = vehicleModel.findOne({VIN: vin}, function (err, vehicleObj) {
+    if (err) {
+      res.send(err);
+    }
+    console.log(vehicleObj);
+    newCustomerObj.vehicles.push(vehicleObj);
+  
+  newCustomerObj.save(function(err) {
+    if (err) {
+      console.log(err);
+  } else {
+    res.redirect("/customerInputForm");
+  }
+});
 
+}); });
+
+// adds new vehicle to DB
+app.post("/vehicleInputForm", function(req, res){
+  var lastServiceModelInstance = new lastServiceModel({
+    date: req.body.lastServiceDate,
+    odometer: Number(req.body.lastServiceOdom),
+    dailyAverageMiles: Number(req.body.lastServiceDailyMiles),
+    monthlyAverageMiles: Number(req.body.lastServiceMonthlyMiles)
+  });
+  
+  var newVehicleObj = new vehicleModel({
+    VIN: req.body.VIN,
+    make: req.body.make,
+    model: req.body.model,
+    year: Number(req.body.year),
+    color: req.body.color,
+    type: req.body.type,
+    productionDate: req.body.productionDate,
+    inserviceDate: req.body.inserviceDate,
+    lastService: lastServiceModelInstance
+  });
+  vehicleModel.create(newVehicleObj, function(err, newlyCreated) {
+    if (err) {
+      console.log(err);
+  } else {
+    res.redirect("/vehicleInputForm");
+  }
+});
+
+});
 
 // Dashboard
 app.get("/dashboard", function(req, res) {

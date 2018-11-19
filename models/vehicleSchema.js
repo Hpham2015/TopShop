@@ -10,6 +10,7 @@ var vehicleSchema = new Schema({
     model: String,
     year: Number,
     licenseNum: Number,
+    VINNum: Number,
     color: String,
     type: String,
     productionDate: Date,

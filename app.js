@@ -1,97 +1,44 @@
 //express
 var express = require("express");
 var app = express();
-
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser')
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: false
+  extended: true
 })); 
 app.use(express.json());       // to support JSON-encoded bodies
 
 //mongoose connection
-var mongoURL = 'mongodb://localhost:27017/TopShop';
+var mongoURL = 'mongodb://localhost:27017/myDB';
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var Schema = mongoose.Schema;
+//allows us to read data from page by looking at body
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // SCHEMA
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
-// Create models
-var jobModel = require("./models/JobSchema.js");
-var repairOrderModel = require("./models/RepairOrderFormSchema.js");
+
+app.use(express.static(__dirname + "/public"));
+app.set("view engine", "ejs");
+
+var Schema = mongoose.Schema;
 
 app.get("/", function(req, res){
   res.render("landing");
 });
 
-// initializes vehicle and last service object models
-var vehicleObj = mongoose.model("vehicle", vehicleSchema);
-var lastServiceObj = mongoose.model("lastService", lastServiceSchema);
+// Create models
+var jobModel = require("./models/JobSchema.js");
+var repairOrderModel = require("./models/RepairOrderFormSchema.js");
+var customerModel = require('./models/customerSchema.js');
+var lastServiceModel = require('./models/lastServiceSchema.js');
+var vehicleModel = require('./models/vehicleSchema.js');
 
-
-// initializes customer object model
-var customerObj = mongoose.model("customer", customerSchema);
-
-// adds new customer to DB
-app.post("/customerInputForm", function(req, res){
-  var newCustomerObj = new customerObj({
-    customerID: req.body.customerID,
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
-    address: req.body.street,
-    city: req.body.City,
-    state: req.body.State,
-    zip: Number(req.body.zip),
-    email: req.body.email,
-    cell: req.body.cell,
-    work: req.body.work
-  });
-  
-  console.log(newCustomerObj);
-  
-  newCustomerObj.save(function(err) {
-    if (err) {
-      console.log(err);
-  } else {
-    res.redirect("/customerInputForm");
-  }
-});
-
-});
-
-// adds new vehicle to DB
-app.post("/vehicleInputForm", function(req, res){
-  var lastServiceModelInstance = new lastServiceObj({
-    date: req.body.lastServiceDate,
-    odometer: Number(req.body.lastServiceOdom),
-    dailyAverageMiles: Number(req.body.lastServiceDailyMiles),
-    monthlyAverageMiles: Number(req.body.lastServiceMonthlyMiles)
-  });
-  
-  var newVehicleObj = new vehicleObj({
-    VIN: req.body.VIN,
-    make: req.body.make,
-    model: req.body.model,
-    year: Number(req.body.year),
-    color: req.body.color,
-    type: req.body.type,
-    productionDate: req.body.productionDate,
-    inserviceDate: req.body.inserviceDate,
-    lastService: lastServiceModelInstance
-  });
-  vehicleObj.create(newVehicleObj, function(err, newlyCreated) {
-    if (err) {
-      console.log(err);
-  } else {
-    res.redirect("/vehicleInputForm");
-  }
-});
-
-});
 
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
@@ -233,6 +180,69 @@ app.post('/vehicleInspectionForm', function(req,res) {
   
 });
 
+// adds new customer to DB
+app.post("/customerInputForm", function(req, res){
+  var newCustomerObj = new customerModel({
+    customerID: req.body.customerID,
+    firstName: req.body.firstname,
+    lastName: req.body.lastname,
+    address: req.body.street,
+    city: req.body.City,
+    state: req.body.State,
+    zip: Number(req.body.zip),
+    email: req.body.email,
+    cell: req.body.cell,
+    work: req.body.work
+  });
+  
+  var vin = req.body.VIN;
+  var query = vehicleModel.findOne({VIN: vin}, function (err, vehicleObj) {
+    if (err) {
+      res.send(err);
+    }
+    console.log(vehicleObj);
+    newCustomerObj.vehicles.push(vehicleObj);
+  
+  newCustomerObj.save(function(err) {
+    if (err) {
+      console.log(err);
+  } else {
+    res.redirect("/customerInputForm");
+  }
+});
+
+}); });
+
+// adds new vehicle to DB
+app.post("/vehicleInputForm", function(req, res){
+  var lastServiceModelInstance = new lastServiceModel({
+    date: req.body.lastServiceDate,
+    odometer: Number(req.body.lastServiceOdom),
+    dailyAverageMiles: Number(req.body.lastServiceDailyMiles),
+    monthlyAverageMiles: Number(req.body.lastServiceMonthlyMiles)
+  });
+  
+  var newVehicleObj = new vehicleModel({
+    VIN: req.body.VIN,
+    make: req.body.make,
+    model: req.body.model,
+    year: Number(req.body.year),
+    color: req.body.color,
+    type: req.body.type,
+    productionDate: req.body.productionDate,
+    inserviceDate: req.body.inserviceDate,
+    lastService: lastServiceModelInstance
+  });
+  vehicleModel.create(newVehicleObj, function(err, newlyCreated) {
+    if (err) {
+      console.log(err);
+  } else {
+    res.redirect("/vehicleInputForm");
+  }
+});
+
+});
+
 
 // Dashboard
 app.get("/dashboard", function(req, res) {
@@ -275,85 +285,40 @@ app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
 
-// adds new customer to DB
-app.post("/customerInputForm", function(req, res){
-  var newCustomerObj = new customerObj({
-    customerID: req.body.customerID,
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
-    address: req.body.street,
-    city: req.body.City,
-    state: req.body.State,
-    zip: Number(req.body.zip),
-    email: req.body.email,
-    cell: req.body.cell,
-    work: req.body.work
-  });
-  
-  var vin = req.body.VIN;
-  var query = vehicleObj.findOne({VIN: vin}, function (err, vehicleObj) {
-    if (err) {
-      res.send(err);
-    }
-    console.log(vehicleObj);
-    newCustomerObj.vehicles.push(vehicleObj);
-  
-  newCustomerObj.save(function(err) {
-    if (err) {
-      console.log(err);
-  } else {
-    res.redirect("/customerInputForm");
-  }
+// Vehicle Page
+var Vehicle = {
+    make: "Honda",
+    model: "S2000",
+    year: "2007",
+    color: "Red",
+    license: "2SUNEJR",
+    vin: "1G3NL52TX1C221106",
+    mileage: 112024,
+    lastService: "12-4-2017",
+    RO: [
+      { 
+        number: 123457,
+        date: "12-4-2017",
+        desc: "Oil Change",
+        totalCost: "$49.99",
+        mileage: 110000
+      },
+      { 
+        number: 123457,
+        date: "9-4-2017",
+        desc: "Oil Change",
+        totalCost: "$49.99",
+        mileage: 105000
+      }
+    ]
+};
+
+app.get("/vehiclePage", function(req, res) {
+  res.render("vehiclePage", {Vehicle:Vehicle});
 });
 
-}); });
 
-// adds new vehicle to DB
-app.post("/vehicleInputForm", function(req, res){
-  var lastServiceModelInstance = new lastServiceObj({
-    date: req.body.lastServiceDate,
-    odometer: Number(req.body.lastServiceOdom),
-    dailyAverageMiles: Number(req.body.lastServiceDailyMiles),
-    monthlyAverageMiles: Number(req.body.lastServiceMonthlyMiles)
-  });
-  
-  var newVehicleObj = new vehicleObj({
-    VIN: req.body.VIN,
-    make: req.body.make,
-    model: req.body.model,
-    year: Number(req.body.year),
-    color: req.body.color,
-    type: req.body.type,
-    productionDate: req.body.productionDate,
-    inserviceDate: req.body.inserviceDate,
-    lastService: lastServiceModelInstance
-  });
-  vehicleObj.create(newVehicleObj, function(err, newlyCreated) {
-    if (err) {
-      console.log(err);
-  } else {
-    res.redirect("/vehicleInputForm");
-  }
-});
-
-});
-
-// function to search for customers in database
-function searchCustomer(first , last, email) {
-  customerObj.find({firstName: first, lastName: last, email: email}, function (err, customer) {
-    if (err) return console.log("Could not find specified customer.");
-    else return customer;
-  });
-}
-
-// function to search for vehicles in database
-function searchVehicle(make, model, year, license) {
-  vehicleObj.find({make: make, model: model, year: year, licenseNum: license}, function (err, vehicle) {
-    if (err) return console.log("Could not find specified vehicle.");
-    else return vehicle;
-  });
-}
-
+// Keep this at the bottom of the page.
 // Whoever is not on aws cloud 9, your ports will be different.
 app.listen(process.env.PORT, process.env.IP, function(){
   console.log("Server started.");

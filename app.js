@@ -20,14 +20,10 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// SCHEMA
-var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
-
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 var Schema = mongoose.Schema;
-
 
 app.get("/", function(req, res){
   res.render("landing");
@@ -36,12 +32,10 @@ app.get("/", function(req, res){
 // Create models
 var jobModel = require("./models/JobSchema.js");
 var repairOrderModel = require("./models/RepairOrderFormSchema.js");
-
-// initializes vehicle and last service object models
-var lastServiceObj = require('./models/lastServiceSchema.js');
-var vehicleObj = require('./models/vehicleSchema.js');
-// initializes customer object model
-var customerObj = require('./models/customerSchema.js');
+var lastServiceModel = require('./models/lastServiceSchema.js');
+var vehicleInspectionModel = require('./models/VehicleInspectionFormSchema.js');
+var vehicleModel = require('./models/vehicleSchema.js');
+var customerModel = require('./models/customerSchema.js');
 
 
 app.get("/customerInputForm", function(req, res){
@@ -119,7 +113,7 @@ app.get("/vehicleInspectionForm", function(req, res) {
 
 app.post('/vehicleInspectionForm', function(req,res) {
   
-  var newVehicleInspectionForm = new VehicleInspectionFormSchema({
+  var newVehicleInspectionForm = new vehicleInspectionModel({
     Name: req.body.Name,
     Mileage: req.body.Mileage,
     Year_Make_Model: req.body.Year_Make_Model,
@@ -225,85 +219,6 @@ var Customer = {
 app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
-
-// adds new customer to DB
-app.post("/customerInputForm", function(req, res){
-  var newCustomerObj = new customerObj({
-    customerID: req.body.customerID,
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
-    address: req.body.street,
-    city: req.body.City,
-    state: req.body.State,
-    zip: Number(req.body.zip),
-    email: req.body.email,
-    cell: req.body.cell,
-    work: req.body.work
-  });
-  
-  var vin = req.body.VIN;
-  var query = vehicleObj.findOne({VIN: vin}, function (err, vehicleObj) {
-    if (err) {
-      res.send(err);
-    }
-    console.log(vehicleObj);
-    newCustomerObj.vehicles.push(vehicleObj);
-  
-  newCustomerObj.save(function(err) {
-    if (err) {
-      console.log(err);
-  } else {
-    res.redirect("/customerInputForm");
-  }
-});
-
-}); });
-
-// adds new vehicle to DB
-app.post("/vehicleInputForm", function(req, res){
-  var lastServiceModelInstance = new lastServiceObj({
-    date: req.body.lastServiceDate,
-    odometer: Number(req.body.lastServiceOdom),
-    dailyAverageMiles: Number(req.body.lastServiceDailyMiles),
-    monthlyAverageMiles: Number(req.body.lastServiceMonthlyMiles)
-  });
-  
-  var newVehicleObj = new vehicleObj({
-    VIN: req.body.VIN,
-    make: req.body.make,
-    model: req.body.model,
-    year: Number(req.body.year),
-    color: req.body.color,
-    type: req.body.type,
-    productionDate: req.body.productionDate,
-    inserviceDate: req.body.inserviceDate,
-    lastService: lastServiceModelInstance
-  });
-  vehicleObj.create(newVehicleObj, function(err, newlyCreated) {
-    if (err) {
-      console.log(err);
-  } else {
-    res.redirect("/vehicleInputForm");
-  }
-});
-
-});
-
-// function to search for customers in database
-function searchCustomer(first , last, email) {
-  customerObj.find({firstName: first, lastName: last, email: email}, function (err, customer) {
-    if (err) return console.log("Could not find specified customer.");
-    else return customer;
-  });
-}
-
-// function to search for vehicles in database
-function searchVehicle(make, model, year, license) {
-  vehicleObj.find({make: make, model: model, year: year, licenseNum: license}, function (err, vehicle) {
-    if (err) return console.log("Could not find specified vehicle.");
-    else return vehicle;
-  });
-}
 
 // Whoever is not on aws cloud 9, your ports will be different.
 app.listen(process.env.PORT, process.env.IP, function(){

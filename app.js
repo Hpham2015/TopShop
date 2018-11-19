@@ -36,6 +36,63 @@ app.get("/", function(req, res){
 var jobModel = require("./models/JobSchema.js");
 var repairOrderModel = require("./models/RepairOrderFormSchema.js");
 
+var exampleTestCustomer = {
+    customerID: 123456,
+    firstName: "John", 
+    lastName: "Wick",
+    street: "666 Nonya Business",
+    city: "New York",
+    state: "NY",
+    zip: 45672,
+    email: "johnwick@youdieded.com",
+    cellPhone: 1234561234,
+    workPhone: 7891231475,
+    vehicles: [
+      { 
+        year: 2007,
+        make: "Honda",
+        model: "S2000",
+        color: "Red",
+        id: 3513513
+      },
+      { 
+        year: 2015,
+        make: "Lexus",
+        model: "IS350",
+        color: "Gray",
+        id: 1351351
+      }
+    ]
+};
+
+var exampleTestVehicle = {
+    make: "Honda",
+    VIN: "exampleVIN17digit",
+    model: "S2000",
+    year: "2007",
+    color: "Red",
+    license: "2SUNEJR",
+    vin: "1G3NL52TX1C221106",
+    mileage: 112024,
+    lastService: "12-4-2017",
+    RO: [
+      { 
+        number: 123457,
+        date: "12-4-2017",
+        desc: "Oil Change",
+        totalCost: "$49.99",
+        mileage: 110000
+      },
+      { 
+        number: 123457,
+        date: "9-4-2017",
+        desc: "Oil Change",
+        totalCost: "$49.99",
+        mileage: 105000
+      }
+    ]
+};
+
 
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
@@ -54,7 +111,8 @@ app.post("/vehicleInputForm", function(req, res) {
 });
 
 app.get("/repairOrderForm", function(req, res){
-  res.render("repairOrderForm");
+  //TODO: replace the exampleTest with what we are being passed. Can't do that yet I believe
+  res.render("repairOrderForm", {Customer:exampleTestCustomer, Vehicle:exampleTestVehicle});
 });
 
 app.get("/searchPage", function(req, res){
@@ -104,10 +162,10 @@ app.post("/repairOrderForm", function(req, res) {
   res.redirect("/repairOrderForm");
 });
 
-
 //listens to vehicleInspectionForm
 app.get("/vehicleInspectionForm", function(req, res) {
-  res.render("vehicleInspectionForm");
+  //TODO: replace the exampleTest with what we are being passed. Can't do that yet I believe
+  res.render("vehicleInspectionForm", {Customer:exampleTestCustomer, Vehicle:exampleTestVehicle});
 });
 
 app.post('/vehicleInspectionForm', function(req,res) {

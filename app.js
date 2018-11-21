@@ -211,6 +211,11 @@ var Customer = {
     ]
 };
 
+app.get("/customerPage", function(req, res) {
+  res.render("customerPage", {Customer:Customer});
+});
+
+
 // searchPage
 
 var DupCustomers = {
@@ -239,13 +244,10 @@ var DupCustomers = {
   ]
 };
 
-app.get("/customerPage", function(req, res) {
-  res.render("customerPage", {Customer:Customer});
-});
-
 app.get("/searchPage", function(req, res) {
   res.render("searchPage", {DupCustomers:DupCustomers});
 });
+
 
 // Vehicle Page
 var Vehicle = {

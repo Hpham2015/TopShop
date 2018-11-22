@@ -225,7 +225,6 @@ app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
 
-<<<<<<< HEAD
 app.get("/searchPage", function(req, res) {
   res.render("searchPage");
 });
@@ -264,7 +263,6 @@ app.post("/searchPage", function(req, res) {
   res.redirect("/searchPage");
 });
 
-=======
 // Vehicle Page
 var Vehicle = {
     make: "Honda",
@@ -297,8 +295,6 @@ app.get("/vehiclePage", function(req, res) {
   res.render("vehiclePage", {Vehicle:Vehicle});
 });
 
-
->>>>>>> master
 // Keep this at the bottom of the page.
 // Whoever is not on aws cloud 9, your ports will be different.
 app.listen(process.env.PORT, process.env.IP, function(){

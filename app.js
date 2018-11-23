@@ -57,10 +57,6 @@ app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
 });
 
-app.get("/searchPage", function(req, res){
-  res.render("searchPage");
-});
-
 app.post("/repairOrderForm", function(req, res) {
  
   var repairOrderInstance = new repairOrderModel({
@@ -194,7 +190,7 @@ var Customer = {
     city: "New York",
     state: "NY",
     zip: 45672,
-    email: "johnwick@youdieded.com",
+    email: "johnwick@youdied.com",
     cellPhone: 1234561234,
     workPhone: 7891231475,
     vehicles: [
@@ -218,6 +214,40 @@ var Customer = {
 app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
+
+
+// searchPage
+
+var DupCustomers = {
+  sameCustomer: [
+    {
+      firstName: "John",
+      lastName: "Smith",
+      email: "johnsmith@example.com",
+      cellPhone: 1239879876,
+      workPhone: 1236546543
+    },
+    {
+      firstName: "John",
+      lastName: "Wick",
+      email: "johnwick@youdied.com",
+      cellPhone: 1234561234,
+      workPhone: 7891231475,
+    },
+    {
+      firstName: "John",
+      lastName: "Snow",
+      email: "johnsnow@winterfell.com",
+      cellPhone: 1237657654,
+      workPhone: 1235675678,
+    }
+  ]
+};
+
+app.get("/searchPage", function(req, res) {
+  res.render("searchPage", {DupCustomers:DupCustomers});
+});
+
 
 // Vehicle Page
 var Vehicle = {

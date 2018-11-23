@@ -53,6 +53,34 @@
                 </div>
             </form>
             
+        <br>
+        <div class="container border border-dark rounded mx-auto">
+            <table class="table table-striped">
+                <thread>
+                    <tr>
+                        <th style=:width:17% scope="col">First Name</th>
+                        <th style=:width:17% scope="col">Last Name</th>
+                        <th style=:width:17% scope="col">Email</th>
+                        <th style=:width:17% scope="col">Cell Phone</th>
+                        <th style=:width:17% scope="col">Work Phone</th>
+                        <th style=:width:17% scope="col">Customer Page</th>
+                    </tr>
+                </thread>
+                <tbody>
+                    <% DupCustomers.sameCustomer.forEach(function(sameCustomer){ %>
+                        <tr>
+                            <td> <div class="col"><%= sameCustomer.firstName %></div></td>
+                            <td> <div class="col"><%= sameCustomer.lastName %></div></td>
+                            <td> <div class="col"><%= sameCustomer.email %></div></td>
+                            <td> <div class="col"><%= sameCustomer.cellPhone %></div></td>
+                            <td> <div class="col"><%= sameCustomer.workPhone %></div></td>
+                            <td> <a class="col" href="/customerPage/">Customer Info</a></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div> 
+
         <h3>Search by Vehicle Information</h3>
             <form>
                 <div class="form-row align-items-center">

@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 app.use(express.json());       // to support JSON-encoded bodies
 
 //mongoose connection
-var mongoURL = 'mongodb://localhost:27017/myDB';
+var mongoURL = 'mongodb://localhost:27017/TopShop';
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -35,9 +35,9 @@ app.get("/", function(req, res){
 // Create models
 var jobModel = require("./models/JobSchema.js");
 var repairOrderModel = require("./models/RepairOrderFormSchema.js");
-var customerModel = require('./models/customerSchema.js');
-var lastServiceModel = require('./models/lastServiceSchema.js');
-var vehicleModel = require('./models/vehicleSchema.js');
+var lastServiceModel = require('./models/LastServiceSchema.js');
+var vehicleModel = require('./models/VehicleSchema.js');
+var customerModel = require('./models/CustomerSchema.js');
 
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
@@ -182,11 +182,11 @@ app.post('/vehicleInspectionForm', function(req,res) {
 app.post("/customerInputForm", function(req, res){
   var newCustomerObj = new customerModel({
     customerID: req.body.customerID,
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
-    address: req.body.street,
-    city: req.body.City,
-    state: req.body.State,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    street: req.body.street,
+    City: req.body.City,
+    State: req.body.State,
     zip: Number(req.body.zip),
     email: req.body.email,
     cell: req.body.cell,
@@ -213,28 +213,30 @@ app.post("/customerInputForm", function(req, res){
 
 // adds new vehicle to DB
 app.post("/vehicleInputForm", function(req, res){
-  var lastServiceModelInstance = new lastServiceModel({
-    date: req.body.lastServiceDate,
-    odometer: Number(req.body.lastServiceOdom),
-    dailyAverageMiles: Number(req.body.lastServiceDailyMiles),
-    monthlyAverageMiles: Number(req.body.lastServiceMonthlyMiles)
+  var lastServiceModelInstance = new lastServiceModel({ // declare with default values
+    date: '1-1-00',
+    odometer: 0,
+    dailyAverageMiles: 0,
+    monthlyAverageMiles: 0
   });
   
   var newVehicleObj = new vehicleModel({
-    VIN: req.body.VIN,
     make: req.body.make,
     model: req.body.model,
     year: Number(req.body.year),
+    licenseNum: req.body.license,
+    VIN: req.body.vin,
     color: req.body.color,
     type: req.body.type,
-    productionDate: req.body.productionDate,
-    inserviceDate: req.body.inserviceDate,
-    lastService: lastServiceModelInstance
+    mileage: req.body.mileage,
+    lastSrvc: lastServiceModelInstance
   });
-  vehicleModel.create(newVehicleObj, function(err, newlyCreated) {
+  console.log(newVehicleObj);
+  vehicleModel.update({VIN: req.body.vin}, newVehicleObj, {upsert: true}, function(err, doc) {
     if (err) {
-      console.log(err);
+      console.log("Item already exists.");
   } else {
+    console.log("Successfully added.");
     res.redirect("/vehicleInputForm");
   }
 });

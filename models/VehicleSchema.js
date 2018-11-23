@@ -10,11 +10,9 @@ var vehicleSchema = new Schema({
     model: String,
     year: Number,
     licenseNum: Number,
-    VINNum: Number,
+    VIN: Number,
     color: String,
     type: String,
-    productionDate: Date,
-    inserviceDate: Date,
     lastSrvc: lastServiceSchema
 });
 

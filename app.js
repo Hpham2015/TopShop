@@ -190,9 +190,11 @@ app.post("/customerInputForm", function(req, res){
     zip: Number(req.body.zip),
     email: req.body.email,
     cell: req.body.cell,
-    work: req.body.work
+    work: req.body.work,
+    vehicles: null
   });
   
+  /*
   var vin = req.body.VIN;
   var query = vehicleModel.findOne({VIN: vin}, function (err, vehicleObj) {
     if (err) {
@@ -200,16 +202,14 @@ app.post("/customerInputForm", function(req, res){
     }
     console.log(vehicleObj);
     newCustomerObj.vehicles.push(vehicleObj);
+    */
   
   newCustomerObj.save(function(err) {
-    if (err) {
-      console.log(err);
-  } else {
+    if (err) console.log(err);
     res.redirect("/customerInputForm");
-  }
 });
 
-}); });
+});
 
 // adds new vehicle to DB
 app.post("/vehicleInputForm", function(req, res){
@@ -231,14 +231,10 @@ app.post("/vehicleInputForm", function(req, res){
     mileage: req.body.mileage,
     lastSrvc: lastServiceModelInstance
   });
-  console.log(newVehicleObj);
-  vehicleModel.update({VIN: req.body.vin}, newVehicleObj, {upsert: true}, function(err, doc) {
-    if (err) {
-      console.log("Item already exists.");
-  } else {
-    console.log("Successfully added.");
+  
+  newVehicleObj.save(function(err) {
+    if (err) console.log(err);
     res.redirect("/vehicleInputForm");
-  }
 });
 
 });

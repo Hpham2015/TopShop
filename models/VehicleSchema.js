@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
-var lastServiceSchema = mongoose.model("LastServiceModel").schema;
+var lastServiceSchema = mongoose.model("LastService").schema;
 
 var vehicleSchema = new Schema({
     customerID: Number,
@@ -16,4 +16,4 @@ var vehicleSchema = new Schema({
     lastSrvc: lastServiceSchema
 });
 
-module.exports = mongoose.model("VehicleModel", vehicleSchema);
+module.exports = mongoose.model("Vehicle", vehicleSchema);

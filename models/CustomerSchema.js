@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
-var vehicleSchema = mongoose.model("VehicleModel").schema;
+var vehicleSchema = mongoose.model("Vehicle").schema;
 
 var customerSchema = new Schema({
   customerID: Number,
@@ -18,4 +18,4 @@ var customerSchema = new Schema({
   vehicles: [vehicleSchema]
 });
 
-module.exports = mongoose.model("CustomerModel", customerSchema);
+module.exports = mongoose.model("Customer", customerSchema);

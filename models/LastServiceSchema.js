@@ -9,4 +9,4 @@ var lastServiceSchema = new Schema({
   monthlyAverageMiles: Number
 });
 
-module.exports = mongoose.model("LastServiceModel", lastServiceSchema);
+module.exports = mongoose.model("LastService", lastServiceSchema);

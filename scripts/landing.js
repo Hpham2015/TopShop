@@ -1,9 +1,8 @@
 window.setTimeout(function() {
   // your code here
 var NewCustomerButton = document.getElementById("NC");
-//var RepairOrderButton = document.getElementById("RO");
-//var NewVehicleButton = document.getElementById("NV");
-var VehicleInspectionButton = document.getElementById("VI");
+
+var DashBoardButton = document.getElementById("VI");
 var logoHome = document.getElementById("logo");
 var ad1 = document.getElementById("firstAd");
 var ad2 = document.getElementById("secondAd");
@@ -13,11 +12,9 @@ var overlay=document.getElementsByClassName("overlay");
 
 
 NewCustomerButton.addEventListener("click",newCustomer);
-//RepairOrderButton.addEventListener("click",repairOrder);
-//NewVehicleButton.addEventListener("click",newVehicle);
-VehicleInspectionButton.addEventListener("click",vehicleInspection);
-var i=0;
 
+DashBoardButton.addEventListener("click",DashBoard);
+var i=0;
 setInterval(function(){
      adChange(i);
      i++;
@@ -27,13 +24,12 @@ setInterval(function(){
      }
      
      console.log("got loop every three secondss");
-},9500);       
+},10000);       
 
 
 function newCustomer(){location.href = "/customerInputForm";}
-//function repairOrder(){location.href = "/repairOrderForm";}    
-//function newVehicle(){location.href = "/vehicleInputForm";}    
-function vehicleInspection(){location.href = "/dashboard";}   
+   
+function DashBoard(){location.href = "/dashboard";}   
 
  
 function adChange(element)

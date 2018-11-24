@@ -43,16 +43,8 @@ app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
 });
 
-app.post("/customerInputForm", function(req, res){
-  res.redirect("/customerInputForm");
-});
-
 app.get("/vehicleInputForm", function(req, res) {
   res.render("vehicleInputForm");
-});
-
-app.post("/vehicleInputForm", function(req, res) {
-  res.redirect("/vehicleInputForm");
 });
 
 app.get("/repairOrderForm", function(req, res){
@@ -178,36 +170,38 @@ app.post('/vehicleInspectionForm', function(req,res) {
   });
   
 });
+
 // adds new customer to DB
 app.post("/customerInputForm", function(req, res){
   var newCustomerObj = new customerModel({
+    customerID: "adsf",
+    firstName: "adsf",
+    lastName: "sadf",
+    street: "adsfasd",
+    city: "asdf",
+    state: "sadf",
+    zip: 12345,
+    email: "adsfasdfsa",
+    cell: 1231231234,
+    work: 1231232134
+    /*
     customerID: req.body.customerID,
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
+    firstName: req.body.firstname,
+    lastName: req.body.lastname,
     street: req.body.street,
-    City: req.body.City,
-    State: req.body.State,
+    city: req.body.City,
+    state: req.body.State,
     zip: Number(req.body.zip),
     email: req.body.email,
-    cell: req.body.cell,
-    work: req.body.work,
-    vehicles: null
-  });
-  
-  /*
-  var vin = req.body.VIN;
-  var query = vehicleModel.findOne({VIN: vin}, function (err, vehicleObj) {
-    if (err) {
-      res.send(err);
-    }
-    console.log(vehicleObj);
-    newCustomerObj.vehicles.push(vehicleObj);
+    cell: Number(req.body.cell),
+    work: Number(req.body.work)
     */
+  });
   
   newCustomerObj.save(function(err) {
     if (err) console.log(err);
     res.redirect("/customerInputForm");
-});
+  });
 
 });
 
@@ -235,7 +229,7 @@ app.post("/vehicleInputForm", function(req, res){
   newVehicleObj.save(function(err) {
     if (err) console.log(err);
     res.redirect("/vehicleInputForm");
-});
+  });
 
 });
 

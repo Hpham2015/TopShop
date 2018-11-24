@@ -1,10 +1,15 @@
 //express
 var express = require("express");
 var app = express();
-
+var mongoose = require("mongoose");
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
+app.use(express.json());       // to support JSON-encoded bodies
 
 //mongoose connection
-var mongoose = require('mongoose');
 var mongoURL = 'mongodb://localhost:27017/myDB';
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
@@ -15,39 +20,92 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//Schema
+// SCHEMA
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
 
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
-//rendering stuff
+var Schema = mongoose.Schema;
+
 app.get("/", function(req, res){
   res.render("landing");
 });
 
+// Create models
+var jobModel = require("./models/JobSchema.js");
+var repairOrderModel = require("./models/RepairOrderFormSchema.js");
+
+
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
+});
+
+app.post("/customerInputForm", function(req, res){
+  res.redirect("/customerInputForm");
+});
+
+app.get("/vehicleInputForm", function(req, res) {
+  res.render("vehicleInputForm");
+});
+
+app.post("/vehicleInputForm", function(req, res) {
+  res.redirect("/vehicleInputForm");
 });
 
 app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
 });
 
-app.get("/vehicleInputForm", function(req, res){
-  res.render("vehicleInputForm");
+app.post("/repairOrderForm", function(req, res) {
+ 
+  var repairOrderInstance = new repairOrderModel({
+    repairOrderNumber: req.body.repair_order_number,
+    customerID: req.body.customerID,
+    VIN: req.body.VIN,
+    
+    mechanicID: req.body.mechanicID,
+    mechanicFirstName: req.body.mechanicFirstName,
+    mechanicLastName: req.body.mechanicLastName,
+    
+    totalCost: req.body.total_cost
+  });
+  repairOrderInstance.jobs.push({
+    repairType: req.body.job_1_repair_type,
+    complaint: req.body.job_1_complaint,
+    cause: req.body.job_1_cause,
+    resolution: req.body.job_1_resolution,
+    cost: req.body.job_1_cost
+  });
+  
+  repairOrderInstance.jobs.push({
+    repairType: req.body.job_2_repair_type,
+    complaint: req.body.job_2_complaint,
+    cause: req.body.job_2_cause,
+    resolution: req.body.job_2_resolution,
+    cost: req.body.job_2_cost
+  });
+  
+  repairOrderInstance.jobs.push({
+    repairType: req.body.job_3_repair_type,
+    complaint: req.body.job_3_complaint,
+    cause: req.body.job_3_cause,
+    resolution: req.body.job_3_resolution,
+    cost: req.body.job_3_cost
+  });
+  
+  repairOrderInstance.save(function (err) {
+    if (err) console.log(err);
+  });
+  res.redirect("/repairOrderForm");
 });
 
-app.get("/vehicleInspectionForm", function(req, res){
+
+//listens to vehicleInspectionForm
+app.get("/vehicleInspectionForm", function(req, res) {
   res.render("vehicleInspectionForm");
 });
 
-// Whoever is not on aws cloud 9, your ports will be different.
-app.listen(process.env.PORT, process.env.IP, function(){
-  console.log("Server started.");
-});
-
-//listens to vehicleInspectionForm
 app.post('/vehicleInspectionForm', function(req,res) {
   
   var newVehicleInspectionForm = new VehicleInspectionFormSchema({
@@ -113,4 +171,119 @@ app.post('/vehicleInspectionForm', function(req,res) {
     }
   });
   
+});
+
+
+// Dashboard
+app.get("/dashboard", function(req, res) {
+  res.render("dashboard");
+});
+
+
+// Customer Page
+
+var Customer = {
+    customerID: 123456,
+    firstName: "John", 
+    lastName: "Wick",
+    street: "666 Nonya Business",
+    city: "New York",
+    state: "NY",
+    zip: 45672,
+    email: "johnwick@youdied.com",
+    cellPhone: 1234561234,
+    workPhone: 7891231475,
+    vehicles: [
+      { 
+        year: 2007,
+        make: "Honda",
+        model: "S2000",
+        color: "Red",
+        id: 3513513
+      },
+      { 
+        year: 2015,
+        make: "Lexus",
+        model: "IS350",
+        color: "Gray",
+        id: 1351351
+      }
+    ]
+};
+
+app.get("/customerPage", function(req, res) {
+  res.render("customerPage", {Customer:Customer});
+});
+
+
+// searchPage
+
+var DupCustomers = {
+  sameCustomer: [
+    {
+      firstName: "John",
+      lastName: "Smith",
+      email: "johnsmith@example.com",
+      cellPhone: 1239879876,
+      workPhone: 1236546543
+    },
+    {
+      firstName: "John",
+      lastName: "Wick",
+      email: "johnwick@youdied.com",
+      cellPhone: 1234561234,
+      workPhone: 7891231475,
+    },
+    {
+      firstName: "John",
+      lastName: "Snow",
+      email: "johnsnow@winterfell.com",
+      cellPhone: 1237657654,
+      workPhone: 1235675678,
+    }
+  ]
+};
+
+app.get("/searchPage", function(req, res) {
+  res.render("searchPage", {DupCustomers:DupCustomers});
+});
+
+
+// Vehicle Page
+var Vehicle = {
+    make: "Honda",
+    model: "S2000",
+    year: "2007",
+    color: "Red",
+    license: "2SUNEJR",
+    vin: "1G3NL52TX1C221106",
+    mileage: 112024,
+    lastService: "12-4-2017",
+    RO: [
+      { 
+        number: 123457,
+        date: "12-4-2017",
+        desc: "Oil Change",
+        totalCost: "$49.99",
+        mileage: 110000
+      },
+      { 
+        number: 123457,
+        date: "9-4-2017",
+        desc: "Oil Change",
+        totalCost: "$49.99",
+        mileage: 105000
+      }
+    ]
+};
+
+app.get("/vehiclePage", function(req, res) {
+  res.render("vehiclePage", {Vehicle:Vehicle});
+});
+
+
+// Keep this at the bottom of the page.
+// Whoever is not on aws cloud 9, your ports will be different.
+app.listen(process.env.PORT, process.env.IP, function(){
+  console.log("Server started.");
 });

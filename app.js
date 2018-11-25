@@ -57,10 +57,6 @@ app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
 });
 
-app.get("/searchPage", function(req, res){
-  res.render("searchPage");
-});
-
 app.post("/repairOrderForm", function(req, res) {
  
   var repairOrderInstance = new repairOrderModel({
@@ -200,7 +196,7 @@ var Customer = {
     city: "New York",
     state: "NY",
     zip: 45672,
-    email: "johnwick@youdieded.com",
+    email: "johnwick@youdied.com",
     cellPhone: 1234561234,
     workPhone: 7891231475,
     vehicles: [
@@ -223,6 +219,39 @@ var Customer = {
 
 app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
+});
+
+
+// searchPage
+
+var DupCustomers = {
+  sameCustomer: [
+    {
+      firstName: "John",
+      lastName: "Smith",
+      email: "johnsmith@example.com",
+      cellPhone: 1239879876,
+      workPhone: 1236546543
+    },
+    {
+      firstName: "John",
+      lastName: "Wick",
+      email: "johnwick@youdied.com",
+      cellPhone: 1234561234,
+      workPhone: 7891231475,
+    },
+    {
+      firstName: "John",
+      lastName: "Snow",
+      email: "johnsnow@winterfell.com",
+      cellPhone: 1237657654,
+      workPhone: 1235675678,
+    }
+  ]
+};
+
+app.get("/searchPage", function(req, res) {
+  res.render("searchPage", {DupCustomers:DupCustomers});
 });
 
 app.get("/searchPage", function(req, res) {
@@ -249,13 +278,43 @@ app.post("/searchPage", function(req, res) {
   }
   else if (action == "searchByRepairOrderNumber"){
     var key = req.body.repairOrderNumber;
-    repairOrderModel.find({repairOrderNumber: key}, function(err, doc) {
-      if (err) console.log(err);
+    var query = repairOrderModel.find({repairOrderNumber: key}, function(err, doc) {
+      if (err) {
+        console.log(err);
+      }
       else {
-        console.log(doc);
+        if (doc === undefined || doc.length == 0) {
+          res.redirect("/searchPage");
+          return;
+        }
+        res.redirect("/repairOrderForm");
+        app.locals.rofNumber = doc[0].repairOrderNumber;
+        app.locals.vin = doc[0].VIN;
+        app.locals.customerID = doc[0].customerID;
+        
+        app.locals.job_1_type = doc[0].jobs[0].repairType;
+        app.locals.job_1_complaint = doc[0].jobs[0].complaint;
+        app.locals.job_1_cause = doc[0].jobs[0].cause;
+        app.locals.job_1_resolution = doc[0].jobs[0].resolution;
+        app.locals.job_1_cost = doc[0].jobs[0].cost;
+        
+        app.locals.job_2_type = doc[0].jobs[1].repairType;
+        app.locals.job_2_complaint = doc[0].jobs[1].complaint;
+        app.locals.job_2_cause = doc[0].jobs[1].cause;
+        app.locals.job_2_resolution = doc[0].jobs[1].resolution;
+        app.locals.job_2_cost = doc[0].jobs[1].cost;
+        
+        app.locals.job_3_type = doc[0].jobs[2].repairType;
+        app.locals.job_3_complaint = doc[0].jobs[2].complaint;
+        app.locals.job_3_cause = doc[0].jobs[2].cause;
+        app.locals.job_3_resolution = doc[0].jobs[2].resolution;
+        app.locals.job_3_cost = doc[0].jobs[2].cost;
+        
+        app.locals.totalCost = doc[0].totalCost;
       }
     });
     
+    return;
     
   } else {
     // nothing

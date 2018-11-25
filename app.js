@@ -1,42 +1,43 @@
-//express
 var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
-var bodyParser = require('body-parser')
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-})); 
-app.use(express.json());       // to support JSON-encoded bodies
-
-//mongoose connection
+var bodyParser = require('body-parser');
 var mongoURL = 'mongodb://localhost:27017/myDB';
+
+
+app.use(bodyParser.urlencoded({extended: true})); 
+app.use(express.static(__dirname + "/public"));
+app.set("view engine", "ejs");
+
+// Who added these 2, why do we need it?
+app.use(express.json());       
+app.use(bodyParser.json());
+
+// Connect to mongoDB
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-//allows us to read data from page by looking at body
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
-// SCHEMA
+// Models
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
-
-app.use(express.static(__dirname + "/public"));
-app.set("view engine", "ejs");
-
-var Schema = mongoose.Schema;
-
-app.get("/", function(req, res){
-  res.render("landing");
-});
-
-// Create models
 var jobModel = require("./models/JobSchema.js");
 var repairOrderModel = require("./models/RepairOrderFormSchema.js");
 
 
+// ------- Routes -------
+
+// Landing Page
+app.get("/", function(req, res){
+  res.render("landing");
+});
+
+// Dashboard
+app.get("/dashboard", function(req, res) {
+  res.render("dashboard");
+});
+
+// Customer Input
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
 });
@@ -45,6 +46,7 @@ app.post("/customerInputForm", function(req, res){
   res.redirect("/customerInputForm");
 });
 
+// Vehicle Input
 app.get("/vehicleInputForm", function(req, res) {
   res.render("vehicleInputForm");
 });
@@ -53,6 +55,7 @@ app.post("/vehicleInputForm", function(req, res) {
   res.redirect("/vehicleInputForm");
 });
 
+// Repair Order Form
 app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
 });
@@ -101,7 +104,7 @@ app.post("/repairOrderForm", function(req, res) {
 });
 
 
-//listens to vehicleInspectionForm
+// Vehicle Inspection Form
 app.get("/vehicleInspectionForm", function(req, res) {
   res.render("vehicleInspectionForm");
 });
@@ -174,14 +177,7 @@ app.post('/vehicleInspectionForm', function(req,res) {
 });
 
 
-// Dashboard
-app.get("/dashboard", function(req, res) {
-  res.render("dashboard");
-});
-
-
 // Customer Page
-
 var Customer = {
     customerID: 123456,
     firstName: "John", 
@@ -217,7 +213,6 @@ app.get("/customerPage", function(req, res) {
 
 
 // searchPage
-
 var DupCustomers = {
   sameCustomer: [
     {

@@ -9,19 +9,26 @@
 
     <div class="container border border-dark rounded mx-auto">
         <h3>Search by Customer Information</h3>
-            <form>
+            <form class="ui form" action="/populateROfromName" method="POST">
                 <div class="form-row align-items-center">
                     <div class="col-md-8 mb-3">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="First Name" required>
-                            <input type="text" class="form-control" placeholder="Last Name" required>
+                            <input name="firstName" type="text" class="form-control" placeholder="First Name" required>
+                            <input name="lastName" type="text" class="form-control" placeholder="Last Name" required>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
+                            <div class="input-group mb-3">
+                                <button class="btn btn-primary" type="submit" id="CustomerName">Search By Customer Name</button>
+                            </div>
+                    </div>
+                    <!-- placeholder for populating repair order page, delete later-->
+                    <div class="col-md-4 mb-3">
                         <div class="input-group mb-3">
-                            <button class="btn btn-primary" type="submit" id="CustomerName">Search By Customer Name</button>
+                            <button class="btn btn-primary" type="submit" id="CustomerName">populate from name</button>
                         </div>
-                    </div>                    
+                    </div>     
+                    <!-- placeholder for populating repair order page, delete later-->            
                 </div>
             </form>
             <form>

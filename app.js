@@ -1,52 +1,90 @@
-//express
 var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
-var bodyParser = require('body-parser')
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-})); 
+var bodyParser = require('body-parser');
+var mongoURL = 'mongodb://localhost:27017/myDB';
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(__dirname + "/public"));
+app.set("view engine", "ejs");
+
+// Who added these 2, why do we need it?
 app.use(express.json());       // to support JSON-encoded bodies
+app.use(bodyParser.json());    //allows us to read data from page by looking at data
+
+// Connect to mongoDB
+
+// SCHEMA
+var lastServiceSchema = require('./models/lastServiceSchema.js');
+var vehicleSchema = require('./models/vehicleSchema.js');
+var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
+var customerSchema = require('./models/customerSchema.js');
+var Schema = mongoose.Schema;
+var Customer = mongoose.model("CustomerModels", customerSchema.customerSchema);
+
+
 
 //mongoose connection
-var mongoURL = 'mongodb://localhost:27017/myDB';
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-//allows us to read data from page by looking at body
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
-// SCHEMA
+// Models
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
+var jobModel = require("./models/JobSchema.js");
+var repairOrderModel = require("./models/RepairOrderFormSchema.js");
 
-app.use(express.static(__dirname + "/public"));
-app.set("view engine", "ejs");
 
-var Schema = mongoose.Schema;
+// ------- Routes -------
 
+// Landing Page
 app.get("/", function(req, res){
   res.render("landing");
 });
 
-// Create models
-var jobModel = require("./models/JobSchema.js");
-var repairOrderModel = require("./models/RepairOrderFormSchema.js");
+// Dashboard
+app.get("/dashboard", function(req, res) {
+  res.render("dashboard");
+});
 
-var exampleTestCustomer = {
+// Customer Input
+app.get("/customerInputForm", function(req, res){
+  res.render("customerInputForm");
+});
+
+app.post("/customerInputForm", function(req, res){
+  res.redirect("/customerInputForm");
+});
+
+// Vehicle Input
+app.get("/vehicleInputForm", function(req, res) {
+  res.render("vehicleInputForm");
+});
+
+app.post("/vehicleInputForm", function(req, res) {
+  res.redirect("/vehicleInputForm");
+});
+
+// Repair Order Form
+app.get("/repairOrderForm", function(req, res){
+  res.render("repairOrderForm");
+});
+
+app.get("/searchPage", function(req, res){
+  
+  /*  uncomment this to add this customer to database upon loading search page
+  var newCustomer = new customerSchema({
     customerID: 123456,
     firstName: "John", 
     lastName: "Wick",
-    street: "666 Nonya Business",
+    address: "666 Nonya Business",
     city: "New York",
     state: "NY",
     zip: 45672,
     email: "johnwick@youdieded.com",
-    cellPhone: 1234561234,
-    workPhone: 7891231475,
+    cell: 1234561234,
+    work: 7891231475,
     vehicles: [
       { 
         year: 2007,
@@ -63,60 +101,32 @@ var exampleTestCustomer = {
         id: 1351351
       }
     ]
-};
-
-var exampleTestVehicle = {
-    make: "Honda",
-    VIN: "exampleVIN17digit",
-    model: "S2000",
-    year: "2007",
-    color: "Red",
-    license: "2SUNEJR",
-    vin: "1G3NL52TX1C221106",
-    mileage: 112024,
-    lastService: "12-4-2017",
-    RO: [
-      { 
-        number: 123457,
-        date: "12-4-2017",
-        desc: "Oil Change",
-        totalCost: "$49.99",
-        mileage: 110000
-      },
-      { 
-        number: 123457,
-        date: "9-4-2017",
-        desc: "Oil Change",
-        totalCost: "$49.99",
-        mileage: 105000
-      }
-    ]
-};
-
-
-app.get("/customerInputForm", function(req, res){
-  res.render("customerInputForm");
-});
-
-app.post("/customerInputForm", function(req, res){
-  res.redirect("/customerInputForm");
-});
-
-app.get("/vehicleInputForm", function(req, res) {
-  res.render("vehicleInputForm");
-});
-
-app.post("/vehicleInputForm", function(req, res) {
-  res.redirect("/vehicleInputForm");
-});
-
-app.get("/repairOrderForm", function(req, res){
-  //TODO: replace the exampleTest with what we are being passed. Can't do that yet I believe
-  res.render("repairOrderForm", {Customer:exampleTestCustomer, Vehicle:exampleTestVehicle});
-});
-
-app.get("/searchPage", function(req, res){
+  });
+  
+  
+  newCustomer.save(function(error) {
+    //res.render("searchPage");
+    if (error) {
+      console.error(error);
+    }
+  });
+  */
+  
   res.render("searchPage");
+});
+
+app.post("/populateROfromName", function(req, res) {
+  customerSchema.findOne( { firstName : req.body.firstName, lastName: req.body.lastName } , function (err, result) {
+        if (err) 
+          console.error(err);
+        if (result) {
+          res.render("repairOrderForm", {Customer:result, Vehicle:result.vehicles[0]});
+          //only works if customer has a vehicle
+        }
+        else {
+          console.log("no result found, display error?");
+        }
+    });
 });
 
 app.post("/repairOrderForm", function(req, res) {
@@ -162,10 +172,10 @@ app.post("/repairOrderForm", function(req, res) {
   res.redirect("/repairOrderForm");
 });
 
-//listens to vehicleInspectionForm
+
+// Vehicle Inspection Form
 app.get("/vehicleInspectionForm", function(req, res) {
-  //TODO: replace the exampleTest with what we are being passed. Can't do that yet I believe
-  res.render("vehicleInspectionForm", {Customer:exampleTestCustomer, Vehicle:exampleTestVehicle});
+  res.render("vehicleInspectionForm");
 });
 
 app.post('/vehicleInspectionForm', function(req,res) {
@@ -236,14 +246,7 @@ app.post('/vehicleInspectionForm', function(req,res) {
 });
 
 
-// Dashboard
-app.get("/dashboard", function(req, res) {
-  res.render("dashboard");
-});
-
-
 // Customer Page
-
 var Customer = {
     customerID: 123456,
     firstName: "John", 
@@ -252,7 +255,7 @@ var Customer = {
     city: "New York",
     state: "NY",
     zip: 45672,
-    email: "johnwick@youdieded.com",
+    email: "johnwick@youdied.com",
     cellPhone: 1234561234,
     workPhone: 7891231475,
     vehicles: [
@@ -276,6 +279,39 @@ var Customer = {
 app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
+
+
+// searchPage
+var DupCustomers = {
+  sameCustomer: [
+    {
+      firstName: "John",
+      lastName: "Smith",
+      email: "johnsmith@example.com",
+      cellPhone: 1239879876,
+      workPhone: 1236546543
+    },
+    {
+      firstName: "John",
+      lastName: "Wick",
+      email: "johnwick@youdied.com",
+      cellPhone: 1234561234,
+      workPhone: 7891231475,
+    },
+    {
+      firstName: "John",
+      lastName: "Snow",
+      email: "johnsnow@winterfell.com",
+      cellPhone: 1237657654,
+      workPhone: 1235675678,
+    }
+  ]
+};
+
+app.get("/searchPage", function(req, res) {
+  res.render("searchPage", {DupCustomers:DupCustomers});
+});
+
 
 // Vehicle Page
 var Vehicle = {

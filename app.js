@@ -115,7 +115,7 @@ app.get("/searchPage", function(req, res){
   res.render("searchPage");
 });
 
-app.get('/customer/:firstName&:lastName', function(req,res) {
+app.get('/displayROfromCustomerInfo/:firstName&:lastName', function(req,res) {
   var firstName = req.params.firstName;
   var lastName = req.params.lastName;
   console.log("Your first name is ", firstName);

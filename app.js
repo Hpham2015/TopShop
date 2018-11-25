@@ -115,6 +115,24 @@ app.get("/searchPage", function(req, res){
   res.render("searchPage");
 });
 
+app.get('/customer/:firstName&:lastName', function(req,res) {
+  var firstName = req.params.firstName;
+  var lastName = req.params.lastName;
+  console.log("Your first name is ", firstName);
+  console.log("Your last name is ", lastName);
+  customerSchema.findOne( { firstName : firstName, lastName: lastName } , function (err, result) {
+        if (err) 
+          console.error(err);
+        if (result) {
+          res.render("repairOrderForm", {Customer:result, Vehicle:result.vehicles[0]});
+          //only works if customer has a vehicle
+        }
+        else {
+          console.log("no result found, display error?");
+        }
+    });
+});
+
 app.post("/populateROfromName", function(req, res) {
   customerSchema.findOne( { firstName : req.body.firstName, lastName: req.body.lastName } , function (err, result) {
         if (err) 

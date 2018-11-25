@@ -254,10 +254,6 @@ app.get("/searchPage", function(req, res) {
   res.render("searchPage", {DupCustomers:DupCustomers});
 });
 
-app.get("/searchPage", function(req, res) {
-  res.render("searchPage");
-});
-
 app.post("/searchPage", function(req, res) {
   var action = req.body.action;
   if (action == "searchByCustomerName") {

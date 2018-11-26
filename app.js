@@ -71,9 +71,10 @@ app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
 });
 
+/*
 app.get("/searchPage", function(req, res){
   
-  /*  uncomment this to add this customer to database upon loading search page
+  //  uncomment this to add this customer to database upon loading search page
   var newCustomer = new customerSchema({
     customerID: 123456,
     firstName: "John", 
@@ -103,6 +104,64 @@ app.get("/searchPage", function(req, res){
     ]
   });
   
+  var newCustomer2 = new customerSchema({
+    customerID: 654123,
+    firstName: "John", 
+    lastName: "Wick",
+    address: "667 Nonya Business",
+    city: "New York",
+    state: "NY",
+    zip: 45672,
+    email: "johnwick@youdieded.com",
+    cell: 9488948917,
+    work: 4651416564,
+    vehicles: [
+      { 
+        year: 2007,
+        make: "Honda",
+        model: "S2000",
+        color: "Red",
+        id: 3513513
+      },
+      { 
+        year: 2015,
+        make: "Lexus",
+        model: "IS350",
+        color: "Gray",
+        id: 1351351
+      }
+    ]
+  });
+  
+  var newCustomer3 = new customerSchema({
+    customerID: 789654,
+    firstName: "John", 
+    lastName: "Wick",
+    address: "6666 Nonya Business",
+    city: "New York",
+    state: "NY",
+    zip: 45672,
+    email: "johnwick@youdieded.com",
+    cell: 56146514561,
+    work: 4651416564,
+    vehicles: [
+      { 
+        year: 2007,
+        make: "Honda",
+        model: "S2000",
+        color: "Red",
+        id: 3513513
+      },
+      { 
+        year: 2015,
+        make: "Lexus",
+        model: "IS350",
+        color: "Gray",
+        id: 1351351
+      }
+    ]
+  });
+  
   
   newCustomer.save(function(error) {
     //res.render("searchPage");
@@ -110,21 +169,39 @@ app.get("/searchPage", function(req, res){
       console.error(error);
     }
   });
-  */
+  
+  newCustomer2.save(function(error) {
+    //res.render("searchPage");
+    if (error) {
+      console.error(error);
+    }
+  });
+  
+  newCustomer3.save(function(error) {
+    //res.render("searchPage");
+    if (error) {
+      console.error(error);
+    }
+  });
+  
   
   res.render("searchPage");
 });
+*/
 
-app.get('/displayROfromCustomerInfo/:firstName&:lastName', function(req,res) {
+app.get('/repairOrderForm/:id&:firstName&:lastName', function(req,res) {
+  console.log("we're in the api restful stuff");
+  var id = req.params.id;
   var firstName = req.params.firstName;
   var lastName = req.params.lastName;
-  console.log("Your first name is ", firstName);
-  console.log("Your last name is ", lastName);
-  customerSchema.findOne( { firstName : firstName, lastName: lastName } , function (err, result) {
+  console.log("Your first name is " + firstName);
+  console.log("Your last name is " + lastName);
+  customerSchema.findOne( { customerID: id, firstName : firstName, lastName: lastName } , function (err, result) {
         if (err) 
           console.error(err);
         if (result) {
-          res.render("repairOrderForm", {Customer:result, Vehicle:result.vehicles[0]});
+          console.log("passing " + result)
+          res.render("repairOrderForm", { Customer: result, Vehicle: result.vehicles[0] } );
           //only works if customer has a vehicle
         }
         else {
@@ -325,6 +402,25 @@ var DupCustomers = {
     }
   ]
 };
+
+
+app.post("/searchPage/nameSearch", function(req, res) {
+  console.log("body:" + JSON.stringify(req.body));
+  console.log("namesearch, firstName: " + req.body.firstName + " last name: " + req.body.lastName);
+  customerSchema.find( { firstName : req.body.firstName, lastName: req.body.lastName } , function (err, result) {
+        if (err) 
+          console.error(err);
+        if (result) {
+          var customers = { sameCustomer: result };
+          res.render("searchPage", {DupCustomers:customers});
+          //only works if customer has a vehicle
+        }
+        else {
+          console.log("no result found, display error?");
+        }
+    });
+  //res.render("searchPage/nameSearch", {DupCustomers:DupCustomers});
+});
 
 app.get("/searchPage", function(req, res) {
   res.render("searchPage", {DupCustomers:DupCustomers});

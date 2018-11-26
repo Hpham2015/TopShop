@@ -8,7 +8,7 @@ var customerSchema = new Schema({
   customerID: String,
   firstName: String,
   lastName: String,
-  address: String,
+  street: String,
   city: String,
   state: String,
   zip: Number,

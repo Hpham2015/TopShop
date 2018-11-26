@@ -23,12 +23,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
 var jobModel = require("./models/JobSchema.js");
 var repairOrderModel = require("./models/RepairOrderFormSchema.js");
-<<<<<<< HEAD
 var lastServiceModel = require('./models/LastServiceSchema.js');
 var vehicleModel = require('./models/VehicleSchema.js');
 var customerModel = require('./models/CustomerSchema.js');
-=======
->>>>>>> 135ecb9733c0b6c4962f364b81af5485cce0420d
 
 
 // ------- Routes -------

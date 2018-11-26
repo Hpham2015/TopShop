@@ -13,6 +13,7 @@ var vehicleSchema = new Schema({
     VIN: Number,
     color: String,
     type: String,
+    mileage: Number,
     lastSrvc: lastServiceSchema
 });
 

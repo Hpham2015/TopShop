@@ -84,7 +84,7 @@ app.post("/vehicleInputForm", function(req, res){
     model: req.body.model,
     year: req.body.year,
     licenseNum: req.body.license,
-    VIN: req.body.vin,
+    VIN: Number(req.body.vin),
     color: req.body.color,
     type: req.body.type,
     mileage: req.body.mileage,

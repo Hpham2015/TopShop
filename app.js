@@ -1,58 +1,106 @@
-//express
 var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
-var bodyParser = require('body-parser')
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-})); 
-app.use(express.json());       // to support JSON-encoded bodies
+var bodyParser = require('body-parser');
+var mongoURL = 'mongodb://localhost:27017/myDB';
 
-//mongoose connection
-var mongoURL = 'mongodb://localhost:27017/TopShop';
+
+app.use(bodyParser.urlencoded({extended: true})); 
+app.use(express.static(__dirname + "/public"));
+app.set("view engine", "ejs");
+
+// Who added these 2, why do we need it?
+app.use(express.json());       
+app.use(bodyParser.json());
+
+// Connect to mongoDB
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-//allows us to read data from page by looking at body
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
-// SCHEMA
+// Models
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
-
-app.use(express.static(__dirname + "/public"));
-app.set("view engine", "ejs");
-
-var Schema = mongoose.Schema;
-
-app.get("/", function(req, res){
-  res.render("landing");
-});
-
-// Create models
 var jobModel = require("./models/JobSchema.js");
 var repairOrderModel = require("./models/RepairOrderFormSchema.js");
 var lastServiceModel = require('./models/LastServiceSchema.js');
 var vehicleModel = require('./models/VehicleSchema.js');
 var customerModel = require('./models/CustomerSchema.js');
 
+
+// ------- Routes -------
+
+// Landing Page
+app.get("/", function(req, res){
+  res.render("landing");
+});
+
+// Dashboard
+app.get("/dashboard", function(req, res) {
+  res.render("dashboard");
+});
+
+// Customer Input
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
 });
 
+// adds new customer to DB
+app.post("/customerInputForm", function(req, res){
+  var newCustomerObj = new customerModel({
+    customerID: req.body.customerID,
+    firstName: req.body.firstname,
+    lastName: req.body.lastname,
+    street: req.body.street,
+    city: req.body.City,
+    state: req.body.State,
+    zip: req.body.zip,
+    email: req.body.email,
+    cell: req.body.cell,
+    work: req.body.work
+  });
+  newCustomerObj.save(function(err) {
+    if (err) console.log(err);
+    res.redirect("/customerInputForm");
+  });
+});
+
+// Vehicle Input
 app.get("/vehicleInputForm", function(req, res) {
   res.render("vehicleInputForm");
 });
 
-app.get("/repairOrderForm", function(req, res){
-  res.render("repairOrderForm");
+// adds new vehicle to DB
+app.post("/vehicleInputForm", function(req, res){
+  var lastServiceModelInstance = new lastServiceModel({ // declare with default values
+    date: '1-1-00',
+    odometer: 0,
+    dailyAverageMiles: 0,
+    monthlyAverageMiles: 0
+  });
+  
+  var newVehicleObj = new vehicleModel({
+    make: req.body.make,
+    model: req.body.model,
+    year: Number(req.body.year),
+    licenseNum: req.body.license,
+    VIN: req.body.vin,
+    color: req.body.color,
+    type: req.body.type,
+    mileage: req.body.mileage,
+    lastSrvc: lastServiceModelInstance
+  });
+  
+  newVehicleObj.save(function(err) {
+    if (err) console.log(err);
+    res.redirect("/vehicleInputForm");
+  });
+
 });
 
-app.get("/searchPage", function(req, res){
-  res.render("searchPage");
+// Repair Order Form
+app.get("/repairOrderForm", function(req, res){
+  res.render("repairOrderForm");
 });
 
 app.post("/repairOrderForm", function(req, res) {
@@ -99,7 +147,7 @@ app.post("/repairOrderForm", function(req, res) {
 });
 
 
-//listens to vehicleInspectionForm
+// Vehicle Inspection Form
 app.get("/vehicleInspectionForm", function(req, res) {
   res.render("vehicleInspectionForm");
 });
@@ -171,76 +219,8 @@ app.post('/vehicleInspectionForm', function(req,res) {
   
 });
 
-// adds new customer to DB
-app.post("/customerInputForm", function(req, res){
-  var newCustomerObj = new customerModel({
-    customerID: "adsf",
-    firstName: "adsf",
-    lastName: "sadf",
-    street: "adsfasd",
-    city: "asdf",
-    state: "sadf",
-    zip: 12345,
-    email: "adsfasdfsa",
-    cell: 1231231234,
-    work: 1231232134
-    /*
-    customerID: req.body.customerID,
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
-    street: req.body.street,
-    city: req.body.City,
-    state: req.body.State,
-    zip: Number(req.body.zip),
-    email: req.body.email,
-    cell: Number(req.body.cell),
-    work: Number(req.body.work)
-    */
-  });
-  
-  newCustomerObj.save(function(err) {
-    if (err) console.log(err);
-    res.redirect("/customerInputForm");
-  });
-
-});
-
-// adds new vehicle to DB
-app.post("/vehicleInputForm", function(req, res){
-  var lastServiceModelInstance = new lastServiceModel({ // declare with default values
-    date: '1-1-00',
-    odometer: 0,
-    dailyAverageMiles: 0,
-    monthlyAverageMiles: 0
-  });
-  
-  var newVehicleObj = new vehicleModel({
-    make: req.body.make,
-    model: req.body.model,
-    year: Number(req.body.year),
-    licenseNum: req.body.license,
-    VIN: req.body.vin,
-    color: req.body.color,
-    type: req.body.type,
-    mileage: req.body.mileage,
-    lastSrvc: lastServiceModelInstance
-  });
-  
-  newVehicleObj.save(function(err) {
-    if (err) console.log(err);
-    res.redirect("/vehicleInputForm");
-  });
-
-});
-
-// Dashboard
-app.get("/dashboard", function(req, res) {
-  res.render("dashboard");
-});
-
 
 // Customer Page
-
 var Customer = {
     customerID: 123456,
     firstName: "John", 
@@ -249,7 +229,7 @@ var Customer = {
     city: "New York",
     state: "NY",
     zip: 45672,
-    email: "johnwick@youdieded.com",
+    email: "johnwick@youdied.com",
     cellPhone: 1234561234,
     workPhone: 7891231475,
     vehicles: [
@@ -274,8 +254,8 @@ app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
 
-// searchPage
 
+// searchPage
 var DupCustomers = {
   sameCustomer: [
     {
@@ -305,6 +285,7 @@ var DupCustomers = {
 app.get("/searchPage", function(req, res) {
   res.render("searchPage", {DupCustomers:DupCustomers});
 });
+
 
 // Vehicle Page
 var Vehicle = {

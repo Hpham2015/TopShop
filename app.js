@@ -57,6 +57,10 @@ app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
 });
 
+app.get("/ReadOnly", function(req, res){
+  res.render("ReadOnly", {ReportValues:ReportValues});
+});
+
 app.post("/repairOrderForm", function(req, res) {
  
   var repairOrderInstance = new repairOrderModel({
@@ -209,6 +213,69 @@ var Customer = {
         id: 1351351
       }
     ]
+};
+//READ ONLY 
+var ReportValues = {
+    customerID: 123456,
+    firstName: "John", 
+    lastName: "Wick",
+    street: "666 Nonya Business",
+    city: "New York",
+    state: "NY",
+    zip: 45672,
+    email: "johnwick@youdied.com",
+    cellPhone: 1234561234,
+    workPhone: 7891231475,
+    vehicles: [
+      { 
+        year: 2007,
+        make: "Honda",
+        model: "S2000",
+        mileage: 100000,
+        VIN: 20872031206534892,
+        license: "F8905438"
+      },
+      { 
+        year: 2015,
+        make: "Lexus",
+        model: "IS350",
+        mileage: 250120,
+        VIN: 16372648209364987,
+        license: "F8905438"
+      }
+    ],
+    Mechanics:[
+      {
+        ID:12345678910,
+        FirstName: "Dominic",
+        LastName: "Toreto"
+      },
+      {
+        ID:12345678910,
+        FirstName: "Dominic",
+        LastName: "Toreto"
+      }
+      ],
+      Repairs:[
+        {
+        RepairType:"CustomerPay",
+        Repair:{
+          complaint:"too expensive",
+          cause:"car crash",
+          resolution:"it got fixed"
+          },
+        cost:1234
+        },
+        {
+        RepairType:"warranty",
+        Repair:{
+          complaint:"none",
+          cause:"panel over laod",
+          resolution:"paid in full"
+          },
+        cost:2000
+        }
+        ]
 };
 
 app.get("/customerPage", function(req, res) {

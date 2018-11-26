@@ -97,9 +97,15 @@ app.post("/repairOrderForm", function(req, res) {
     cost: req.body.job_3_cost
   });
   
-  repairOrderInstance.save(function (err) {
-    if (err) console.log(err);
-  });
+  repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+    repairOrderInstance, {upsert: true}, function(err, doc) {
+      if (err) console.log("Repair Order Form existed");
+      else console.log("Successfully added");
+    });
+  
+  // repairOrderInstance.save(function (err) {
+  //   if (err) console.log(err);
+  // });
   res.redirect("/repairOrderForm");
 });
 
@@ -243,6 +249,69 @@ app.get("/searchPage", function(req, res) {
   res.render("searchPage", {DupCustomers:DupCustomers});
 });
 
+app.post("/searchPage", function(req, res) {
+  var action = req.body.action;
+  if (action == "searchByCustomerName") {
+    var firstName = req.body.customerFirstName;
+    var lastName = req.body.customerLastName;
+  }
+  else if (action == "searchByCustomerEmail") {
+    var email = req.body.customerEmail;
+  }
+  else if (action == "searchByCustomerID") {
+    var id = req.body.customerID;
+  }
+  else if (action == "searchByVIN") {
+    var vin = req.body.vin;
+  }
+  else if (action == "searchByLicense") {
+    var license = req.body.license;
+  }
+  else if (action == "searchByRepairOrderNumber"){
+    var key = req.body.repairOrderNumber;
+    var query = repairOrderModel.find({repairOrderNumber: key}, function(err, doc) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        if (doc === undefined || doc.length == 0) {
+          res.redirect("/searchPage");
+          return;
+        }
+        res.redirect("/repairOrderForm");
+        app.locals.rofNumber = doc[0].repairOrderNumber;
+        app.locals.vin = doc[0].VIN;
+        app.locals.customerID = doc[0].customerID;
+        
+        app.locals.job_1_type = doc[0].jobs[0].repairType;
+        app.locals.job_1_complaint = doc[0].jobs[0].complaint;
+        app.locals.job_1_cause = doc[0].jobs[0].cause;
+        app.locals.job_1_resolution = doc[0].jobs[0].resolution;
+        app.locals.job_1_cost = doc[0].jobs[0].cost;
+        
+        app.locals.job_2_type = doc[0].jobs[1].repairType;
+        app.locals.job_2_complaint = doc[0].jobs[1].complaint;
+        app.locals.job_2_cause = doc[0].jobs[1].cause;
+        app.locals.job_2_resolution = doc[0].jobs[1].resolution;
+        app.locals.job_2_cost = doc[0].jobs[1].cost;
+        
+        app.locals.job_3_type = doc[0].jobs[2].repairType;
+        app.locals.job_3_complaint = doc[0].jobs[2].complaint;
+        app.locals.job_3_cause = doc[0].jobs[2].cause;
+        app.locals.job_3_resolution = doc[0].jobs[2].resolution;
+        app.locals.job_3_cost = doc[0].jobs[2].cost;
+        
+        app.locals.totalCost = doc[0].totalCost;
+      }
+    });
+    
+    return;
+    
+  } else {
+    // nothing
+  }
+  res.redirect("/searchPage");
+});
 
 // Vehicle Page
 var Vehicle = {
@@ -275,7 +344,6 @@ var Vehicle = {
 app.get("/vehiclePage", function(req, res) {
   res.render("vehiclePage", {Vehicle:Vehicle});
 });
-
 
 // Keep this at the bottom of the page.
 // Whoever is not on aws cloud 9, your ports will be different.

@@ -7,7 +7,7 @@
     </div>
   </div>
   
-<form class="needs-validation" novalidate>
+<form class="customercreationform" action='/customerInputForm' method="POST">
   <div class="form-row">
     
     <div class="col-md-4 mb-3">
@@ -16,7 +16,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text" id="inputGroupPrepend">ID</span>
         </div>
-        <input type="text" class="form-control" id="customerID" placeholder="FJ39HG13KQ" 
+        <input type="text" class="form-control" name="customerID" placeholder="FJ39HG13KQ" 
         style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" required>
         <div class="invalid-feedback">
           Please choose a customer ID.
@@ -26,7 +26,7 @@
     
     <div class="col-md-4 mb-3">
       <label for="validationCustom01">First name</label>
-      <input type="text" class="form-control" id="firstname" placeholder="John"  required>
+      <input type="text" class="form-control" name="firstname" placeholder="John"  required>
       <div class="valid-feedback">
         Looks good!
       </div>
@@ -34,7 +34,7 @@
 
     <div class="col-md-4 mb-3">
       <label for="validationCustom02">Last name</label>
-      <input type="text" class="form-control" id="lastname" placeholder="Smith"  required>
+      <input type="text" class="form-control" name="lastname" placeholder="Smith"  required>
       <div class="valid-feedback">
         Looks good!
       </div>
@@ -45,7 +45,7 @@
   <div class="form-row">
     <div class="col-md-6 mb-3">
       <label for="validationCustom03">Street</label>
-      <input type="text" class="form-control" id="street" placeholder="1342 Baseline Rd" required>
+      <input type="text" class="form-control" name="street" placeholder="1342 Baseline Rd" required>
       <div class="invalid-feedback">
         Please provide a valid street.
       </div>
@@ -53,7 +53,7 @@
 
     <div class="col-md-6 mb-3">
       <label for="validationCustom03">City</label>
-      <input type="text" class="form-control" id="City" placeholder="Santa Cruz" required>
+      <input type="text" class="form-control" name="City" placeholder="Santa Cruz" required>
       <div class="invalid-feedback">
         Please provide a valid city.
       </div>
@@ -61,7 +61,7 @@
     
     <div class="col-md-3 mb-3">
       <label for="validationCustom04">State</label>
-      <input type="text" class="form-control" id="State" placeholder="CA" 
+      <input type="text" class="form-control" name="State" placeholder="CA" 
       minlength="2" maxlength="2" required>
       <div class="invalid-feedback">
         Please provide a valid state.
@@ -70,7 +70,7 @@
     
     <div class="col-md-3 mb-3">
       <label for="Zip">Zip</label>
-      <input type="number" minlength="5" maxlength="5" class="form-control" id="zip" placeholder="95060" required>
+      <input type="number" minlength="5" maxlength="5" class="form-control" name="zip" placeholder="95060" required>
       <div class="invalid-feedback">
         Please provide a valid zip.
       </div>
@@ -78,7 +78,7 @@
     
     <div class="col-md-3 mb-3">
       <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" placeholder="johnsmith@email.com" required>
+      <input type="email" class="form-control" name="email" placeholder="johnsmith@email.com" required>
       <div class="invalid-feedback">
         Please provide a valid email.
       </div>
@@ -86,7 +86,7 @@
     
     <div class="col-md-3 mb-3">
       <label for="Cell">Cell Phone</label>
-      <input type="tel" minlength="10" maxlength="10" class="form-control" id="cell" placeholder="8312435594" required>
+      <input type="tel" minlength="10" maxlength="10" class="form-control" name="cell" placeholder="8312435594" required>
       <div class="invalid-feedback">
         Please provide a valid Cell number.
       </div>
@@ -94,7 +94,7 @@
     
     <div class="col-md-3 mb-3">
       <label for="Work">Work Phone</label>
-      <input type="tel" minlength="10" maxlength="10" class="form-control" id="work" placeholder="8312435594" required>
+      <input type="tel" minlength="10" maxlength="10" class="form-control" name="work" placeholder="8312435594" required>
       <div class="invalid-feedback">
         Please provide a valid Work number.
       </div>
@@ -115,7 +115,7 @@
   'use strict';
   window.addEventListener('load', function() {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
+    var forms = document.getElementsByClassName('customercreationform');
     // Loop over them and prevent submission
     var validation = Array.prototype.filter.call(forms, function(form) {
       form.addEventListener('submit', function(event) {

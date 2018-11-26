@@ -2,7 +2,7 @@ var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
-var mongoURL = 'mongodb://localhost:27017/myDB';
+var mongoURL = 'mongodb://localhost:27017/TopShop';
 
 
 app.use(bodyParser.urlencoded({extended: true})); 
@@ -23,6 +23,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
 var jobModel = require("./models/JobSchema.js");
 var repairOrderModel = require("./models/RepairOrderFormSchema.js");
+var lastServiceModel = require('./models/LastServiceSchema.js');
+var vehicleModel = require('./models/VehicleSchema.js');
+var customerModel = require('./models/CustomerSchema.js');
 
 
 // ------- Routes -------
@@ -42,8 +45,24 @@ app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
 });
 
+// adds new customer to DB
 app.post("/customerInputForm", function(req, res){
-  res.redirect("/customerInputForm");
+  var newCustomerObj = new customerModel({
+    customerID: req.body.customerID,
+    firstName: req.body.firstname,
+    lastName: req.body.lastname,
+    street: req.body.street,
+    city: req.body.City,
+    state: req.body.State,
+    zip: req.body.zip,
+    email: req.body.email,
+    cell: req.body.cell,
+    work: req.body.work
+  });
+  newCustomerObj.save(function(err) {
+    if (err) console.log(err);
+    res.redirect("/customerInputForm");
+  });
 });
 
 // Vehicle Input
@@ -51,8 +70,32 @@ app.get("/vehicleInputForm", function(req, res) {
   res.render("vehicleInputForm");
 });
 
-app.post("/vehicleInputForm", function(req, res) {
-  res.redirect("/vehicleInputForm");
+// adds new vehicle to DB
+app.post("/vehicleInputForm", function(req, res){
+  var lastServiceModelInstance = new lastServiceModel({ // declare with default values
+    date: '1-1-00',
+    odometer: 0,
+    dailyAverageMiles: 0,
+    monthlyAverageMiles: 0
+  });
+  
+  var newVehicleObj = new vehicleModel({
+    make: req.body.make,
+    model: req.body.model,
+    year: req.body.year,
+    licenseNum: req.body.license,
+    VIN: req.body.vin,
+    color: req.body.color,
+    type: req.body.type,
+    mileage: req.body.mileage,
+    lastSrvc: lastServiceModelInstance
+  });
+  
+  newVehicleObj.save(function(err) {
+    if (err) console.log(err);
+    res.redirect("/vehicleInputForm");
+  });
+
 });
 
 // Repair Order Form

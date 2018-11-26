@@ -1,47 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" 
+      crossorigin="anonymous">    
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/mainstyles.css">
     <title>TopShop</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="/stylesheets/Landing/landing.css"
   </head>
   
   <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">TopShop</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
     
-    <nav class="navbar navbar-light" style="background-color: rgba(40,40,40,0.95);">
-      <div id="headerLeft">
-        <img id = "logo" src="/stylesheets/Landing/logo.png"> 
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="dashboard">About Us <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
       </div>
-      
-      <div id ="headerRight"v>
-        <button class= "glow" id="NC">New Customer</button>
-        <button class= "glow" id="VI">Check out Dashboard </button>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row" id="box-search">
+          <div class="thumbnail text-center">
+                <div class="video">
+                  <video class="hidden-sm-down" muted autoplay="" loop="myVideo">
+                    <source src="/stylesheets/Landing/mechanic.mp4" type="video/mp4">
+                  </video>
+                </div>
+              <div class="caption">
+                <div class="text-center">
+                  <img src="/stylesheets/Landing/logo.png" class="img-thumbnail" style="width:10%">
+                </div>  
+                <h1 style="font-size:100px; color:white">Welcome to TopShop</h1>
+                <br>
+                <br>
+                <button type="button" class="btn btn-outline-light btn-lg">Sign Up</button>
+                <a href="dashboard" class="btn btn-outline-light btn-lg">Log In</a>
+              </div>
+          </div>
       </div>
-	  </nav>
-  
-    
-    <div id="bvideo">
-      <video autoplay muted loop id="myVideo" >
-        <source src="/stylesheets/Landing/mechanic.mp4" type="video/mp4">
-      </video>
-      <div class="overlay">
-        <h1 class="out"id="firstAd">Introducing TopShop</h1>
-        <h1 class="out"id="secondAd">No longer losing papers...</h1>
-        <h1 class="out"id="thirdAd">Requesting service and registering Vehicle done easy</h1>
-        <h1 class="out"id="forthAd">Sign up now!</h1>
-       
-      </div> 
-      
-    </div>
-    
-    
-    
-    
-	
-	
-	   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script src="/scripts/landing.js"></script>
+    </div>  
   </body>
 </html>

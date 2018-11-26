@@ -65,3 +65,26 @@ body {
 }
 
 /* End of styling for vehicle inspection form */
+
+/* Start styling for landing page */
+.thumbnail {
+    position: relative;
+    top: 35%;
+    left: 0;
+    width: 100%;
+}
+
+.caption {
+    position: absolute;
+    top: 15%;
+    left: 0;
+    width: 100%;
+}
+
+
+.video {
+    display: block;
+    margin: 0 auto;
+}
+
+/* End styling for landing page */

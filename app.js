@@ -2,7 +2,7 @@ var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
-var mongoURL = 'mongodb://localhost:27017/myDB';
+var mongoURL = 'mongodb://localhost:27017/TopShop';
 
 
 app.use(bodyParser.urlencoded({extended: true})); 
@@ -82,7 +82,7 @@ app.post("/vehicleInputForm", function(req, res){
   var newVehicleObj = new vehicleModel({
     make: req.body.make,
     model: req.body.model,
-    year: Number(req.body.year),
+    year: req.body.year,
     licenseNum: req.body.license,
     VIN: req.body.vin,
     color: req.body.color,

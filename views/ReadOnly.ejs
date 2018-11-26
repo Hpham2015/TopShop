@@ -1,0 +1,251 @@
+<% include partials/header %>
+
+<div class="container-fluid">
+  
+  <div class="jumbotron jumbotron-fluid border border-dark rounded">
+    <div class="container-fluid">
+      <h1 class="display-4 text-center">Read Only Forms</h1>
+    </div>
+  </div>
+  
+  <!--Section for Customer Info-->
+  <div class="container border border-dark rounded mx-auto">
+
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="CustomerID">Customer ID</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupPrepend">ID</span>
+          </div>
+          <input name="customerID" type="text" class="form-control" id="customerID" value="<%= ReportValues.customerID %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="FirstName">First name</label>
+        <input  name="firstName" type="text" class="form-control" id="firstname" value="<%= ReportValues.firstName %>" readonly>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="LastName">Last name</label>
+        <input name="firstName" type="text" class="form-control" id="lastname" value="<%= ReportValues.lastName %>" readonly>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-3 mb-3">
+        <label for="Street">Street</label>
+        <input name="street" type="text" class="form-control" id="Street" value="<%= ReportValues.street %>" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="City">City</label>
+        <input name="city" type="text" class="form-control" id="City" value="<%= ReportValues.city %>" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="State">State</label>
+        <input name-"state" type="text" class="form-control" id="State" value="<%= ReportValues.state %>"
+        minlength="2" maxlength="2" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="Zip">Zip</label>
+        <input name="zip" type="number" minlength="5" maxlength="5" class="form-control" id="zip" value="<%= ReportValues.zip %>" readonly>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label for="email">Email</label>
+        <input name="email" type="email" class="form-control" id="email" value="<%= ReportValues.email %>" readonly>
+      </div>    
+      <div class="col-md-3 mb-3">
+        <label for="Cell">Cell Phone</label>
+        <input name="cell" type="tel" minlength="10" maxlength="10" class="form-control" id="cell" value="<%= ReportValues.cellPhone %>" readonly>
+      </div>    
+      <div class="col-md-3 mb-3">
+        <label for="Work">Work Phone</label>
+        <input name="work" type="tel" minlength="10" maxlength="10" class="form-control" id="work" value="<%= ReportValues.workPhone %>" readonly>
+      </div>    
+    </div>
+</div>
+<div class="container border border-dark rounded mx-auto">
+      <h4 class="font-weight-bold">Vehicles</h4>
+      
+      
+      <div class="container">
+          <div class="row">
+          <label class="col"><strong>year/make/model</strong></label>
+          <label class="col"><strong>mileage</strong></label>
+          <label class="col"><strong>VIN number</strong></label>
+          <label class="col"><strong>DL number</strong></label>
+          </div>
+        <% ReportValues.vehicles.forEach(function(vehicle){ %>
+          <div class="row">
+            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
+            <div class="col"><%= vehicle.mileage %></div>
+            <div class="col"><%= vehicle.VIN %></div>
+            <div class="col"><%= vehicle.license %></div>
+          </div>
+        <% }); %>
+      </div>
+      
+    </div>
+    
+    <div class="container border border-dark rounded mx-auto">
+      <h4 class="font-weight-bold">Mechanics</h4>
+      
+      
+      <div class="container">
+          <div class="row">
+          <label class="col"><strong>Mechanic ID</strong></label>
+          <label class="col"><strong>First Name</strong></label>
+          <label class="col"><strong>Last Name</strong></label>
+          </div>
+        <% ReportValues.Mechanics.forEach(function(Mechanic){ %>
+          <div class="row">
+            <div class="col"><%= Mechanic.ID %></div>
+            <div class="col"><%= Mechanic.FirstName %></div>
+            <div class="col"><%= Mechanic.LastName %></div>
+            
+          </div>
+        <% }); %>
+      </div>
+      
+    </div>
+    
+    <div class="container border border-dark rounded mx-auto">
+    <h4 class="font-weight-bold">Repairs</h4>
+    <br>
+    <% ReportValues.Repairs.forEach(function(repair){ %>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="repairtype">Repair Type</label>
+          <input name="repairtype" type="text" class="form-control"  value="<%= repair.RepairType %>" 
+            aria-describedby="inputGroupPrepend" readonly>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="repair">Repair</label>
+        <input  name="repair" type="text" class="form-control"  value="<%= "complaint:" +"   "+ repair.Repair.complaint %>" readonly>
+        <input  name="repair" type="text" class="form-control"  value="<%= "cause:" +"   "+ repair.Repair.cause %>" readonly>
+        <input  name="repair" type="text" class="form-control"  value="<%= "resolution:" +"   "+ repair.Repair.resolution %>" readonly>
+        
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Cost">Cost</label>
+        <input name="Cost" type="text" class="form-control"  value="<%= "$"+repair.cost %>" readonly>
+        
+      </div>
+    </div>
+      <% }); %>
+    
+    
+</div>
+<div class="container border border-dark rounded mx-auto">
+      <h4 class="font-weight-bold">Vehicles</h4>
+      
+      
+      <div class="container">
+          <div class="row">
+          <label class="col"><strong>year/make/model</strong></label>
+          <label class="col"><strong>mileage</strong></label>
+          <label class="col"><strong>VIN number</strong></label>
+          <label class="col"><strong>DL number</strong></label>
+          </div>
+        <% ReportValues.vehicles.forEach(function(vehicle){ %>
+          <div class="row">
+            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
+            <div class="col"><%= vehicle.mileage %></div>
+            <div class="col"><%= vehicle.VIN %></div>
+            <div class="col"><%= vehicle.license %></div>
+          </div>
+        <% }); %>
+      </div>
+      
+    </div>
+    <div class="container border border-dark rounded mx-auto">
+      <h4 class="font-weight-bold">Vehicles</h4>
+      
+      
+      <div class="container">
+          <div class="row">
+          <label class="col"><strong>year/make/model</strong></label>
+          <label class="col"><strong>mileage</strong></label>
+          <label class="col"><strong>VIN number</strong></label>
+          <label class="col"><strong>DL number</strong></label>
+          </div>
+        <% ReportValues.vehicles.forEach(function(vehicle){ %>
+          <div class="row">
+            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
+            <div class="col"><%= vehicle.mileage %></div>
+            <div class="col"><%= vehicle.VIN %></div>
+            <div class="col"><%= vehicle.license %></div>
+          </div>
+        <% }); %>
+      </div>
+      
+    </div>
+    <div class="container border border-dark rounded mx-auto">
+      <h4 class="font-weight-bold">Vehicles</h4>
+      
+      
+      <div class="container">
+          <div class="row">
+          <label class="col"><strong>year/make/model</strong></label>
+          <label class="col"><strong>mileage</strong></label>
+          <label class="col"><strong>VIN number</strong></label>
+          <label class="col"><strong>DL number</strong></label>
+          </div>
+        <% ReportValues.vehicles.forEach(function(vehicle){ %>
+          <div class="row">
+            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
+            <div class="col"><%= vehicle.mileage %></div>
+            <div class="col"><%= vehicle.VIN %></div>
+            <div class="col"><%= vehicle.license %></div>
+          </div>
+        <% }); %>
+      </div>
+      
+    </div>
+    <div class="container border border-dark rounded mx-auto">
+      <h4 class="font-weight-bold">Vehicles</h4>
+      
+      
+      <div class="container">
+          <div class="row">
+          <label class="col"><strong>year/make/model</strong></label>
+          <label class="col"><strong>mileage</strong></label>
+          <label class="col"><strong>VIN number</strong></label>
+          <label class="col"><strong>DL number</strong></label>
+          </div>
+        <% ReportValues.vehicles.forEach(function(vehicle){ %>
+          <div class="row">
+            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
+            <div class="col"><%= vehicle.mileage %></div>
+            <div class="col"><%= vehicle.VIN %></div>
+            <div class="col"><%= vehicle.license %></div>
+          </div>
+        <% }); %>
+      </div>
+      
+    </div>
+    <div class="container border border-dark rounded mx-auto">
+      <h4 class="font-weight-bold">Vehicles</h4>
+      
+      
+      <div class="container">
+          <div class="row">
+          <label class="col"><strong>year/make/model</strong></label>
+          <label class="col"><strong>mileage</strong></label>
+          <label class="col"><strong>VIN number</strong></label>
+          <label class="col"><strong>DL number</strong></label>
+          </div>
+        <% ReportValues.vehicles.forEach(function(vehicle){ %>
+          <div class="row">
+            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
+            <div class="col"><%= vehicle.mileage %></div>
+            <div class="col"><%= vehicle.VIN %></div>
+            <div class="col"><%= vehicle.license %></div>
+          </div>
+        <% }); %>
+      </div>
+      
+    </div>
+    
+    
+
+<% include partials/footer %>

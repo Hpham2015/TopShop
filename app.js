@@ -2,9 +2,10 @@ var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
-var mongoURL = 'mongodb://localhost:27017/myDB';
+var mongoURL = 'mongodb://localhost:27017/TopShop';
 
-app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
@@ -36,6 +37,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
 var jobModel = require("./models/JobSchema.js");
 var repairOrderModel = require("./models/RepairOrderFormSchema.js");
+var lastServiceModel = require('./models/LastServiceSchema.js');
+var vehicleModel = require('./models/VehicleSchema.js');
+var customerModel = require('./models/CustomerSchema.js');
 
 
 // ------- Routes -------
@@ -55,8 +59,24 @@ app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
 });
 
+// adds new customer to DB
 app.post("/customerInputForm", function(req, res){
-  res.redirect("/customerInputForm");
+  var newCustomerObj = new customerModel({
+    customerID: req.body.customerID,
+    firstName: req.body.firstname,
+    lastName: req.body.lastname,
+    street: req.body.street,
+    city: req.body.City,
+    state: req.body.State,
+    zip: req.body.zip,
+    email: req.body.email,
+    cell: req.body.cell,
+    work: req.body.work
+  });
+  newCustomerObj.save(function(err) {
+    if (err) console.log(err);
+    res.redirect("/customerInputForm");
+  });
 });
 
 // Vehicle Input
@@ -64,8 +84,32 @@ app.get("/vehicleInputForm", function(req, res) {
   res.render("vehicleInputForm");
 });
 
-app.post("/vehicleInputForm", function(req, res) {
-  res.redirect("/vehicleInputForm");
+// adds new vehicle to DB
+app.post("/vehicleInputForm", function(req, res){
+  var lastServiceModelInstance = new lastServiceModel({ // declare with default values
+    date: '1-1-00',
+    odometer: 0,
+    dailyAverageMiles: 0,
+    monthlyAverageMiles: 0
+  });
+  
+  var newVehicleObj = new vehicleModel({
+    make: req.body.make,
+    model: req.body.model,
+    year: req.body.year,
+    licenseNum: req.body.license,
+    VIN: req.body.vin,
+    color: req.body.color,
+    type: req.body.type,
+    mileage: req.body.mileage,
+    lastSrvc: lastServiceModelInstance
+  });
+  
+  newVehicleObj.save(function(err) {
+    if (err) console.log(err);
+    res.redirect("/vehicleInputForm");
+  });
+
 });
 
 // Repair Order Form
@@ -425,20 +469,6 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
     });
 });
 
-app.post("/populateROfromName", function(req, res) {
-  customerSchema.findOne( { firstName : req.body.firstName, lastName: req.body.lastName } , function (err, result) {
-        if (err) 
-          console.error(err);
-        if (result) {
-          res.render("repairOrderForm", {Customer:result, Vehicle:result.vehicles[0]});
-          //only works if customer has a vehicle
-        }
-        else {
-          console.log("no result found, display error?");
-        }
-    });
-});
-
 app.post("/repairOrderForm", function(req, res) {
  
   var repairOrderInstance = new repairOrderModel({
@@ -476,9 +506,15 @@ app.post("/repairOrderForm", function(req, res) {
     cost: req.body.job_3_cost
   });
   
-  repairOrderInstance.save(function (err) {
-    if (err) console.log(err);
-  });
+  repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+    repairOrderInstance, {upsert: true}, function(err, doc) {
+      if (err) console.log("Repair Order Form existed");
+      else console.log("Successfully added");
+    });
+  
+  // repairOrderInstance.save(function (err) {
+  //   if (err) console.log(err);
+  // });
   res.redirect("/repairOrderForm");
 });
 
@@ -591,6 +627,7 @@ app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
 
+//MYSTUFF STARTS HERE, SLOWLY REPLACE INTO VY'S STUFF
 
 app.get("/customerPage/:id", function(req, res) {
   var customerID = req.params.id;
@@ -680,6 +717,102 @@ app.get("/searchPage", function(req, res) {
   res.render("searchPage", {DupCustomers:DupCustomers});
 });
 
+//MY STUFF ENDS HERE, VY'S STUFF IS NEXT
+
+// searchPage
+var DupCustomers = {
+  sameCustomer: [
+    {
+      firstName: "John",
+      lastName: "Smith",
+      email: "johnsmith@example.com",
+      cellPhone: 1239879876,
+      workPhone: 1236546543
+    },
+    {
+      firstName: "John",
+      lastName: "Wick",
+      email: "johnwick@youdied.com",
+      cellPhone: 1234561234,
+      workPhone: 7891231475,
+    },
+    {
+      firstName: "John",
+      lastName: "Snow",
+      email: "johnsnow@winterfell.com",
+      cellPhone: 1237657654,
+      workPhone: 1235675678,
+    }
+  ]
+};
+
+app.get("/searchPage", function(req, res) {
+  res.render("searchPage", {DupCustomers:DupCustomers});
+});
+
+app.post("/searchPage", function(req, res) {
+  var action = req.body.action;
+  if (action == "searchByCustomerName") {
+    var firstName = req.body.customerFirstName;
+    var lastName = req.body.customerLastName;
+  }
+  else if (action == "searchByCustomerEmail") {
+    var email = req.body.customerEmail;
+  }
+  else if (action == "searchByCustomerID") {
+    var id = req.body.customerID;
+  }
+  else if (action == "searchByVIN") {
+    var vin = req.body.vin;
+  }
+  else if (action == "searchByLicense") {
+    var license = req.body.license;
+  }
+  else if (action == "searchByRepairOrderNumber"){
+    var key = req.body.repairOrderNumber;
+    var query = repairOrderModel.find({repairOrderNumber: key}, function(err, doc) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        if (doc === undefined || doc.length == 0) {
+          res.redirect("/searchPage");
+          return;
+        }
+        res.redirect("/repairOrderForm");
+        app.locals.rofNumber = doc[0].repairOrderNumber;
+        app.locals.vin = doc[0].VIN;
+        app.locals.customerID = doc[0].customerID;
+        
+        app.locals.job_1_type = doc[0].jobs[0].repairType;
+        app.locals.job_1_complaint = doc[0].jobs[0].complaint;
+        app.locals.job_1_cause = doc[0].jobs[0].cause;
+        app.locals.job_1_resolution = doc[0].jobs[0].resolution;
+        app.locals.job_1_cost = doc[0].jobs[0].cost;
+        
+        app.locals.job_2_type = doc[0].jobs[1].repairType;
+        app.locals.job_2_complaint = doc[0].jobs[1].complaint;
+        app.locals.job_2_cause = doc[0].jobs[1].cause;
+        app.locals.job_2_resolution = doc[0].jobs[1].resolution;
+        app.locals.job_2_cost = doc[0].jobs[1].cost;
+        
+        app.locals.job_3_type = doc[0].jobs[2].repairType;
+        app.locals.job_3_complaint = doc[0].jobs[2].complaint;
+        app.locals.job_3_cause = doc[0].jobs[2].cause;
+        app.locals.job_3_resolution = doc[0].jobs[2].resolution;
+        app.locals.job_3_cost = doc[0].jobs[2].cost;
+        
+        app.locals.totalCost = doc[0].totalCost;
+      }
+    });
+    
+    return;
+    
+  } else {
+    // nothing
+  }
+  res.redirect("/searchPage");
+});
 
 // Vehicle Page
 var Vehicle = {
@@ -708,6 +841,8 @@ var Vehicle = {
       }
     ]
 };
+
+//VY'S STUFF ENDS HERE, REPLACE THE ABOVE
 
 app.get("/vehiclePage", function(req, res) {
   res.render("vehiclePage", {Vehicle:Vehicle});

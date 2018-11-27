@@ -17,7 +17,9 @@
     <h3 class="group-label">Repair Order Form #</h3>
     <div class="form-row">
       <div class="col-md-4 mb-3">
-        <input name="repair_order_number" type="number" class="form-control" id="repair_order_number" minlength="5" maxlength="5" placeholder="84895" required>      
+        <input name="repair_order_number" type="number" class="form-control" 
+        id="repair_order_number" minlength="5" maxlength="5" placeholder="84895" 
+        value= <% if (typeof rofNumber !== 'undefined') {%> <%=rofNumber;%> <% } else { %> "" <% } %>  required>      
       </div>
     </div>
 
@@ -153,21 +155,36 @@
             <td>
             <h6><strong><br></strong></h6>
               <select name="job_1_repair_type" class="custom-select" id="job_1_repair_type" required>
+                <% var pay_selected = ""; %>
+                <% var warranty_selected = ""; %>
+                <% var internal_selected = ""; %>
+                <% if (typeof job_1_type !== 'undefined') { 
+                    if (job_1_type === "Customer Pay") { 
+                      pay_selected = "selected";
+                    }
+                    else if (job_1_type === "Warranty") {
+                      warranty_selected = "selected";
+                    }
+                    else if (job_1_type === "Internal") {
+                      internal_selected = "selected";
+                    }
+                }
+                %>
                 <option value="">Choose...</option>
-                <option value="Customer Pay">Customer Pay</option>  
-                <option value="Warranty">Warranty</option>    
-                <option value="Internal">Internal</option>  
+                <option value="Customer Pay" <%=pay_selected%>>Customer Pay</option>  
+                <option value="Warranty" <%=warranty_selected%>>Warranty</option>    
+                <option value="Internal" <%=internal_selected%>>Internal</option>  
               </select>
             </td>
-              <td> 
+            <td> 
               <h6><strong>Complaint</strong></h6>
-              <textarea name="job_1_complaint" class="form-control" aria-label="With textarea" required></textarea> 
+              <textarea name="job_1_complaint" class="form-control" aria-label="With textarea" required><% if (typeof job_1_complaint !== 'undefined') { %><%=job_1_complaint%><% } else { %><% } %></textarea> 
               <br>
               <h6><strong>Cause</strong></h6>
-              <textarea name="job_1_cause" class="form-control" aria-label="With textarea" required></textarea>
+              <textarea name="job_1_cause" class="form-control" aria-label="With textarea" required><% if (typeof job_1_cause !== 'undefined') { %><%=job_1_cause%><% } else { %><% } %></textarea>
               <br>
               <h6><strong>Resolution</strong></h6>
-              <textarea name="job_1_resolution" class="form-control" aria-label="With textarea" required></textarea>
+              <textarea name="job_1_resolution" class="form-control" aria-label="With textarea" required><% if (typeof job_1_resolution !== 'undefined') { %><%=job_1_resolution%><% } else { %><% } %></textarea>
               </td>  <!-- Need to add ID to be saved -->
             <td>  
               <h6><strong><br></strong></h6>
@@ -175,7 +192,8 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
-                <input name="job_1_cost" type="text" class="form-control" onchange="add_number()" value="0" id="job_1_cost"  required>
+                <input name="job_1_cost" type="text" class="form-control" onchange="add_number()"
+                value= <% if (typeof job_1_cost !== 'undefined') { %><%=job_1_cost;%><% } else { %> "0" <% } %> id="job_1_cost"  required>
               </div>
             </td>
           </tr>
@@ -184,52 +202,36 @@
             <td> 
             <h6><strong><br></strong></h6>
             <select name="job_2_repair_type" class="custom-select" id="job_2_repair_type" required>
+                <% var pay_selected = ""; %>
+                <% var warranty_selected = ""; %>
+                <% var internal_selected = ""; %>
+                <% if (typeof job_2_type !== 'undefined') { 
+                    if (job_2_type === "Customer Pay") { 
+                      pay_selected = "selected";
+                    }
+                    else if (job_2_type === "Warranty") {
+                      warranty_selected = "selected";
+                    }
+                    else if (job_2_type === "Internal") {
+                      internal_selected = "selected";
+                    }
+                }
+                %>
                 <option value="">Choose...</option>
-                <option value="Customer Pay">Customer Pay</option>  
-                <option value="Warranty">Warranty</option>    
-                <option value="Internal">Internal</option>  
+                <option value="Customer Pay" <%=pay_selected%>>Customer Pay</option>  
+                <option value="Warranty" <%=warranty_selected%>>Warranty</option>    
+                <option value="Internal" <%=internal_selected%>>Internal</option>  
               </select>
             </td>
             <td> 
               <h6><strong>Complaint</strong></h6>
-              <textarea name="job_2_complaint" class="form-control" aria-label="With textarea" required></textarea> 
+              <textarea name="job_2_complaint" class="form-control" aria-label="With textarea" required><% if (typeof job_2_complaint !== 'undefined') { %><%=job_2_complaint%><% } else { %><% } %></textarea> 
               <br>
               <h6><strong>Cause</strong></h6>
-              <textarea name="job_2_cause" class="form-control" aria-label="With textarea" required></textarea>
+              <textarea name="job_2_cause" class="form-control" aria-label="With textarea" required><% if (typeof job_2_cause !== 'undefined') { %><%=job_2_cause%><% } else { %><% } %></textarea>
               <br>
               <h6><strong>Resolution</strong></h6>
-              <textarea name="job_2_resolution" class="form-control" aria-label="With textarea" required></textarea>
-              </td>  <!-- Need to add ID to be saved -->
-            <td>
-              <h6><strong><br></strong></h6>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="inputGroupPrepend">$</span>
-                </div>
-                <input name="job_2_cost" type="text" class="form-control" onchange="add_number()" value="0" id="job_2_cost"  required>
-              </div>            
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td> 
-            <h6><strong><br></strong></h6>
-            <select name="job_3_repair_type" class="custom-select" id="job_3_repair_type" required>
-                <option value="">Choose...</option>
-                <option value="Customer Pay">Customer Pay</option>  
-                <option value="Warranty">Warranty</option>    
-                <option value="Internal">Internal</option>  
-              </select>
-            </td>
-              <td>
-              <h6><strong>Complaint</strong></h6>
-              <textarea name="job_3_complaint" class="form-control" aria-label="With textarea" required></textarea> 
-              <br>
-              <h6><strong>Cause</strong></h6>
-              <textarea name="job_3_cause" class="form-control" aria-label="With textarea" required></textarea>
-              <br>
-              <h6><strong>Resolution</strong></h6>
-              <textarea name="job_3_resolution" class="form-control" aria-label="With textarea" required></textarea>
+              <textarea name="job_2_resolution" class="form-control" aria-label="With textarea" required><% if (typeof job_2_resolution !== 'undefined') { %><%=job_2_resolution%><% } else { %><% } %></textarea>
               </td>  <!-- Need to add ID to be saved -->
             <td>  
               <h6><strong><br></strong></h6>
@@ -237,9 +239,57 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
-                <input name="job_3_cost" type="text" class="form-control" onchange="add_number()" value="0" id="job_3_cost"  required>
-              </div>           
-              </td>
+                <input name="job_2_cost" type="text" class="form-control" onchange="add_number()"
+                value= <% if (typeof job_2_cost !== 'undefined') { %><%=job_2_cost;%><% } else { %> "0" <% } %> id="job_2_cost"  required>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td> 
+            <h6><strong><br></strong></h6>
+            <select name="job_3_repair_type" class="custom-select" id="job_3_repair_type" required>
+                <% var pay_selected = ""; %>
+                <% var warranty_selected = ""; %>
+                <% var internal_selected = ""; %>
+                <% if (typeof job_3_type !== 'undefined') { 
+                    if (job_3_type === "Customer Pay") { 
+                      pay_selected = "selected";
+                    }
+                    else if (job_3_type === "Warranty") {
+                      warranty_selected = "selected";
+                    }
+                    else if (job_3_type === "Internal") {
+                      internal_selected = "selected";
+                    }
+                }
+                %>
+                <option value="">Choose...</option>
+                <option value="Customer Pay" <%=pay_selected%>>Customer Pay</option>  
+                <option value="Warranty" <%=warranty_selected%>>Warranty</option>    
+                <option value="Internal" <%=internal_selected%>>Internal</option>  
+              </select>
+            </td>
+            <td> 
+              <h6><strong>Complaint</strong></h6>
+              <textarea name="job_3_complaint" class="form-control" aria-label="With textarea" required><% if (typeof job_3_complaint !== 'undefined') { %><%=job_3_complaint%><% } else { %><% } %></textarea> 
+              <br>
+              <h6><strong>Cause</strong></h6>
+              <textarea name="job_3_cause" class="form-control" aria-label="With textarea" required><% if (typeof job_3_cause !== 'undefined') { %><%=job_3_cause%><% } else { %><% } %></textarea>
+              <br>
+              <h6><strong>Resolution</strong></h6>
+              <textarea name="job_3_resolution" class="form-control" aria-label="With textarea" required><% if (typeof job_3_resolution !== 'undefined') { %><%=job_3_resolution%><% } else { %><% } %></textarea>
+              </td>  <!-- Need to add ID to be saved -->
+            <td>  
+              <h6><strong><br></strong></h6>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroupPrepend">$</span>
+                </div>
+                <input name="job_3_cost" type="text" class="form-control" onchange="add_number()"
+                value= <% if (typeof job_3_cost !== 'undefined') { %><%=job_3_cost;%><% } else { %> "0" <% } %> id="job_3_cost"  required>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -250,7 +300,8 @@
                 <span class="input-group-text" id="inputGroup-sizing-lg">Total Cost:</span>
                 <span class="input-group-text" id="inputGroup-sizing-lg">$</span>
               </div>
-              <input name="total_cost" type="text" class="form-control" id="total_cost" readonly>
+              <input name="total_cost" type="text" class="form-control" id="total_cost" 
+              value= <% if (typeof totalCost !== 'undefined') { %><%=totalCost%> <% } else { %>""<% } %> readonly>
             </div>
           </div>
         

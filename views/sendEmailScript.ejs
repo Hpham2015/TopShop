@@ -1,20 +1,29 @@
 <body>
     
     <script>
+    // not sure if sending email is possible at this point
         function sendEmail() {
+            // following variables store customer information that is used in email
             var email = document.getElementById('email').value;
             var customer = document.getElementById('firstName').value + " " + document.getElementById('lastName').value;
             var car = document.getElementById('year').value + " " + document.getElementById('make').value + " " + document.getElementById('model').value;
             var subject = "Your recent service for your " + car;
             var body = "Hello " + customer + ",<br>Attached to this email contains the repair order form, vehicle inspection form, and final paperwork for your " + car + ". ";
             
-            document.write('<a href="mailto:' + email + '?subject=' + subject + '&body' + body + '"></a>')
+            // opens up user's mail client and prefills subject and body
+            window.open('mailto:' + email + '?subject=' + subject + '&body=' + body );
         }
-    </script>
-    
-    <script>
-        function buildPDF() {
-            var doc = new jsPDF();
+        
+        function buildPDF(firstName, lastName) {
+            // default file name (ex. JohnSmithForms.pdf)
+            const filename = firstName + lastname + 'Forms.pdf';
+            
+            // pulls #id elements then converts into a PNG, which is then added onto PDF doc
+            html2canvas(document.querySelector('#body')).then(canvas => {
+                let pdf = new jsPDF('p', 'mm', 'a4');
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 211, 298);
+                pdf.save(filename);
+            });
         }
     </script>
 </body>

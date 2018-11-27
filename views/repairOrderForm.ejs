@@ -32,7 +32,7 @@
           </div>
           <input name="customerID" type="text" class="form-control" id="customerID"
           style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend"
-          value="<% if (locals.Customer) { %> <%= Customer.id%> <% } else { " " } %>" readonly>
+          value="<% if (locals.Customer) { %> <%= Customer.id%> <% } else { 'Wasn\t passed customer' } %>" readonly>
         </div>
       </div>
       <div class="col-md-4 mb-3">
@@ -50,7 +50,7 @@
       <div class="col-md-3 mb-3">
         <label for="Street">Street</label>
         <input name="street" type="text" class="form-control" id="Street" 
-        value="<% if (locals.Customer) { %><%=Customer.address%> <% } else { " " } %>" readonly>
+        value="<% if (locals.Customer) { %><%=Customer.street%> <% } else { " " } %>" readonly>
       </div>
       <div class="col-md-3 mb-3">
         <label for="City">City</label>
@@ -100,7 +100,7 @@
         </div>
         <div class="col-md-3 mb-3">
           <label for="VIN">VIN</label>
-            <input name="VIN" type="text" aria-label="VIN" class="form-control" value="<% if (locals.Vehicle) { %> <%= Vehicle.VINNum%> <% } else { " " } %>" readonly>
+            <input name="VIN" type="text" aria-label="VIN" class="form-control" value="<% if (locals.Vehicle) { %> <%= Vehicle.VIN%> <% } else { " " } %>" readonly>
         </div>
         <div class="col-md-3 mb-3">
           <label for="License">License</label>

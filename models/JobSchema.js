@@ -8,6 +8,6 @@ var jobSchema = new Schema({
   cause: String,
   resolution: String,
   cost: String
-})
+});
 
 module.exports = mongoose.model("JobModel", jobSchema);

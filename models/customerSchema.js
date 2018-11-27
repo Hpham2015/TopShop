@@ -5,16 +5,16 @@ var Schema = mongoose.Schema;
 var vehicleSchema = mongoose.model("VehicleModel").schema;
 
 var customerSchema = new Schema({
-  customerID: Number,
+  customerID: String,
   firstName: String,
   lastName: String,
-  address: String,
+  street: String,
   city: String,
   state: String,
   zip: Number,
   email: String,
-  cell: String,
-  work: String,
+  cell: Number,
+  work: Number,
   vehicles: [vehicleSchema]
 });
 

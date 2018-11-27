@@ -15,10 +15,12 @@ app.use(bodyParser.json());    //allows us to read data from page by looking at 
 // Connect to mongoDB
 
 // SCHEMA
+var jobSchema = require('./models/JobSchema.js');
 var lastServiceSchema = require('./models/lastServiceSchema.js');
 var vehicleSchema = require('./models/vehicleSchema.js');
 var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
 var customerSchema = require('./models/customerSchema.js');
+var repairOrderSchema = require('./models/RepairOrderFormSchema.js');
 var Schema = mongoose.Schema;
 var Customer = mongoose.model("CustomerModels", customerSchema.customerSchema);
 
@@ -75,11 +77,72 @@ app.get("/repairOrderForm", function(req, res){
 app.get("/searchPage", function(req, res){
   
   //  uncomment this to add this customer to database upon loading search page
-  var newCustomer = new customerSchema({
+  
+  var lastService1 = new lastServiceSchema({
+    date: new Date('December 1, 1111 01:11:11'),
+    odometer: 11111,
+    dailyAverageMiles: 11111,
+    monthlyAverageMiles: 11111
+  });
+  
+  var lastService2 = new lastServiceSchema({
+    date: new Date('December 2, 2222 02:22:22'),
+    odometer: 22222,
+    dailyAverageMiles: 22222,
+    monthlyAverageMiles: 22222
+  });
+  
+  var lastService3 = new lastServiceSchema({
+    date: new Date('December 3, 3333 03:33:33'),
+    odometer: 33333,
+    dailyAverageMiles: 33333,
+    monthlyAverageMiles: 33333
+  });
+  
+  var newVehicle1 = new vehicleSchema({
+    customerID: 1111111111,
+    make: "make11111",
+    model: "model11111",
+    year: 1111,
+    licenseNum: "1111111",
+    VIN: 111,
+    color: "blue111",
+    type: "type1111",
+    mileage: 11111,
+    lastSrvc: lastService1
+  });
+  
+  var newVehicle2 = new vehicleSchema({
+    customerID: 2222222222,
+    make: "make22222",
+    model: "model22222",
+    year: 2222,
+    licenseNum: "2222222",
+    VIN: 222,
+    color: "blue222",
+    type: "type2222",
+    mileage: 22222,
+    lastSrvc: lastService2
+  });
+  
+  var newVehicle3 = new vehicleSchema({
+    customerID: 3333333333,
+    make: "make33333",
+    model: "model33333",
+    year: 3333,
+    licenseNum: "3333333",
+    VIN: 333,
+    color: "blue333",
+    type: "type3333",
+    mileage: 33333,
+    lastSrvc: lastService3
+  });
+  
+  var newCustomer1 = new customerSchema({
     customerID: 1111111111,
     firstName: "John", 
     lastName: "Connor",
-    address: "111 Nonya Business",
+    street: "111 Nonya Business",
     city: "New York",
     state: "NY",
     zip: 11111,
@@ -87,20 +150,9 @@ app.get("/searchPage", function(req, res){
     cell: 1231111111,
     work: 1111111111,
     vehicles: [
-      { 
-        year: 2007,
-        make: "Honda",
-        model: "S2000",
-        color: "Red",
-        id: 3513513
-      },
-      { 
-        year: 2015,
-        make: "Lexus",
-        model: "IS350",
-        color: "Gray",
-        id: 1351351
-      }
+      newVehicle1,
+      newVehicle2,
+      newVehicle3
     ]
   });
   
@@ -108,7 +160,7 @@ app.get("/searchPage", function(req, res){
     customerID: 2222222222,
     firstName: "John", 
     lastName: "Connor",
-    address: "22222 Nonya Business",
+    street: "22222 Nonya Business",
     city: "New York",
     state: "NY",
     zip: 22222,
@@ -116,20 +168,8 @@ app.get("/searchPage", function(req, res){
     cell: 2222222222,
     work: 2222222222,
     vehicles: [
-      { 
-        year: 2007,
-        make: "Honda",
-        model: "S2000",
-        color: "Red",
-        id: 3513513
-      },
-      { 
-        year: 2015,
-        make: "Lexus",
-        model: "IS350",
-        color: "Gray",
-        id: 1351351
-      }
+      newVehicle1,
+      newVehicle2
     ]
   });
   
@@ -137,7 +177,7 @@ app.get("/searchPage", function(req, res){
     customerID: 3333333333,
     firstName: "John", 
     lastName: "Conner",
-    address: "3333333 Nonya Business",
+    street: "3333333 Nonya Business",
     city: "New York",
     state: "NY",
     zip: 3333333,
@@ -145,25 +185,98 @@ app.get("/searchPage", function(req, res){
     cell: 3333333333,
     work: 3333333333,
     vehicles: [
-      { 
-        year: 2007,
-        make: "Honda",
-        model: "S2000",
-        color: "Red",
-        id: 3513513
-      },
-      { 
-        year: 2015,
-        make: "Lexus",
-        model: "IS350",
-        color: "Gray",
-        id: 1351351
-      }
+      newVehicle1
     ]
   });
   
+  var jobs1 = new jobSchema({
+    repairType: "1",
+    complaint: "11",
+    cause: "111",
+    resolution: "1111",
+    cost: "11111"
+  });
   
-  newCustomer.save(function(error) {
+  var jobs2 = new jobSchema({
+    repairType: "2",
+    complaint: "22",
+    cause: "222",
+    resolution: "2222",
+    cost: "22222"
+  });
+  
+  var jobs3 = new jobSchema({
+    repairType: "3",
+    complaint: "33",
+    cause: "333",
+    resolution: "3333",
+    cost: "33333"
+  });
+  
+  var vehicleInspecion1 = new VehicleInspectionFormSchema({
+    Name: "111",
+    Mileage: 111,
+    Year_Make_Model: "111",
+    VIN: 111,
+    License: "1111111",
+    email: "11111"
+  });
+  
+  var vehicleInspecion2 = new VehicleInspectionFormSchema({
+    Name: "222",
+    Mileage: 222,
+    Year_Make_Model: "222",
+    VIN: 222,
+    License: "2222222",
+    email: "22222"
+  });
+  
+  var vehicleInspecion3 = new VehicleInspectionFormSchema({
+    Name: "333",
+    Mileage: 333,
+    Year_Make_Model: "333",
+    VIN: 333,
+    License: "3333333",
+    email: "33333"
+  });
+
+  var repairOrder1 = new repairOrderSchema({
+    repairOrderNumber: "1",
+    customerID: "1111111111",
+    VIN: "111",
+    inspectionReport: vehicleInspecion1,
+    mechanicID: "11111",
+    mechanicFirstName: "firstname111",
+    mechanicLastName: "lastname111",
+    jobs: jobs1,
+    totalCost: "111"
+  });
+  
+  var repairOrder2 = new repairOrderSchema({
+    repairOrderNumber: "2",
+    customerID: "2222222222",
+    VIN: "222",
+    inspectionReport: vehicleInspecion2,
+    mechanicID: "22222",
+    mechanicFirstName: "firstname222",
+    mechanicLastName: "lastname222",
+    jobs: jobs2,
+    totalCost: "222"
+  });
+  
+  var repairOrder3 = new repairOrderSchema({
+    repairOrderNumber: "3",
+    customerID: "3333333333",
+    VIN: "111",
+    inspectionReport: vehicleInspecion3,
+    mechanicID: "33333",
+    mechanicFirstName: "firstname333",
+    mechanicLastName: "lastname333",
+    jobs: jobs3,
+    totalCost: "333"
+  });
+  
+  newCustomer1.save(function(error) {
     //res.render("searchPage");
     if (error) {
       console.error(error);
@@ -184,24 +297,126 @@ app.get("/searchPage", function(req, res){
     }
   });
   
+  newVehicle1.save(function(error) {
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  newVehicle2.save(function(error) {
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  newVehicle3.save(function(error) {
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  lastService1.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  lastService2.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  lastService3.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  repairOrder1.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  repairOrder2.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  repairOrder3.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  vehicleInspecion1.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  vehicleInspecion2.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  vehicleInspecion3.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  jobs1.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  jobs2.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
+  
+  jobs3.save(function(error){
+    if (error) {
+      console.log(error);
+    }
+  });
   
   res.render("searchPage");
 });
 */
 
-app.get('/repairOrderForm/:firstName&:lastName', function(req,res) {
-  console.log("we're in the api restful stuff");
-  var id = req.params.id;
-  var firstName = req.params.firstName;
-  var lastName = req.params.lastName;
-  console.log("Your first name is " + firstName);
-  console.log("Your last name is " + lastName);
-  customerSchema.findOne( { customerID: id, firstName : firstName, lastName: lastName } , function (err, result) {
+app.get('/repairOrderForm/:ROnumber', function(req,res) {
+  var ROnumber = req.params.ROnumber;
+  //every repair order has its own unique RO number
+  repairOrderSchema.findOne( { repairOrderNumber: ROnumber } , function (err, RO) {
         if (err) 
           console.error(err);
-        if (result) {
-          console.log("passing " + result)
-          res.render("repairOrderForm", { Customer: result, Vehicle: result.vehicles[0] } );
+        if (RO) {
+          customerSchema.findOne( { customerID: RO.customerID } , function (err, Customer) {
+                if (err) 
+                  console.error(err);
+                if (Customer) {
+                  vehicleSchema.findOne( { VIN: RO.VIN } , function (err, Vehicle) {
+                        if (err) 
+                          console.error(err);
+                        if (Vehicle) {
+                          res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} )
+                        }
+                        else {
+                          console.log("no result found, display error?");
+                        }
+                  });
+                }
+                else {
+                  console.log("no result found, display error?");
+                }
+          });
           //only works if customer has a vehicle
         }
         else {
@@ -343,7 +558,7 @@ app.post('/vehicleInspectionForm', function(req,res) {
 
 // Customer Page
 var Customer = {
-    customerID: 123456,
+    customerID: "123457",
     firstName: "John", 
     lastName: "Wick",
     street: "666 Nonya Business",
@@ -371,35 +586,35 @@ var Customer = {
     ]
 };
 
+
 app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
+});
+
+
+app.get("/customerPage/:id", function(req, res) {
+  var customerID = req.params.id;
+  console.log("id returned is: " + customerID);
+  //we use findOne here because each customer should have their own unique ID
+  customerSchema.findOne( { customerID: customerID } , function (err, result) {
+        if (err) 
+          console.error(err);
+        if (result) {
+          console.log("res is:" + result);
+          res.render("customerPage", { Customer: result } );
+        }
+        else {
+          console.log("no result found for name search, display something?");
+        }
+    });
 });
 
 
 // searchPage
 var DupCustomers = {
   sameCustomer: [
-    {
-      firstName: "John",
-      lastName: "Smith",
-      email: "johnsmith@example.com",
-      cellPhone: 1239879876,
-      workPhone: 1236546543
-    },
-    {
-      firstName: "John",
-      lastName: "Wick",
-      email: "johnwick@youdied.com",
-      cellPhone: 1234561234,
-      workPhone: 7891231475,
-    },
-    {
-      firstName: "John",
-      lastName: "Snow",
-      email: "johnsnow@winterfell.com",
-      cellPhone: 1237657654,
-      workPhone: 1235675678,
-    }
+    //The app needs to load this or else it will give an error. 
+    //This is empty because there are no search results when first loading this page.
   ]
 };
 
@@ -496,6 +711,41 @@ var Vehicle = {
 
 app.get("/vehiclePage", function(req, res) {
   res.render("vehiclePage", {Vehicle:Vehicle});
+});
+
+app.get("/vehiclePage/:VIN", function(req, res) {
+  var VIN = req.params.VIN;
+  //Every vehicle should have its own unique VIN
+  //We are searching for this because we agreed that the 
+  //customer's profiles wouldn't hold the vehicles
+  vehicleSchema.findOne( { VIN : VIN } , function(err, Vehicle) {
+      if (err)
+          console.error(err);
+      if (Vehicle) {
+          console.log("searched vehicle: " + Vehicle);
+          repairOrderSchema.find( { VIN: VIN } , function (err, RO) {
+            if (err)
+              console.log(err);
+            if (RO) {
+              //RO = ("[" + RO + "]");
+              console.log("seara ROs: " + RO);
+            }
+            else { //a vehicle can have no ROs yet
+              console.log("no ROs found");
+              RO = []; 
+            }
+            //console.log("formed:" + RO);
+            var result = Object.keys(RO).map(function(key) {
+              return [RO[key]];
+            });
+            console.log("result:" + result);
+            res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
+          });
+      }
+      else {
+        console.log("no result found for VIN search, display something?");
+      }
+    });
 });
 
 

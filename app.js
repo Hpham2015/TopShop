@@ -666,7 +666,6 @@ app.post("/searchPage", function(req, res) {
             //encapsulating because alfred's code requires it
             var customers = { sameCustomer: result };
             res.render("searchPage", { DupCustomers: customers } );
-            //only works if customer has a vehicle
           }
           else {
             console.log("no result found for name search, display something?");

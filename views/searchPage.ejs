@@ -24,11 +24,11 @@
                     </div>                    
                 </div>
             </form>
-            <form>
+            <form class="ui form" action="/searchPage/emailSearch" method="POST">
                 <div class="form-row align-items-center">
                     <div class="col-md-8 mb-3">
                         <div class="input-group mb-3">
-                            <input type="email" class="form-control" placeholder="example@example.com" required>
+                            <input name="email" type="email" class="form-control" placeholder="example@example.com" required>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
@@ -38,11 +38,11 @@
                     </div>                    
                 </div>
             </form>
-            <form>
+            <form class="ui form" action="/searchPage/idSearch" method="POST">
                 <div class="form-row align-items-center">
                     <div class="col-md-8 mb-3">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Customer ID" minlength="10" maxlength="10" required>
+                            <input name="customerID" type="text" class="form-control" placeholder="Customer ID" minlength="10" maxlength="10" required>
                         </div>
                     </div>
                     <div class="col-md-4 mb-3">
@@ -75,7 +75,7 @@
                             <td> <div class="col"><%= sameCustomer.cellPhone %></div></td>
                             <td> <div class="col"><%= sameCustomer.workPhone %></div></td>
                             <td> <a class="col" href="/customerPage/">Customer Info</a></td>
-                            <td> <a class="col" href="/repairOrderForm/<%= sameCustomer.customerID%>&<%= sameCustomer.firstName%>&<%= sameCustomer.lastName%>">Repair Order</a></td>
+                            <td> <a class="col" href="/repairOrderForm/<%= sameCustomer.firstName%>&<%= sameCustomer.lastName%>">Repair Order</a></td>
                         </tr>
                     <% }); %>
                 </tbody>

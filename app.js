@@ -76,16 +76,16 @@ app.get("/searchPage", function(req, res){
   
   //  uncomment this to add this customer to database upon loading search page
   var newCustomer = new customerSchema({
-    customerID: 123456,
+    customerID: 1111111111,
     firstName: "John", 
-    lastName: "Wick",
-    address: "666 Nonya Business",
+    lastName: "Connor",
+    address: "111 Nonya Business",
     city: "New York",
     state: "NY",
-    zip: 45672,
-    email: "johnwick@youdieded.com",
-    cell: 1234561234,
-    work: 7891231475,
+    zip: 11111,
+    email: "11111@youdieded.com",
+    cell: 1231111111,
+    work: 1111111111,
     vehicles: [
       { 
         year: 2007,
@@ -105,16 +105,16 @@ app.get("/searchPage", function(req, res){
   });
   
   var newCustomer2 = new customerSchema({
-    customerID: 654123,
+    customerID: 2222222222,
     firstName: "John", 
-    lastName: "Wick",
-    address: "667 Nonya Business",
+    lastName: "Connor",
+    address: "22222 Nonya Business",
     city: "New York",
     state: "NY",
-    zip: 45672,
-    email: "johnwick@youdieded.com",
-    cell: 9488948917,
-    work: 4651416564,
+    zip: 22222,
+    email: "222222222@youdieded.com",
+    cell: 2222222222,
+    work: 2222222222,
     vehicles: [
       { 
         year: 2007,
@@ -134,16 +134,16 @@ app.get("/searchPage", function(req, res){
   });
   
   var newCustomer3 = new customerSchema({
-    customerID: 789654,
+    customerID: 3333333333,
     firstName: "John", 
-    lastName: "Wick",
-    address: "6666 Nonya Business",
+    lastName: "Conner",
+    address: "3333333 Nonya Business",
     city: "New York",
     state: "NY",
-    zip: 45672,
+    zip: 3333333,
     email: "johnwick@youdieded.com",
-    cell: 56146514561,
-    work: 4651416564,
+    cell: 3333333333,
+    work: 3333333333,
     vehicles: [
       { 
         year: 2007,
@@ -189,7 +189,7 @@ app.get("/searchPage", function(req, res){
 });
 */
 
-app.get('/repairOrderForm/:id&:firstName&:lastName', function(req,res) {
+app.get('/repairOrderForm/:firstName&:lastName', function(req,res) {
   console.log("we're in the api restful stuff");
   var id = req.params.id;
   var firstName = req.params.firstName;
@@ -411,15 +411,54 @@ app.post("/searchPage/nameSearch", function(req, res) {
         if (err) 
           console.error(err);
         if (result) {
+          //encapsulating because alfred's code requires it
           var customers = { sameCustomer: result };
-          res.render("searchPage", {DupCustomers:customers});
+          res.render("searchPage", { DupCustomers: customers } );
           //only works if customer has a vehicle
         }
         else {
-          console.log("no result found, display error?");
+          console.log("no result found for name search, display something?");
         }
     });
   //res.render("searchPage/nameSearch", {DupCustomers:DupCustomers});
+});
+
+app.post("/searchPage/emailSearch", function(req, res) {
+  console.log("body:" + JSON.stringify(req.body));
+  customerSchema.find( { email : req.body.email } , function(err, result) {
+      if (err)
+          console.error(err);
+      if (result) {
+        console.log(result);
+          //encapsulating because alfred's code requires it
+          var customers = { sameCustomer: result };
+          res.render("searchPage", {DupCustomers:customers} );
+      }
+      else {
+        console.log("no result found for email search, display something?");
+      }
+    });
+});
+
+app.post("/searchPage/idSearch", function(req, res) {
+  console.log("body:" + JSON.stringify(req.body));
+  customerSchema.find( { email : req.body.customerID } , function(err, result) {
+      if (err)
+          console.error(err);
+      if (result) {
+        console.log(result);
+          //encapsulating because alfred's code requires it
+          var customers = { sameCustomer: result };
+          res.render("searchPage", {DupCustomers:customers} );
+      }
+      else {
+        console.log("no result found for email search, display something?");
+      }
+    });
+});
+
+app.get("/searchPage", function(req, res) {
+  res.render("searchPage", {DupCustomers:DupCustomers});
 });
 
 app.get("/searchPage", function(req, res) {

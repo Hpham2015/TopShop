@@ -22,8 +22,6 @@ var vehicleModel = require('./models/VehicleSchema.js');
 var VehicleInspectionFormModel = require('./models/VehicleInspectionFormSchema.js');
 var customerModel = require('./models/CustomerSchema.js');
 var repairOrderModel = require('./models/RepairOrderFormSchema.js');
-var Schema = mongoose.Schema;
-//var Customer = mongoose.model("CustomerModels", customerModel.customerSchema);
 
 //mongoose connection
 mongoose.connect(mongoURL, {useNewUrlParser: true});
@@ -136,9 +134,9 @@ app.get("/searchPage", function(req, res){
     make: "make11111",
     model: "model11111",
     year: 1111,
-    licenseNum: "1111111",
+    licenseNum: "License1",
     VIN: 111,
-    color: "blue111",
+    color: "color111",
     type: "type1111",
     mileage: 11111,
     lastSrvc: lastService1
@@ -149,9 +147,9 @@ app.get("/searchPage", function(req, res){
     make: "make22222",
     model: "model22222",
     year: 2222,
-    licenseNum: "2222222",
+    licenseNum: "License2",
     VIN: 222,
-    color: "blue222",
+    color: "color222",
     type: "type2222",
     mileage: 22222,
     lastSrvc: lastService2
@@ -162,9 +160,9 @@ app.get("/searchPage", function(req, res){
     make: "make33333",
     model: "model33333",
     year: 3333,
-    licenseNum: "3333333",
+    licenseNum: "License3",
     VIN: 333,
-    color: "blue333",
+    color: "color333",
     type: "type3333",
     mileage: 33333,
     lastSrvc: lastService3
@@ -222,54 +220,60 @@ app.get("/searchPage", function(req, res){
   });
   
   var jobs1 = new jobModel({
-    repairType: "1",
-    complaint: "11",
-    cause: "111",
-    resolution: "1111",
-    cost: "11111"
+    repairType: "repairType1",
+    complaint: "Complaint11",
+    cause: "Cause111",
+    resolution: "Resolution1111",
+    cost: "Cost11111"
   });
   
   var jobs2 = new jobModel({
-    repairType: "2",
-    complaint: "22",
-    cause: "222",
-    resolution: "2222",
-    cost: "22222"
+    repairType: "repairType2",
+    complaint: "Complaint22",
+    cause: "Cause222",
+    resolution: "Resolution2222",
+    cost: "Cost22222"
   });
   
   var jobs3 = new jobModel({
-    repairType: "3",
-    complaint: "33",
-    cause: "333",
-    resolution: "3333",
-    cost: "33333"
+    repairType: "repairType3",
+    complaint: "Complaint33",
+    cause: "Cause333",
+    resolution: "Resolution3333",
+    cost: "Cost33333"
   });
   
   var vehicleInspecion1 = new VehicleInspectionFormModel({
-    Name: "111",
+    Name: "Name111",
     Mileage: 111,
-    Year_Make_Model: "111",
+    Year_Make_Model: "Yearmakemodel111",
     VIN: 111,
-    License: "1111111",
-    email: "11111"
+    License: "License1",
+    email: "email1",
+    Comments: "1car comment",
+    Inspected_on: new Date('December 1, 1111 01:11:11')
   });
   
   var vehicleInspecion2 = new VehicleInspectionFormModel({
-    Name: "222",
+    Name: "Name222",
     Mileage: 222,
-    Year_Make_Model: "222",
+    Year_Make_Model: "Yearmakemodel222",
     VIN: 222,
-    License: "2222222",
-    email: "22222"
+    License: "License2",
+    email: "email2",
+    Comments: "2car comment",
+    Inspected_on: new Date('December 2, 2222 02:22:22')
   });
   
   var vehicleInspecion3 = new VehicleInspectionFormModel({
-    Name: "333",
+    Name: "Name333",
     Mileage: 333,
-    Year_Make_Model: "333",
+    Year_Make_Model: "Yearmakemodel333",
     VIN: 333,
-    License: "3333333",
-    email: "33333"
+    License: "License3",
+    email: "email3",
+    Comments: "3car comment",
+    Inspected_on: new Date('December 3, 3333 03:33:33')
   });
 
   var repairOrder1 = new repairOrderModel({
@@ -425,7 +429,14 @@ app.get("/searchPage", function(req, res){
 
 app.get('/repairOrderForm/:ROnumber', function(req,res) {
   var ROnumber = req.params.ROnumber;
-  //every repair order has its own unique RO number
+  //Every repair order has its own unique RO number.
+  //
+  //We need to search for these because we agreed to not 
+  //store certain things like customers inside a repair order.
+  //
+  //Note that if a repair order exists, there must exist a
+  //customer that owns a vehicle for which the RO is connected
+  //with so all these searches should return something.
   repairOrderModel.findOne( { repairOrderNumber: ROnumber } , function (err, RO) {
         if (err) 
           console.error(err);
@@ -438,21 +449,20 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
                         if (err) 
                           console.error(err);
                         if (Vehicle) {
-                          res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} )
+                          res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} );
                         }
                         else {
-                          console.log("no result found, display error?");
+                          console.log("No Vehicle found, display error?");
                         }
                   });
                 }
                 else {
-                  console.log("no result found, display error?");
+                  console.log("No Customer found, display error?");
                 }
           });
-          //only works if customer has a vehicle
         }
         else {
-          console.log("no result found, display error?");
+          console.log("No RO found, display error?");
         }
     });
 });
@@ -744,7 +754,7 @@ app.post("/searchPage", function(req, res) {
   } else {
     // nothing
   }
-  //res.redirect("/searchPage");
+  //res.redirect("/searchPage"); This conflicts with searching for customer. Is this line actually needed?
 });
 
 // Vehicle Page

@@ -44,7 +44,7 @@
       </div>
       <div class="col-md-3 mb-3">
         <label for="Mileage">Current Mileage</label>
-        <input name="vehicleMileage" type="number" minlength="5" maxlength="5" class="form-control" id="zip" value="<%=Vehicle.mileage%>" readonly>
+        <input name="vehicleMileage" type="number" minlength="5" maxlength="5" class="form-control" id="zip" value="<%= Vehicle.mileage %>" readonly>
       </div>
       <div class="col-md-3 mb-3">
         <label for="lastService">Last Service Date</label>
@@ -56,7 +56,6 @@
     <div class="container border border-dark rounded mx-auto">
       <div class="font-weight-bold">Repair Orders</div>
       <br>
-      <%= (RO) ? RO.repairOrderNumber : 'FUCK' %>
       <div class="container">
         <% RO.forEach(function(ro){ %>
           <div class="row">

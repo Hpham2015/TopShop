@@ -15,32 +15,20 @@ app.use(bodyParser.json());    //allows us to read data from page by looking at 
 
 // Connect to mongoDB
 
-// SCHEMA
-var jobSchema = require('./models/JobSchema.js');
-var lastServiceSchema = require('./models/lastServiceSchema.js');
-var vehicleSchema = require('./models/vehicleSchema.js');
-var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
-var customerSchema = require('./models/customerSchema.js');
-var repairOrderSchema = require('./models/RepairOrderFormSchema.js');
+// Models
+var jobModel = require('./models/JobSchema.js');
+var lastServiceModel = require('./models/LastServiceSchema.js');
+var vehicleModel = require('./models/VehicleSchema.js');
+var VehicleInspectionFormModel = require('./models/VehicleInspectionFormSchema.js');
+var customerModel = require('./models/CustomerSchema.js');
+var repairOrderModel = require('./models/RepairOrderFormSchema.js');
 var Schema = mongoose.Schema;
-var Customer = mongoose.model("CustomerModels", customerSchema.customerSchema);
-
-
+//var Customer = mongoose.model("CustomerModels", customerModel.customerSchema);
 
 //mongoose connection
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-
-// Models
-var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
-var jobModel = require("./models/JobSchema.js");
-var repairOrderModel = require("./models/RepairOrderFormSchema.js");
-var lastServiceModel = require('./models/LastServiceSchema.js');
-var vehicleModel = require('./models/VehicleSchema.js');
-var customerModel = require('./models/CustomerSchema.js');
-
 
 // ------- Routes -------
 
@@ -122,28 +110,28 @@ app.get("/searchPage", function(req, res){
   
   //  uncomment this to add this customer to database upon loading search page
   
-  var lastService1 = new lastServiceSchema({
+  var lastService1 = new lastServiceModel({
     date: new Date('December 1, 1111 01:11:11'),
     odometer: 11111,
     dailyAverageMiles: 11111,
     monthlyAverageMiles: 11111
   });
   
-  var lastService2 = new lastServiceSchema({
+  var lastService2 = new lastServiceModel({
     date: new Date('December 2, 2222 02:22:22'),
     odometer: 22222,
     dailyAverageMiles: 22222,
     monthlyAverageMiles: 22222
   });
   
-  var lastService3 = new lastServiceSchema({
+  var lastService3 = new lastServiceModel({
     date: new Date('December 3, 3333 03:33:33'),
     odometer: 33333,
     dailyAverageMiles: 33333,
     monthlyAverageMiles: 33333
   });
   
-  var newVehicle1 = new vehicleSchema({
+  var newVehicle1 = new vehicleModel({
     customerID: 1111111111,
     make: "make11111",
     model: "model11111",
@@ -156,7 +144,7 @@ app.get("/searchPage", function(req, res){
     lastSrvc: lastService1
   });
   
-  var newVehicle2 = new vehicleSchema({
+  var newVehicle2 = new vehicleModel({
     customerID: 2222222222,
     make: "make22222",
     model: "model22222",
@@ -169,7 +157,7 @@ app.get("/searchPage", function(req, res){
     lastSrvc: lastService2
   });
   
-  var newVehicle3 = new vehicleSchema({
+  var newVehicle3 = new vehicleModel({
     customerID: 3333333333,
     make: "make33333",
     model: "model33333",
@@ -182,7 +170,7 @@ app.get("/searchPage", function(req, res){
     lastSrvc: lastService3
   });
   
-  var newCustomer1 = new customerSchema({
+  var newCustomer1 = new customerModel({
     customerID: 1111111111,
     firstName: "John", 
     lastName: "Connor",
@@ -200,7 +188,7 @@ app.get("/searchPage", function(req, res){
     ]
   });
   
-  var newCustomer2 = new customerSchema({
+  var newCustomer2 = new customerModel({
     customerID: 2222222222,
     firstName: "John", 
     lastName: "Connor",
@@ -217,7 +205,7 @@ app.get("/searchPage", function(req, res){
     ]
   });
   
-  var newCustomer3 = new customerSchema({
+  var newCustomer3 = new customerModel({
     customerID: 3333333333,
     firstName: "John", 
     lastName: "Conner",
@@ -233,7 +221,7 @@ app.get("/searchPage", function(req, res){
     ]
   });
   
-  var jobs1 = new jobSchema({
+  var jobs1 = new jobModel({
     repairType: "1",
     complaint: "11",
     cause: "111",
@@ -241,7 +229,7 @@ app.get("/searchPage", function(req, res){
     cost: "11111"
   });
   
-  var jobs2 = new jobSchema({
+  var jobs2 = new jobModel({
     repairType: "2",
     complaint: "22",
     cause: "222",
@@ -249,7 +237,7 @@ app.get("/searchPage", function(req, res){
     cost: "22222"
   });
   
-  var jobs3 = new jobSchema({
+  var jobs3 = new jobModel({
     repairType: "3",
     complaint: "33",
     cause: "333",
@@ -257,7 +245,7 @@ app.get("/searchPage", function(req, res){
     cost: "33333"
   });
   
-  var vehicleInspecion1 = new VehicleInspectionFormSchema({
+  var vehicleInspecion1 = new VehicleInspectionFormModel({
     Name: "111",
     Mileage: 111,
     Year_Make_Model: "111",
@@ -266,7 +254,7 @@ app.get("/searchPage", function(req, res){
     email: "11111"
   });
   
-  var vehicleInspecion2 = new VehicleInspectionFormSchema({
+  var vehicleInspecion2 = new VehicleInspectionFormModel({
     Name: "222",
     Mileage: 222,
     Year_Make_Model: "222",
@@ -275,7 +263,7 @@ app.get("/searchPage", function(req, res){
     email: "22222"
   });
   
-  var vehicleInspecion3 = new VehicleInspectionFormSchema({
+  var vehicleInspecion3 = new VehicleInspectionFormModel({
     Name: "333",
     Mileage: 333,
     Year_Make_Model: "333",
@@ -284,7 +272,7 @@ app.get("/searchPage", function(req, res){
     email: "33333"
   });
 
-  var repairOrder1 = new repairOrderSchema({
+  var repairOrder1 = new repairOrderModel({
     repairOrderNumber: "1",
     customerID: "1111111111",
     VIN: "111",
@@ -296,7 +284,7 @@ app.get("/searchPage", function(req, res){
     totalCost: "111"
   });
   
-  var repairOrder2 = new repairOrderSchema({
+  var repairOrder2 = new repairOrderModel({
     repairOrderNumber: "2",
     customerID: "2222222222",
     VIN: "222",
@@ -308,7 +296,7 @@ app.get("/searchPage", function(req, res){
     totalCost: "222"
   });
   
-  var repairOrder3 = new repairOrderSchema({
+  var repairOrder3 = new repairOrderModel({
     repairOrderNumber: "3",
     customerID: "3333333333",
     VIN: "111",
@@ -438,15 +426,15 @@ app.get("/searchPage", function(req, res){
 app.get('/repairOrderForm/:ROnumber', function(req,res) {
   var ROnumber = req.params.ROnumber;
   //every repair order has its own unique RO number
-  repairOrderSchema.findOne( { repairOrderNumber: ROnumber } , function (err, RO) {
+  repairOrderModel.findOne( { repairOrderNumber: ROnumber } , function (err, RO) {
         if (err) 
           console.error(err);
         if (RO) {
-          customerSchema.findOne( { customerID: RO.customerID } , function (err, Customer) {
+          customerModel.findOne( { customerID: RO.customerID } , function (err, Customer) {
                 if (err) 
                   console.error(err);
                 if (Customer) {
-                  vehicleSchema.findOne( { VIN: RO.VIN } , function (err, Vehicle) {
+                  vehicleModel.findOne( { VIN: RO.VIN } , function (err, Vehicle) {
                         if (err) 
                           console.error(err);
                         if (Vehicle) {
@@ -526,7 +514,7 @@ app.get("/vehicleInspectionForm", function(req, res) {
 
 app.post('/vehicleInspectionForm', function(req,res) {
   
-  var newVehicleInspectionForm = new VehicleInspectionFormSchema({
+  var newVehicleInspectionForm = new VehicleInspectionFormModel({
     Name: req.body.Name,
     Mileage: req.body.Mileage,
     Year_Make_Model: req.body.Year_Make_Model,
@@ -627,13 +615,11 @@ app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
 
-//MYSTUFF STARTS HERE, SLOWLY REPLACE INTO VY'S STUFF
-
 app.get("/customerPage/:id", function(req, res) {
   var customerID = req.params.id;
   console.log("id returned is: " + customerID);
   //we use findOne here because each customer should have their own unique ID
-  customerSchema.findOne( { customerID: customerID } , function (err, result) {
+  customerModel.findOne( { customerID: customerID } , function (err, result) {
         if (err) 
           console.error(err);
         if (result) {
@@ -646,103 +632,11 @@ app.get("/customerPage/:id", function(req, res) {
     });
 });
 
-
 // searchPage
 var DupCustomers = {
   sameCustomer: [
     //The app needs to load this or else it will give an error. 
-    //This is empty because there are no search results when first loading this page.
-  ]
-};
-
-
-app.post("/searchPage/nameSearch", function(req, res) {
-  console.log("body:" + JSON.stringify(req.body));
-  console.log("namesearch, firstName: " + req.body.firstName + " last name: " + req.body.lastName);
-  customerSchema.find( { firstName : req.body.firstName, lastName: req.body.lastName } , function (err, result) {
-        if (err) 
-          console.error(err);
-        if (result) {
-          //encapsulating because alfred's code requires it
-          var customers = { sameCustomer: result };
-          res.render("searchPage", { DupCustomers: customers } );
-          //only works if customer has a vehicle
-        }
-        else {
-          console.log("no result found for name search, display something?");
-        }
-    });
-  //res.render("searchPage/nameSearch", {DupCustomers:DupCustomers});
-});
-
-app.post("/searchPage/emailSearch", function(req, res) {
-  console.log("body:" + JSON.stringify(req.body));
-  customerSchema.find( { email : req.body.email } , function(err, result) {
-      if (err)
-          console.error(err);
-      if (result) {
-        console.log(result);
-          //encapsulating because alfred's code requires it
-          var customers = { sameCustomer: result };
-          res.render("searchPage", {DupCustomers:customers} );
-      }
-      else {
-        console.log("no result found for email search, display something?");
-      }
-    });
-});
-
-app.post("/searchPage/idSearch", function(req, res) {
-  console.log("body:" + JSON.stringify(req.body));
-  customerSchema.find( { email : req.body.customerID } , function(err, result) {
-      if (err)
-          console.error(err);
-      if (result) {
-        console.log(result);
-          //encapsulating because alfred's code requires it
-          var customers = { sameCustomer: result };
-          res.render("searchPage", {DupCustomers:customers} );
-      }
-      else {
-        console.log("no result found for email search, display something?");
-      }
-    });
-});
-
-app.get("/searchPage", function(req, res) {
-  res.render("searchPage", {DupCustomers:DupCustomers});
-});
-
-app.get("/searchPage", function(req, res) {
-  res.render("searchPage", {DupCustomers:DupCustomers});
-});
-
-//MY STUFF ENDS HERE, VY'S STUFF IS NEXT
-
-// searchPage
-var DupCustomers = {
-  sameCustomer: [
-    {
-      firstName: "John",
-      lastName: "Smith",
-      email: "johnsmith@example.com",
-      cellPhone: 1239879876,
-      workPhone: 1236546543
-    },
-    {
-      firstName: "John",
-      lastName: "Wick",
-      email: "johnwick@youdied.com",
-      cellPhone: 1234561234,
-      workPhone: 7891231475,
-    },
-    {
-      firstName: "John",
-      lastName: "Snow",
-      email: "johnsnow@winterfell.com",
-      cellPhone: 1237657654,
-      workPhone: 1235675678,
-    }
+    //This is empty because there are no search results when first loading a search page.
   ]
 };
 
@@ -755,12 +649,51 @@ app.post("/searchPage", function(req, res) {
   if (action == "searchByCustomerName") {
     var firstName = req.body.customerFirstName;
     var lastName = req.body.customerLastName;
+    customerModel.find( { firstName : firstName, lastName: lastName } , function (err, result) {
+          if (err) 
+            console.error(err);
+          if (result) {
+            //encapsulating because alfred's code requires it
+            var customers = { sameCustomer: result };
+            res.render("searchPage", { DupCustomers: customers } );
+            //only works if customer has a vehicle
+          }
+          else {
+            console.log("no result found for name search, display something?");
+          }
+      });
   }
   else if (action == "searchByCustomerEmail") {
     var email = req.body.customerEmail;
+    customerModel.find( { email : email } , function(err, result) {
+        if (err)
+            console.error(err);
+        if (result) {
+          console.log(result);
+            //encapsulating because alfred's code requires it
+            var customers = { sameCustomer: result };
+            res.render("searchPage", {DupCustomers:customers} );
+        }
+        else {
+          console.log("no result found for email search, display something?");
+        }
+      });
   }
   else if (action == "searchByCustomerID") {
     var id = req.body.customerID;
+    customerModel.find( { customerID : id } , function(err, result) {
+        if (err)
+            console.error(err);
+        if (result) {
+          console.log(result);
+            //encapsulating because alfred's code requires it
+            var customers = { sameCustomer: result };
+            res.render("searchPage", {DupCustomers:customers} );
+        }
+        else {
+          console.log("no result found for email search, display something?");
+        }
+      });
   }
   else if (action == "searchByVIN") {
     var vin = req.body.vin;
@@ -811,7 +744,7 @@ app.post("/searchPage", function(req, res) {
   } else {
     // nothing
   }
-  res.redirect("/searchPage");
+  //res.redirect("/searchPage");
 });
 
 // Vehicle Page
@@ -842,8 +775,6 @@ var Vehicle = {
     ]
 };
 
-//VY'S STUFF ENDS HERE, REPLACE THE ABOVE
-
 app.get("/vehiclePage", function(req, res) {
   res.render("vehiclePage", {Vehicle:Vehicle});
 });
@@ -853,12 +784,12 @@ app.get("/vehiclePage/:VIN", function(req, res) {
   //Every vehicle should have its own unique VIN
   //We are searching for this because we agreed that the 
   //customer's profiles wouldn't hold the vehicles
-  vehicleSchema.findOne( { VIN : VIN } , function(err, Vehicle) {
+  vehicleModel.findOne( { VIN : VIN } , function(err, Vehicle) {
       if (err)
           console.error(err);
       if (Vehicle) {
           console.log("searched vehicle: " + Vehicle);
-          repairOrderSchema.find( { VIN: VIN } , function (err, RO) {
+          repairOrderModel.find( { VIN: VIN } , function (err, RO) {
             if (err)
               console.log(err);
             if (RO) {

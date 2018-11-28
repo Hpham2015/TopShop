@@ -6,7 +6,7 @@ var mongoURL = 'mongodb://localhost:27017/TopShop';
 
 //Set the below to true if your database is empty to populate the database
 //with dummy information.
-var databaseNeedsPopulating = true;
+var databaseNeedsPopulating = false;
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(__dirname + "/public"));
@@ -130,6 +130,8 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
                         if (err) 
                           console.error(err);
                         if (Vehicle) {
+                          app.locals.Customer = Customer;
+                          app.locals.Vehicle = Vehicle;
                           res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} );
                         }
                         else {
@@ -200,7 +202,7 @@ app.post("/repairOrderForm", function(req, res) {
 
 // Vehicle Inspection Form
 app.get("/vehicleInspectionForm", function(req, res) {
-  res.render("vehicleInspectionForm");
+  res.render("vehicleInspectionForm", { Customer: app.locals.Customer, Vehicle: app.locals.Vehicle } );
 });
 
 app.post('/vehicleInspectionForm', function(req,res) {

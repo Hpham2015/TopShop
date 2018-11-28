@@ -1,6 +1,9 @@
 <body>
     
+    
+    
     <script>
+    /*
     // not sure if sending email is possible at this point
         function sendEmail() {
             // following variables store customer information that is used in email
@@ -14,16 +17,23 @@
             window.open('mailto:' + email + '?subject=' + subject + '&body=' + body );
         }
         
-        function buildPDF(firstName, lastName) {
+        */
+        
+        function buildPDF(firstName, lastName, quality = 2) {
             // default file name (ex. JohnSmithForms.pdf)
             const filename = firstName + lastname + 'Forms.pdf';
+            let pdf = new jsPDF('p', 'mm', 'a4');
             
             // pulls #id elements then converts into a PNG, which is then added onto PDF doc
-            html2canvas(document.querySelector('#body')).then(canvas => {
-                let pdf = new jsPDF('p', 'mm', 'a4');
+            html2canvas(document.querySelector('#body1'), {scale: quality}).then(canvas => {
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 211, 298);
-                pdf.save(filename);
             });
+            html2canvas(document.querySelector('#body2'), {scale: quality}).then(canvas => {
+                pdf.addPage();
+                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 211, 298);
+            });
+            
+            pdf.save(filename);
         }
     </script>
 </body>

@@ -275,7 +275,23 @@ var ReportValues = {
           },
         cost:2000
         }
-        ]
+        ],
+        VehicleInspection:
+        {
+          RequiresImmediate:"require immediate",
+          MayRequire:"may require",
+          Checked:"checked and ok",
+          LFTreadDepth:12,
+          RFTreadDepth:16,
+          LRTreadDepth:10,
+          RRTreachDepth:12,
+          LFPreasure:50,
+          RFPreasure:70,
+          LRPreasure:50,
+          RRPreasure:50
+          
+        },
+        Comments:"Jack the vehicle up using the jack points closest to the tire. Slowly rotate the tire to find the problem. If you don’t see an object sticking out of the tire or a hole, there’s a trick to discovering the leak. Make a mixture of liquid soap and water. As you brush the water on the tire, the mixture will create bubbles where the hole is located. If you mark the hole with chalk or white shoe polish you can easily find it again."
 };
 
 app.get("/customerPage", function(req, res) {

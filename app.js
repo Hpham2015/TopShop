@@ -132,6 +132,7 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
                         if (Vehicle) {
                           app.locals.Customer = Customer;
                           app.locals.Vehicle = Vehicle;
+                          app.locals.RO = RO;
                           res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} );
                         }
                         else {
@@ -202,7 +203,7 @@ app.post("/repairOrderForm", function(req, res) {
 
 // Vehicle Inspection Form
 app.get("/vehicleInspectionForm", function(req, res) {
-  res.render("vehicleInspectionForm", { Customer: app.locals.Customer, Vehicle: app.locals.Vehicle } );
+  res.render("vehicleInspectionForm", { Customer: app.locals.Customer, Vehicle: app.locals.Vehicle, RO: app.locals.RO } );
 });
 
 app.post('/vehicleInspectionForm', function(req,res) {

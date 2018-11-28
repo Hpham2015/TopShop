@@ -1,13 +1,12 @@
 <% include partials/header %>
-
 <div class="container-fluid">
   
   <div class="jumbotron jumbotron-fluid border border-dark rounded">
     <div class="container-fluid">
-      <h1 class="display-4 text-center">Read Only Forms</h1>
+      <h1 class="display-4 text-center">Report Summary</h1>
     </div>
   </div>
-  
+  <button id="pdfDownload" class="btn btn-primary btn">download PDF</button>
   <!--Section for Customer Info-->
   <div class="container border border-dark rounded mx-auto">
 
@@ -76,7 +75,7 @@
           </div>
         <% ReportValues.vehicles.forEach(function(vehicle){ %>
           <div class="row">
-            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
+            <div  class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
             <div class="col"><%= vehicle.mileage %></div>
             <div class="col"><%= vehicle.VIN %></div>
             <div class="col"><%= vehicle.license %></div>
@@ -135,113 +134,381 @@
     
     
 </div>
+
+<!--Interior/exterior SEGMENT-->
 <div class="container border border-dark rounded mx-auto">
-      <h4 class="font-weight-bold">Vehicles</h4>
+      <h4 class="font-weight-bold">Interior/Exterior</h4>
       
       
-      <div class="container">
+      <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="Exterior body">Exterior body</label>
+        <div class="input-group">
+          <input  name="Exterior body" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Windshield/Glass">Windshield/Glass</label>
+        <div class="input-group">
+          <input name="Windshield/Glass" type="text" class="form-control"  value="<%=  ReportValues.VehicleInspection.Checked  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Wipers">Wipers</label>
+        <div class="input-group">
+          <input name="Wipers" type="text" class="form-control"  value="<%=  ReportValues.VehicleInspection.Checked  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="Exterior Lights">Exterior Lights</label>
+        <div class="input-group">
+          <input name="Exterior Lights" type="text" class="form-control"  value="<%=  ReportValues.VehicleInspection.MayRequire  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Interior Lights">Interior Lights</label>
+        <div class="input-group">
+          <input name="Interior Lights" type="text" class="form-control"  value="<%=  ReportValues.VehicleInspection.Checked  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="AC Operation">AC Operation</label>
+        <div class="input-group">
+          <input name="AC Operation" type="text" class="form-control"  value="<%=  ReportValues.VehicleInspection.MayRequire  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="Heating">Heating</label>
+        <div class="input-group">
+          <input name="Heating" type="text" class="form-control"  value="<%=  ReportValues.VehicleInspection.RequiresImmediate  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Other">Other</label>
+        <div class="input-group">
+          <input name="Other" type="text" class="form-control"  value="<%=  ReportValues.VehicleInspection.RequiresImmediate  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      
+    </div>
+      
+    </div>
+    
+    <!--UNDER HOOD SEGMENT-->
+    <div class="container border border-dark rounded mx-auto">
+      <h4 class="font-weight-bold">Underhood</h4>
+      
+      
+     <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="Engine Oil">Engine Oil</label>
+        <div class="input-group">
+          <input name="Engine Oil" type="text" class="form-control" value="<%=  ReportValues.VehicleInspection.Checked  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Coolant">Coolant</label>
+        <div class="input-group">
+          <input name="Coolant" type="text" class="form-control"  value="<%=  ReportValues.VehicleInspection.MayRequire  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Battery Charge">Battery Charge</label>
+        <div class="input-group">
+          <input name="Battery Charge" type="text" class="form-control"  value="<%=  ReportValues.VehicleInspection.Checked  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="Brake Fluid">Brake Fluid</label>
+        <div class="input-group">
+          <input name="Brake Fluid" type="text" class="form-control"  value="<%=  ReportValues.VehicleInspection.RequiresImmediate  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Air Filter">Air Filter</label>
+        <div class="input-group">
+          <input name="Air Filter" type="text" class="form-control"  value="<%=  ReportValues.VehicleInspection.Checked  %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Battery Condition">Battery Condition</label>
+        <div class="input-group">
+          <input name="Battery Condition" type="text" class="form-control" value="<%= ReportValues.VehicleInspection.MayRequire %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="Power Steering">Power Steering</label>
+        <div class="input-group">
+          <input name="Power Steering" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Cabin Filter">Cabin Filter</label>
+        <div class="input-group">
+          <input name="Cabin Filter" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Wiring">Wiring</label>
+        <div class="input-group">
+          <input name="Wiring" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="Washer Fluid">Washer Fluid</label>
+        <div class="input-group">
+          <input name="Washer Fluid" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.MayRequire %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Fuel Filter">Fuel Filter</label>
+        <div class="input-group">
+          <input name="Fuel Filter" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Other">Other</label>
+        <div class="input-group">
+          <input name="Other" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="Belts and Hoses">Belts and Hoses</label>
+        <div class="input-group">
+          <input name="Belts and Hoses" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.MayRequire %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Sparkplugs/Wires">Sparkplugs/Wires</label>
+        <div class="input-group">
+          <input name="Sparkplugs/Wires" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+    </div>
+    
+    <!--Under Vehicle  SEGMENT-->
+    <div class="container border border-dark rounded mx-auto">
+      <h4 class="font-weight-bold">Under Vehicle</h4>
+      
+      
+      <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="Brakes (Pads/Shoes)">Brakes (Pads/Shoes)</label>
+        <div class="input-group">
+          <input name="Brakes (Pads/Shoes)" type="text" class="form-control" id="customerID" value="<%= ReportValues.VehicleInspection.MayRequire %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Shocks/Struts">Shocks/Struts</label>
+        <div class="input-group">
+          <input name="Shocks/Struts" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Fuel Lines">Fuel Lines</label>
+        <div class="input-group">
+          <input name="Fuel Lines" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="Brake Lines/Hoses">Brake Lines/Hoses</label>
+        <div class="input-group">
+          <input name="Brake Lines/Hoses" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.MayRequire %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Driveline (Axles/CV Shaft)">Driveline (Axles/CV Shaft)</label>
+        <div class="input-group">
+          <input name="Driveline (Axles/CV Shaft)" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Other">Other</label>
+        <div class="input-group">
+          <input name="Other" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+     <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="Steering System">Steering System</label>
+        <div class="input-group">
+          <input name="Steering System" type="text" class="form-control" value="<%= ReportValues.VehicleInspection.MayRequire %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="Exhaust System">Exhaust System</label>
+        <div class="input-group">
+          <input name="Exhaust System" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      
+    </div> 
+    
+    
+      
+    </div>
+    <!--Tires SEGMENT-->
+    <div class="container border border-dark rounded mx-auto">
+      <h4 class="font-weight-bold">Tires</h4>
+      
+      
+      <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="LF Tread Depth">LF Tread Depth</label>
+        <div class="input-group">
+          <input name="LF Tread Depth" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.MayRequire %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+        
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="LF Wear/Damage">LF Wear/Damage</label>
+        <div class="input-group">
+          <input name="LF Wear/Damage" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="RF Tread Depth">RF Tread Depth</label>
+        <div class="input-group">
+          <input name="RF Tread Depth" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.MayRequire %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="RF Wear/Damage">RF Wear/Damage</label>
+        <div class="input-group">
+          <input name="RF Wear/Damage" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="LR Tread Depth">LR Tread Depth</label>
+        <div class="input-group">
+          <input name="LR Tread Depth" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.MayRequire %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="LR Wear/Damage">LR Wear/Damage</label>
+        <div class="input-group">
+          <input name="LR Wear/Damage" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-4 mb-3">
+        <label for="RR Tread Depth">RR Tread Depth</label>
+        <div class="input-group">
+          <input name="RR Tread Depth" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.MayRequire %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="RR Wear/Damage">RR Wear/Damage</label>
+        <div class="input-group">
+          <input name="RR Wear/Damage" type="text" class="form-control"  value="<%= ReportValues.VehicleInspection.RequiresImmediate %>" 
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      
           <div class="row">
-          <label class="col"><strong>year/make/model</strong></label>
-          <label class="col"><strong>mileage</strong></label>
-          <label class="col"><strong>VIN number</strong></label>
-          <label class="col"><strong>DL number</strong></label>
+          <label class="col"><strong>TIRE</strong></label>
+          <label class="col"><strong>Tread Depth</strong></label>
+          <label class="col"><strong>Pressure PSI</strong></label>
           </div>
-        <% ReportValues.vehicles.forEach(function(vehicle){ %>
           <div class="row">
-            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
-            <div class="col"><%= vehicle.mileage %></div>
-            <div class="col"><%= vehicle.VIN %></div>
-            <div class="col"><%= vehicle.license %></div>
+            <div class="col">LF</div>
+            <div class="col"><%= ReportValues.VehicleInspection.LFTreadDepth%></div>
+            <div class="col"><%= ReportValues.VehicleInspection.LFPreasure%></div>
+            
           </div>
-        <% }); %>
+          <div class="row">
+            <div class="col">RF</div>
+            <div class="col"><%= ReportValues.VehicleInspection.RFTreadDepth%></div>
+            <div class="col"><%= ReportValues.VehicleInspection.RFPreasure%></div>
+            
+          </div>
+          <div class="row">
+            <div class="col">LR</div>
+            <div class="col"><%= ReportValues.VehicleInspection.LRTreadDepth%></div>
+            <div class="col"><%= ReportValues.VehicleInspection.LRPreasure%></div>
+            
+          </div>
+          <div class="row">
+            <div class="col">RR</div>
+            <div class="col"><%= ReportValues.VehicleInspection.RRTreachDepth%></div>
+            <div class="col"><%= ReportValues.VehicleInspection.RRPreasure%></div>
+            
+          </div>
+        
       </div>
       
     </div>
     <div class="container border border-dark rounded mx-auto">
-      <h4 class="font-weight-bold">Vehicles</h4>
+      <h4 class="font-weight-bold">Comments/Recommedndations</h4>
       
       
-      <div class="container">
-          <div class="row">
-          <label class="col"><strong>year/make/model</strong></label>
-          <label class="col"><strong>mileage</strong></label>
-          <label class="col"><strong>VIN number</strong></label>
-          <label class="col"><strong>DL number</strong></label>
-          </div>
-        <% ReportValues.vehicles.forEach(function(vehicle){ %>
-          <div class="row">
-            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
-            <div class="col"><%= vehicle.mileage %></div>
-            <div class="col"><%= vehicle.VIN %></div>
-            <div class="col"><%= vehicle.license %></div>
-          </div>
-        <% }); %>
-      </div>
-      
-    </div>
-    <div class="container border border-dark rounded mx-auto">
-      <h4 class="font-weight-bold">Vehicles</h4>
-      
-      
-      <div class="container">
-          <div class="row">
-          <label class="col"><strong>year/make/model</strong></label>
-          <label class="col"><strong>mileage</strong></label>
-          <label class="col"><strong>VIN number</strong></label>
-          <label class="col"><strong>DL number</strong></label>
-          </div>
-        <% ReportValues.vehicles.forEach(function(vehicle){ %>
-          <div class="row">
-            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
-            <div class="col"><%= vehicle.mileage %></div>
-            <div class="col"><%= vehicle.VIN %></div>
-            <div class="col"><%= vehicle.license %></div>
-          </div>
-        <% }); %>
-      </div>
-      
-    </div>
-    <div class="container border border-dark rounded mx-auto">
-      <h4 class="font-weight-bold">Vehicles</h4>
-      
-      
-      <div class="container">
-          <div class="row">
-          <label class="col"><strong>year/make/model</strong></label>
-          <label class="col"><strong>mileage</strong></label>
-          <label class="col"><strong>VIN number</strong></label>
-          <label class="col"><strong>DL number</strong></label>
-          </div>
-        <% ReportValues.vehicles.forEach(function(vehicle){ %>
-          <div class="row">
-            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
-            <div class="col"><%= vehicle.mileage %></div>
-            <div class="col"><%= vehicle.VIN %></div>
-            <div class="col"><%= vehicle.license %></div>
-          </div>
-        <% }); %>
-      </div>
-      
-    </div>
-    <div class="container border border-dark rounded mx-auto">
-      <h4 class="font-weight-bold">Vehicles</h4>
-      
-      
-      <div class="container">
-          <div class="row">
-          <label class="col"><strong>year/make/model</strong></label>
-          <label class="col"><strong>mileage</strong></label>
-          <label class="col"><strong>VIN number</strong></label>
-          <label class="col"><strong>DL number</strong></label>
-          </div>
-        <% ReportValues.vehicles.forEach(function(vehicle){ %>
-          <div class="row">
-            <div class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
-            <div class="col"><%= vehicle.mileage %></div>
-            <div class="col"><%= vehicle.VIN %></div>
-            <div class="col"><%= vehicle.license %></div>
-          </div>
-        <% }); %>
+      <div class="col-md-4 mb-3">
+        <div class="input-group">
+          <textarea class="form-control"    
+             readonly><%= ReportValues.Comments %></textarea>
+             
+        </div>
       </div>
       
     </div>

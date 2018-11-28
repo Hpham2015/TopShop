@@ -1,0 +1,12 @@
+.RequiresImmediate
+{
+    border-color:red;
+}
+.MayRequire
+{
+    border-color:yellow;
+}
+.checkedAndOk
+{
+    border-color:red;
+}

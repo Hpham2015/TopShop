@@ -16,8 +16,6 @@ app.set("view engine", "ejs");
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(bodyParser.json());    //allows us to read data from page by looking at data
 
-// Connect to mongoDB
-
 // Models
 var lastServiceModel = require('./models/LastServiceSchema.js');
 var vehicleModel = require('./models/VehicleSchema.js');
@@ -25,7 +23,7 @@ var VehicleInspectionFormModel = require('./models/VehicleInspectionFormSchema.j
 var customerModel = require('./models/CustomerSchema.js');
 var repairOrderModel = require('./models/RepairOrderFormSchema.js');
 
-//mongoose connection
+// Connect to mongoDB
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

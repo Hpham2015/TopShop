@@ -6,7 +6,7 @@ var mongoURL = 'mongodb://localhost:27017/TopShop';
 
 //Set the below to true if your database is empty to populate the database
 //with dummy information.
-var databaseNeedsPopulating = false;
+var databaseNeedsPopulating = true;
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(__dirname + "/public"));
@@ -17,6 +17,7 @@ app.use(express.json());       // to support JSON-encoded bodies
 app.use(bodyParser.json());    //allows us to read data from page by looking at data
 
 // Models
+var jobModel = require('./models/JobSchema.js');
 var lastServiceModel = require('./models/LastServiceSchema.js');
 var vehicleModel = require('./models/VehicleSchema.js');
 var VehicleInspectionFormModel = require('./models/VehicleInspectionFormSchema.js');

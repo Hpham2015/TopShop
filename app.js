@@ -342,7 +342,8 @@ app.post("/searchPage", function(req, res) {
   if (action == "searchByCustomerName") {
     var firstName = req.body.customerFirstName;
     var lastName = req.body.customerLastName;
-    customerModel.find( { firstName : firstName, lastName: lastName } , function (err, result) {
+    customerModel.find( { firstName : {$regex: firstName, $options: "i" }, 
+                         lastName: {$regex: lastName, $options: "i" } } , function (err, result) {
           if (err) 
             console.error(err);
           if (result) {

@@ -275,6 +275,24 @@ app.post('/vehicleInspectionForm', function(req,res) {
 
 
 // Customer Page
+var lastService1 = new lastServiceModel({
+    date: new Date('December 1, 2011 01:11:11'),
+    odometer: 11111,
+    dailyAverageMiles: 30,
+    monthlyAverageMiles: 900
+});
+var newVehicle1 = new vehicleModel({
+    customerID: 1672548348,
+    make: "Toyota",
+    model: "Camry",
+    year: 2019,
+    licenseNum: "9J1JB12",
+    VIN: "1FAPP36X6RK192113",
+    color: "Red",
+    type: "Midsize",
+    mileage: 11111,
+    lastSrvc: lastService1
+});
 var Customer = {
     customerID: "123457",
     firstName: "John", 
@@ -287,20 +305,7 @@ var Customer = {
     cellPhone: 1234561234,
     workPhone: 7891231475,
     vehicles: [
-      { 
-        year: 2007,
-        make: "Honda",
-        model: "S2000",
-        color: "Red",
-        id: 3513513
-      },
-      { 
-        year: 2015,
-        make: "Lexus",
-        model: "IS350",
-        color: "Gray",
-        id: 1351351
-      }
+      newVehicle1
     ]
 };
 

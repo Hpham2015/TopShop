@@ -22,15 +22,14 @@
         value= <% if (typeof rofNumber !== 'undefined') {%> <%=rofNumber;%> <% } else { %> "" <% } %>  required>      
       </div>
     </div>
-
+  <!-- Start of Customer Info: ID / Name / Street / City / State / ZIP / Email / Phone # -->
     <h3 class="group-label">Customer Info</h3>  
     
     <div class="form-row">
       <div class="col-md-4 mb-3">
-        <label for="CustomerID">Customer ID</label>
         <div class="input-group">
           <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroupPrepend">ID</span>
+            <span class="input-group-text">Customer ID:</span>
           </div>
           <input name="customerID" type="text" class="form-control" id="customerID"
           style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend"
@@ -38,52 +37,89 @@
         </div>
       </div>
       <div class="col-md-4 mb-3">
-        <label for="FirstName">First name</label>
-        <input name="firstName" type="text" class="form-control" id="firstname"
-         value="<% if (locals.Customer) { %><%=Customer.firstName%> <% } else { " " } %>" readonly>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">First Name:</span>
+          </div>
+          <input name="firstName" type="text" class="form-control" id="firstname"
+           value="<% if (locals.Customer) { %><%=Customer.firstName%> <% } else { " " } %>" readonly>          
+        </div>
       </div>
       <div class="col-md-4 mb-3">
-        <label for="LastName">Last name</label>
-        <input name="lastName" type="text" class="form-control" id="lastname"
-        value="<% if (locals.Customer) { %><%=Customer.lastName%> <% } else { " " } %>" readonly>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Last Name:</span>
+          </div>
+          <input name="lastName" type="text" class="form-control" id="lastname"
+          value="<% if (locals.Customer) { %><%=Customer.lastName%> <% } else { " " } %>" readonly>
+        </div>
       </div>
     </div>
+    
     <div class="form-row">
       <div class="col-md-3 mb-3">
-        <label for="Street">Street</label>
-        <input name="street" type="text" class="form-control" id="Street" 
-        value="<% if (locals.Customer) { %><%=Customer.street%> <% } else { " " } %>" readonly>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Street:</span>
+          </div>
+          <input name="street" type="text" class="form-control" id="Street" 
+          value="<% if (locals.Customer) { %><%=Customer.street%> <% } else { " " } %>" readonly>          
+        </div>        
       </div>
       <div class="col-md-3 mb-3">
-        <label for="City">City</label>
-        <input name="city" type="text" class="form-control" id="City" 
-        value="<% if (locals.Customer) { %><%=Customer.city%> <% } else { " " } %>" readonly>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">City:</span>
+          </div>
+          <input name="city" type="text" class="form-control" id="City" 
+          value="<% if (locals.Customer) { %><%=Customer.city%> <% } else { " " } %>" readonly>          
+        </div>        
       </div>
       <div class="col-md-3 mb-3">
-        <label for="State">State</label>
-        <input name="state" type="text" class="form-control" id="State"
-        minlength="2" maxlength="2" 
-        value="<% if (locals.Customer) { %><%=Customer.state%> <% } else { " " } %>" readonly>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">State:</span>
+          </div>
+          <input name="state" type="text" class="form-control" id="State"
+          minlength="2" maxlength="2" 
+          value="<% if (locals.Customer) { %><%=Customer.state%> <% } else { " " } %>" readonly>          
+        </div>        
       </div>
       <div class="col-md-3 mb-3">
-        <label for="Zip">Zip</label>
-        <input name="zip" type="number" minlength="5" maxlength="5" class="form-control" id="zip" 
-        value=<% if (locals.Customer) { %><%=Customer.zip%> <% } else { " " } %> readonly>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Zip:</span>
+          </div>
+          <input name="zip" type="number" minlength="5" maxlength="5" class="form-control" id="zip" 
+          value=<% if (locals.Customer) { %><%=Customer.zip%> <% } else { " " } %> readonly>          
+        </div>        
       </div>
       <div class="col-md-3 mb-3">
-        <label for="email">Email</label>
-        <input name="email" type="email" class="form-control" id="email" 
-        value="<% if (locals.Customer) { %><%=Customer.email%> <% } else { " " } %>" readonly>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Email:</span>
+          </div>
+          <input name="email" type="email" class="form-control" id="email" 
+          value="<% if (locals.Customer) { %><%=Customer.email%> <% } else { " " } %>" readonly>        
+        </div>        
       </div>    
       <div class="col-md-3 mb-3">
-        <label for="Cell">Cell Phone</label>
-        <input name="cell" type="tel" minlength="10" maxlength="10" class="form-control" id="cell" 
-        value="<% if (locals.Customer) { %><%=Customer.cell%> <% } else { " " } %>" readonly>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Cell Phone:</span>
+          </div>
+          <input name="cell" type="tel" minlength="10" maxlength="10" class="form-control" id="cell" 
+          value="<% if (locals.Customer) { %><%=Customer.cell%> <% } else { " " } %>" readonly>          
+        </div>        
       </div>    
       <div class="col-md-3 mb-3">
-        <label for="Work">Work Phone</label>
-        <input name="work" type="tel" minlength="10" maxlength="10" class="form-control" id="work" 
-        value="<% if (locals.Customer) { %><%=Customer.work%> <% } else { " " } %>" readonly>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Work Phone:</span>
+          </div>
+          <input name="work" type="tel" minlength="10" maxlength="10" class="form-control" id="work" 
+          value="<% if (locals.Customer) { %><%=Customer.work%> <% } else { " " } %>" readonly>        
+        </div>        
       </div>    
     </div>
     
@@ -91,23 +127,40 @@
     <h3 class="group-label">Vehicle Info</h3>    
       <div class="form-row">
         <div class="col-md-3 mb-3">
-          <label for="Year/Model/Make">Year/Model/Make</label>
-            <input name="yearModelMake" type="text" aria-label="Year/Model/Mak" class="form-control" 
-             value="<% if (locals.Vehicle) { %><%= Vehicle.year%> <%= Vehicle.make%> <%= Vehicle.model%><% } else { " " } %>"  readonly>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Year/Model/Make:</span>
+            </div>
+              <input name="yearModelMake" type="text" aria-label="Year/Model/Mak" class="form-control" 
+               value="<% if (locals.Vehicle) { %><%= Vehicle.year%> <%= Vehicle.make%> <%= Vehicle.model%><% } else { " " } %>"  readonly>          
+          </div>          
         </div>
         <div class="col-md-3 mb-3">
-          <label for="Mileage">Mileage</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Mileage:</span>
+            </div>
             <input type="text" aria-label="Mileage" class="form-control" 
-            value="<% if (locals.Vehicle) { %><%= Vehicle.year%> <% } else { " " } %>"readonly>
+            value="<% if (locals.Vehicle) { %><%= Vehicle.year%> <% } else { " " } %>"readonly>            
+          </div>
         </div>
         <div class="col-md-3 mb-3">
-          <label for="VIN">VIN</label>
-            <input name="VIN" type="text" aria-label="VIN" class="form-control" value="<% if (locals.Vehicle) { %> <%= Vehicle.VIN%> <% } else { " " } %>" readonly>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">VIN:</span>
+            </div>
+            <input name="VIN" type="text" aria-label="VIN" class="form-control" 
+            value="<% if (locals.Vehicle) { %> <%= Vehicle.VIN%> <% } else { " " } %>" readonly>            
+          </div>          
         </div>
         <div class="col-md-3 mb-3">
-          <label for="License">License</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">License:</span>
+            </div>
             <input name="license" type="text" aria-label="License" class="form-control" 
-            value="<% if (locals.Vehicle) { %><%= Vehicle.licenseNum%><% } else { " " } %>"readonly>
+            value="<% if (locals.Vehicle) { %><%= Vehicle.licenseNum%><% } else { " " } %>"readonly>            
+          </div>          
         </div>
       </div>
       
@@ -115,26 +168,32 @@
     <h3 class="group-label">Mechanic Info</h3>    
       <div class="form-row">
         <div class="col-md-4 mb-3">
-          <label for="CustomerID">Mechanic ID</label>
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroupPrepend">ID</span>
+              <span class="input-group-text">Mechanic ID:</span>
             </div>
-            <!-- TODO: Mechanic ID and names were left blank for now. Implement them later with further instruction -->
             <input type="text" class="form-control" id="mechanicID" placeholder="ER96JBFI74" value="ER96JBFI74"
-            style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+            style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>            
           </div>
         </div>
         <div class="col-md-4 mb-3">
-          <label for="FirstName">First name</label>
-          <input name="mechanicFirstName" type="text" class="form-control" id="mechanicFirstName" placeholder="Jane" value="Jane" readonly>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">First Name:</span>
+            </div>
+            <input name="mechanicFirstName" type="text" class="form-control" id="mechanicFirstName" placeholder="Jane" value="Jane" readonly>
+          </div>
         </div>
         <div class="col-md-4 mb-3">
-          <label for="LastName">Last name</label>
-          <input name="mechanicLastName" type="text" class="form-control" id="mechanicLastName" placeholder="Doe" value="Doe" readonly>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Last Name</span>
+            </div>
+            <input name="mechanicLastName" type="text" class="form-control" id="mechanicLastName" placeholder="Doe" value="Doe" readonly>
+          </div>
         </div>
       </div>
-    <a class="btn btn-primary btn-lg mt-2" href="/vehicleInspectionForm" role="button">Vehicle Inspection Form</a>
+    <a class="btn btn-primary" href="/vehicleInspectionForm" role="button">Vehicle Inspection Form</a>
   </div>
   
   <!-- Actual Repair Order Form -->
@@ -308,8 +367,8 @@
         <br>
     <!--<button type="submit" class="btn btn-primary btn-lg mt-2">Submit Repair Order</button>-->
     <input type="submit" class="btn btn-primary btn">
-    <button class="btn btn-primary" type="button">Update Repair Order</button>
-    <button class="btn btn-primary" type="button">Delete Repair Order</button>
+    <button class="btn btn-success" type="button">Update Repair Order</button>
+    <button class="btn btn-danger" type="button">Delete Repair Order</button>
 <!-- Form Ends Here -->
   </div>
   </form>

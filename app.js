@@ -276,6 +276,24 @@ app.post('/vehicleInspectionForm', function(req,res) {
 
 
 // Customer Page
+var lastService1 = new lastServiceModel({
+    date: new Date('December 1, 2011 01:11:11'),
+    odometer: 11111,
+    dailyAverageMiles: 30,
+    monthlyAverageMiles: 900
+});
+var newVehicle1 = new vehicleModel({
+    customerID: 1672548348,
+    make: "Toyota",
+    model: "Camry",
+    year: 2019,
+    licenseNum: "9J1JB12",
+    VIN: "1FAPP36X6RK192113",
+    color: "Red",
+    type: "Midsize",
+    mileage: 11111,
+    lastSrvc: lastService1
+});
 var Customer = {
     customerID: "123457",
     firstName: "John", 
@@ -288,20 +306,7 @@ var Customer = {
     cellPhone: 1234561234,
     workPhone: 7891231475,
     vehicles: [
-      { 
-        year: 2007,
-        make: "Honda",
-        model: "S2000",
-        color: "Red",
-        id: 3513513
-      },
-      { 
-        year: 2015,
-        make: "Lexus",
-        model: "IS350",
-        color: "Gray",
-        id: 1351351
-      }
+      newVehicle1
     ]
 };
 
@@ -417,24 +422,29 @@ app.post("/searchPage", function(req, res) {
         app.locals.vin = doc[0].VIN;
         app.locals.customerID = doc[0].customerID;
         
-        app.locals.job_1_type = doc[0].jobs[0].repairType;
-        app.locals.job_1_complaint = doc[0].jobs[0].complaint;
-        app.locals.job_1_cause = doc[0].jobs[0].cause;
-        app.locals.job_1_resolution = doc[0].jobs[0].resolution;
-        app.locals.job_1_cost = doc[0].jobs[0].cost;
+        if (typeof doc[0].jobs[0] !== 'undefined') {
+          app.locals.job_1_type = doc[0].jobs[0].repairType;
+          app.locals.job_1_complaint = doc[0].jobs[0].complaint;
+          app.locals.job_1_cause = doc[0].jobs[0].cause;
+          app.locals.job_1_resolution = doc[0].jobs[0].resolution;
+          app.locals.job_1_cost = doc[0].jobs[0].cost;
+        }
         
-        app.locals.job_2_type = doc[0].jobs[1].repairType;
-        app.locals.job_2_complaint = doc[0].jobs[1].complaint;
-        app.locals.job_2_cause = doc[0].jobs[1].cause;
-        app.locals.job_2_resolution = doc[0].jobs[1].resolution;
-        app.locals.job_2_cost = doc[0].jobs[1].cost;
+        if (typeof doc[0].jobs[1] !== 'undefined') {
+          app.locals.job_2_type = doc[0].jobs[1].repairType;
+          app.locals.job_2_complaint = doc[0].jobs[1].complaint;
+          app.locals.job_2_cause = doc[0].jobs[1].cause;
+          app.locals.job_2_resolution = doc[0].jobs[1].resolution;
+          app.locals.job_2_cost = doc[0].jobs[1].cost;
+        }
         
-        app.locals.job_3_type = doc[0].jobs[2].repairType;
-        app.locals.job_3_complaint = doc[0].jobs[2].complaint;
-        app.locals.job_3_cause = doc[0].jobs[2].cause;
-        app.locals.job_3_resolution = doc[0].jobs[2].resolution;
-        app.locals.job_3_cost = doc[0].jobs[2].cost;
-        
+        if (typeof doc[0].jobs[2] !== 'undefined') {
+          app.locals.job_3_type = doc[0].jobs[2].repairType;
+          app.locals.job_3_complaint = doc[0].jobs[2].complaint;
+          app.locals.job_3_cause = doc[0].jobs[2].cause;
+          app.locals.job_3_resolution = doc[0].jobs[2].resolution;
+          app.locals.job_3_cost = doc[0].jobs[2].cost;
+        }
         app.locals.totalCost = doc[0].totalCost;
       }
     });

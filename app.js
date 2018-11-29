@@ -6,7 +6,7 @@ var mongoURL = 'mongodb://localhost:27017/TopShop';
 
 //Set the below to true if your database is empty to populate the database
 //with dummy information.
-var databaseNeedsPopulating = false;
+var databaseNeedsPopulating = true;
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(__dirname + "/public"));
@@ -416,24 +416,29 @@ app.post("/searchPage", function(req, res) {
         app.locals.vin = doc[0].VIN;
         app.locals.customerID = doc[0].customerID;
         
-        app.locals.job_1_type = doc[0].jobs[0].repairType;
-        app.locals.job_1_complaint = doc[0].jobs[0].complaint;
-        app.locals.job_1_cause = doc[0].jobs[0].cause;
-        app.locals.job_1_resolution = doc[0].jobs[0].resolution;
-        app.locals.job_1_cost = doc[0].jobs[0].cost;
+        if (typeof doc[0].jobs[0] !== 'undefined') {
+          app.locals.job_1_type = doc[0].jobs[0].repairType;
+          app.locals.job_1_complaint = doc[0].jobs[0].complaint;
+          app.locals.job_1_cause = doc[0].jobs[0].cause;
+          app.locals.job_1_resolution = doc[0].jobs[0].resolution;
+          app.locals.job_1_cost = doc[0].jobs[0].cost;
+        }
         
-        app.locals.job_2_type = doc[0].jobs[1].repairType;
-        app.locals.job_2_complaint = doc[0].jobs[1].complaint;
-        app.locals.job_2_cause = doc[0].jobs[1].cause;
-        app.locals.job_2_resolution = doc[0].jobs[1].resolution;
-        app.locals.job_2_cost = doc[0].jobs[1].cost;
+        if (typeof doc[0].jobs[1] !== 'undefined') {
+          app.locals.job_2_type = doc[0].jobs[1].repairType;
+          app.locals.job_2_complaint = doc[0].jobs[1].complaint;
+          app.locals.job_2_cause = doc[0].jobs[1].cause;
+          app.locals.job_2_resolution = doc[0].jobs[1].resolution;
+          app.locals.job_2_cost = doc[0].jobs[1].cost;
+        }
         
-        app.locals.job_3_type = doc[0].jobs[2].repairType;
-        app.locals.job_3_complaint = doc[0].jobs[2].complaint;
-        app.locals.job_3_cause = doc[0].jobs[2].cause;
-        app.locals.job_3_resolution = doc[0].jobs[2].resolution;
-        app.locals.job_3_cost = doc[0].jobs[2].cost;
-        
+        if (typeof doc[0].jobs[2] !== 'undefined') {
+          app.locals.job_3_type = doc[0].jobs[2].repairType;
+          app.locals.job_3_complaint = doc[0].jobs[2].complaint;
+          app.locals.job_3_cause = doc[0].jobs[2].cause;
+          app.locals.job_3_resolution = doc[0].jobs[2].resolution;
+          app.locals.job_3_cost = doc[0].jobs[2].cost;
+        }
         app.locals.totalCost = doc[0].totalCost;
       }
     });

@@ -28,9 +28,9 @@
             html2canvas(document.querySelector('#body1'), {scale: quality}).then(canvas => {
                 pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 211, 298);
             });
-            html2canvas(document.querySelector('#body2'), {scale: quality}).then(canvas => {
+            html2canvas(document.querySelector('#body2'), {scale: quality}).then(canvas2 => {
                 pdf.addPage();
-                pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 211, 298);
+                pdf.addImage(canvas2.toDataURL('image/png'), 'PNG', 0, 0, 211, 298);
             });
             
             pdf.save(filename);

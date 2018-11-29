@@ -32,48 +32,58 @@
           <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroupPrepend">ID</span>
           </div>
-          <input name="customerID" type="text" class="form-control" id="customerID" placeholder="FJ39HG13KQ" value="FJ39HG13KQ" 
-          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
+          <input name="customerID" type="text" class="form-control" id="customerID"
+          style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend"
+          value="<% if (locals.Customer) { %> <%= Customer.id%> <% } else { 'Wasn\t passed customer' } %>" readonly>
         </div>
       </div>
       <div class="col-md-4 mb-3">
         <label for="FirstName">First name</label>
-        <input  name="firstName" type="text" class="form-control" id="firstname" placeholder="John" value="John" readonly>
+        <input name="firstName" type="text" class="form-control" id="firstname"
+         value="<% if (locals.Customer) { %><%=Customer.firstName%> <% } else { " " } %>" readonly>
       </div>
       <div class="col-md-4 mb-3">
         <label for="LastName">Last name</label>
-        <input name="firstName" type="text" class="form-control" id="lastname" placeholder="Smith" value="Smith" readonly>
+        <input name="lastName" type="text" class="form-control" id="lastname"
+        value="<% if (locals.Customer) { %><%=Customer.lastName%> <% } else { " " } %>" readonly>
       </div>
     </div>
     <div class="form-row">
       <div class="col-md-3 mb-3">
         <label for="Street">Street</label>
-        <input name="street" type="text" class="form-control" id="Street" placeholder="1342 Baseline Rd" value"1342 Baseline Rd" readonly>
+        <input name="street" type="text" class="form-control" id="Street" 
+        value="<% if (locals.Customer) { %><%=Customer.street%> <% } else { " " } %>" readonly>
       </div>
       <div class="col-md-3 mb-3">
         <label for="City">City</label>
-        <input name="city" type="text" class="form-control" id="City" placeholder="Santa Cruz" value="Santa Cruz" readonly>
+        <input name="city" type="text" class="form-control" id="City" 
+        value="<% if (locals.Customer) { %><%=Customer.city%> <% } else { " " } %>" readonly>
       </div>
       <div class="col-md-3 mb-3">
         <label for="State">State</label>
-        <input name-"state" type="text" class="form-control" id="State" placeholder="CA" value="CA"
-        minlength="2" maxlength="2" readonly>
+        <input name="state" type="text" class="form-control" id="State"
+        minlength="2" maxlength="2" 
+        value="<% if (locals.Customer) { %><%=Customer.state%> <% } else { " " } %>" readonly>
       </div>
       <div class="col-md-3 mb-3">
         <label for="Zip">Zip</label>
-        <input name="zip" type="number" minlength="5" maxlength="5" class="form-control" id="zip" placeholder="95060" value="95060" readonly>
+        <input name="zip" type="number" minlength="5" maxlength="5" class="form-control" id="zip" 
+        value=<% if (locals.Customer) { %><%=Customer.zip%> <% } else { " " } %> readonly>
       </div>
       <div class="col-md-3 mb-3">
         <label for="email">Email</label>
-        <input name="email" type="email" class="form-control" id="email" placeholder="johnsmith@email.com" value="johnsmith@email.com" readonly>
+        <input name="email" type="email" class="form-control" id="email" 
+        value="<% if (locals.Customer) { %><%=Customer.email%> <% } else { " " } %>" readonly>
       </div>    
       <div class="col-md-3 mb-3">
         <label for="Cell">Cell Phone</label>
-        <input name="cell" type="tel" minlength="10" maxlength="10" class="form-control" id="cell" placeholder="8312435594" value="8312435594" readonly>
+        <input name="cell" type="tel" minlength="10" maxlength="10" class="form-control" id="cell" 
+        value="<% if (locals.Customer) { %><%=Customer.cell%> <% } else { " " } %>" readonly>
       </div>    
       <div class="col-md-3 mb-3">
         <label for="Work">Work Phone</label>
-        <input name="work" type="tel" minlength="10" maxlength="10" class="form-control" id="work" placeholder="8312435594" value="8312435594" readonly>
+        <input name="work" type="tel" minlength="10" maxlength="10" class="form-control" id="work" 
+        value="<% if (locals.Customer) { %><%=Customer.work%> <% } else { " " } %>" readonly>
       </div>    
     </div>
     
@@ -82,19 +92,22 @@
       <div class="form-row">
         <div class="col-md-3 mb-3">
           <label for="Year/Model/Make">Year/Model/Make</label>
-            <input name="yearModelMake" type="text" aria-label="Year/Model/Mak" class="form-control" readonly>
+            <input name="yearModelMake" type="text" aria-label="Year/Model/Mak" class="form-control" 
+             value="<% if (locals.Vehicle) { %><%= Vehicle.year%> <%= Vehicle.make%> <%= Vehicle.model%><% } else { " " } %>"  readonly>
         </div>
         <div class="col-md-3 mb-3">
           <label for="Mileage">Mileage</label>
-            <input name="mileage" type="text" aria-label="Mileage" class="form-control" readonly>
+            <input type="text" aria-label="Mileage" class="form-control" 
+            value="<% if (locals.Vehicle) { %><%= Vehicle.year%> <% } else { " " } %>"readonly>
         </div>
         <div class="col-md-3 mb-3">
           <label for="VIN">VIN</label>
-            <input name="VIN" type="text" aria-label="VIN" class="form-control" readonly>
+            <input name="VIN" type="text" aria-label="VIN" class="form-control" value="<% if (locals.Vehicle) { %> <%= Vehicle.VIN%> <% } else { " " } %>" readonly>
         </div>
         <div class="col-md-3 mb-3">
           <label for="License">License</label>
-            <input name="license" type="text" aria-label="License" class="form-control" readonly>
+            <input name="license" type="text" aria-label="License" class="form-control" 
+            value="<% if (locals.Vehicle) { %><%= Vehicle.licenseNum%><% } else { " " } %>"readonly>
         </div>
       </div>
       
@@ -107,6 +120,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="inputGroupPrepend">ID</span>
             </div>
+            <!-- TODO: Mechanic ID and names were left blank for now. Implement them later with further instruction -->
             <input type="text" class="form-control" id="mechanicID" placeholder="ER96JBFI74" value="ER96JBFI74"
             style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
           </div>

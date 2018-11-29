@@ -4,34 +4,39 @@ var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
 var mongoURL = 'mongodb://localhost:27017/TopShop';
 
+//Set the below to true if your database is empty to populate the database
+//with dummy information.
+var databaseNeedsPopulating = false;
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 // Who added these 2, why do we need it?
-app.use(express.json());       
-app.use(bodyParser.json());
+app.use(express.json());       // to support JSON-encoded bodies
+app.use(bodyParser.json());    //allows us to read data from page by looking at data
+
+// Models
+var jobModel = require('./models/JobSchema.js');
+var lastServiceModel = require('./models/LastServiceSchema.js');
+var vehicleModel = require('./models/VehicleSchema.js');
+var VehicleInspectionFormModel = require('./models/VehicleInspectionFormSchema.js');
+var customerModel = require('./models/CustomerSchema.js');
+var repairOrderModel = require('./models/RepairOrderFormSchema.js');
 
 // Connect to mongoDB
 mongoose.connect(mongoURL, {useNewUrlParser: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-
-// Models
-var VehicleInspectionFormSchema = require('./models/VehicleInspectionFormSchema.js');
-var jobModel = require("./models/JobSchema.js");
-var repairOrderModel = require("./models/RepairOrderFormSchema.js");
-var lastServiceModel = require('./models/LastServiceSchema.js');
-var vehicleModel = require('./models/VehicleSchema.js');
-var customerModel = require('./models/CustomerSchema.js');
-
-
 // ------- Routes -------
 
 // Landing Page
 app.get("/", function(req, res){
+  if (databaseNeedsPopulating) {
+    var populateDatabaseFunction = require("./populateDatabase.js");
+    populateDatabaseFunction.populate();
+  }
   res.render("landing");
 });
 
@@ -103,6 +108,49 @@ app.get("/repairOrderForm", function(req, res){
   res.render("repairOrderForm");
 });
 
+app.get('/repairOrderForm/:ROnumber', function(req,res) {
+  var ROnumber = req.params.ROnumber;
+  //Every repair order has its own unique RO number.
+  //
+  //We need to search for these because we agreed to not 
+  //store certain things like customers inside a repair order.
+  //
+  //Note that if a repair order exists, there must exist a
+  //customer that owns a vehicle for which the RO is connected
+  //with so all these searches should return something.
+  repairOrderModel.findOne( { repairOrderNumber: ROnumber } , function (err, RO) {
+        if (err) 
+          console.error(err);
+        if (RO) {
+          customerModel.findOne( { customerID: RO.customerID } , function (err, Customer) {
+                if (err) 
+                  console.error(err);
+                if (Customer) {
+                  vehicleModel.findOne( { VIN: RO.VIN } , function (err, Vehicle) {
+                        if (err) 
+                          console.error(err);
+                        if (Vehicle) {
+                          app.locals.Customer = Customer;
+                          app.locals.Vehicle = Vehicle;
+                          app.locals.RO = RO;
+                          res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} );
+                        }
+                        else {
+                          console.log("No Vehicle found, display error?");
+                        }
+                  });
+                }
+                else {
+                  console.log("No Customer found, display error?");
+                }
+          });
+        }
+        else {
+          console.log("No RO found, display error?");
+        }
+    });
+});
+
 app.post("/repairOrderForm", function(req, res) {
  
   var repairOrderInstance = new repairOrderModel({
@@ -155,12 +203,12 @@ app.post("/repairOrderForm", function(req, res) {
 
 // Vehicle Inspection Form
 app.get("/vehicleInspectionForm", function(req, res) {
-  res.render("vehicleInspectionForm");
+  res.render("vehicleInspectionForm", { Customer: app.locals.Customer, Vehicle: app.locals.Vehicle, RO: app.locals.RO } );
 });
 
 app.post('/vehicleInspectionForm', function(req,res) {
   
-  var newVehicleInspectionForm = new VehicleInspectionFormSchema({
+  var newVehicleInspectionForm = new VehicleInspectionFormModel({
     Name: req.body.Name,
     Mileage: req.body.Mileage,
     Year_Make_Model: req.body.Year_Make_Model,
@@ -228,7 +276,7 @@ app.post('/vehicleInspectionForm', function(req,res) {
 
 // Customer Page
 var Customer = {
-    customerID: 123456,
+    customerID: "123457",
     firstName: "John", 
     lastName: "Wick",
     street: "666 Nonya Business",
@@ -256,35 +304,33 @@ var Customer = {
     ]
 };
 
+
 app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
 
+app.get("/customerPage/:id", function(req, res) {
+  var customerID = req.params.id;
+  console.log("id returned is: " + customerID);
+  //we use findOne here because each customer should have their own unique ID
+  customerModel.findOne( { customerID: customerID } , function (err, result) {
+        if (err) 
+          console.error(err);
+        if (result) {
+          console.log("res is:" + result);
+          res.render("customerPage", { Customer: result } );
+        }
+        else {
+          console.log("no result found for name search, display something?");
+        }
+    });
+});
 
 // searchPage
 var DupCustomers = {
   sameCustomer: [
-    {
-      firstName: "John",
-      lastName: "Smith",
-      email: "johnsmith@example.com",
-      cellPhone: 1239879876,
-      workPhone: 1236546543
-    },
-    {
-      firstName: "John",
-      lastName: "Wick",
-      email: "johnwick@youdied.com",
-      cellPhone: 1234561234,
-      workPhone: 7891231475,
-    },
-    {
-      firstName: "John",
-      lastName: "Snow",
-      email: "johnsnow@winterfell.com",
-      cellPhone: 1237657654,
-      workPhone: 1235675678,
-    }
+    //The app needs to load this or else it will give an error. 
+    //This is empty because there are no search results when first loading a search page.
   ]
 };
 
@@ -297,12 +343,51 @@ app.post("/searchPage", function(req, res) {
   if (action == "searchByCustomerName") {
     var firstName = req.body.customerFirstName;
     var lastName = req.body.customerLastName;
+    customerModel.find( { firstName : {$regex: firstName, $options: "i" }, 
+                         lastName: {$regex: lastName, $options: "i" } } , function (err, result) {
+          if (err) 
+            console.error(err);
+          if (result) {
+            //encapsulating because alfred's code requires it
+            var customers = { sameCustomer: result };
+            res.render("searchPage", { DupCustomers: customers } );
+          }
+          else {
+            console.log("no result found for name search, display something?");
+          }
+      });
   }
   else if (action == "searchByCustomerEmail") {
     var email = req.body.customerEmail;
+    customerModel.find( { email : email } , function(err, result) {
+        if (err)
+            console.error(err);
+        if (result) {
+          console.log(result);
+            //encapsulating because alfred's code requires it
+            var customers = { sameCustomer: result };
+            res.render("searchPage", {DupCustomers:customers} );
+        }
+        else {
+          console.log("no result found for email search, display something?");
+        }
+      });
   }
   else if (action == "searchByCustomerID") {
     var id = req.body.customerID;
+    customerModel.find( { customerID : id } , function(err, result) {
+        if (err)
+            console.error(err);
+        if (result) {
+          console.log(result);
+            //encapsulating because alfred's code requires it
+            var customers = { sameCustomer: result };
+            res.render("searchPage", {DupCustomers:customers} );
+        }
+        else {
+          console.log("no result found for email search, display something?");
+        }
+      });
   }
   else if (action == "searchByVIN") {
     var vin = req.body.vin;
@@ -353,7 +438,7 @@ app.post("/searchPage", function(req, res) {
   } else {
     // nothing
   }
-  res.redirect("/searchPage");
+  //res.redirect("/searchPage"); This conflicts with searching for customer. Is this line actually needed?
 });
 
 // Vehicle Page
@@ -387,6 +472,42 @@ var Vehicle = {
 app.get("/vehiclePage", function(req, res) {
   res.render("vehiclePage", {Vehicle:Vehicle});
 });
+
+app.get("/vehiclePage/:VIN", function(req, res) {
+  var VIN = req.params.VIN;
+  //Every vehicle should have its own unique VIN
+  //We are searching for this because we agreed that the 
+  //customer's profiles wouldn't hold the vehicles
+  vehicleModel.findOne( { VIN : VIN } , function(err, Vehicle) {
+      if (err)
+          console.error(err);
+      if (Vehicle) {
+          console.log("searched vehicle: " + Vehicle);
+          repairOrderModel.find( { VIN: VIN } , function (err, RO) {
+            if (err)
+              console.log(err);
+            if (RO) {
+              //RO = ("[" + RO + "]");
+              console.log("seara ROs: " + RO);
+            }
+            else { //a vehicle can have no ROs yet
+              console.log("no ROs found");
+              RO = []; 
+            }
+            //console.log("formed:" + RO);
+            var result = Object.keys(RO).map(function(key) {
+              return [RO[key]];
+            });
+            console.log("result:" + result);
+            res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
+          });
+      }
+      else {
+        console.log("no result found for VIN search, display something?");
+      }
+    });
+});
+
 
 // Keep this at the bottom of the page.
 // Whoever is not on aws cloud 9, your ports will be different.

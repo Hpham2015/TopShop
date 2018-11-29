@@ -1,9 +1,10 @@
 <% include partials/header %>
 
 <div class="container-fluid">
-  <% if (locals.Vehicle) {
-  }
-  else {
+  <!-- The below will detect if there is a Vehicle. If there is no vehicle,
+  then we check if there is an Err object passed. If Err object exists, then
+  display the Err object -->
+  <% if (!locals.Vehicle) {
    %> <h1><p class="bg-danger"> <% if (locals.Err) { %> <%=Err%> <% } %> </p></h1> <%
   } %>
   <div class="jumbotron jumbotron-fluid border border-dark rounded">
@@ -77,10 +78,10 @@
       <div class="col-md-3 mb-3">
         <label for="Mileage">Current Mileage</label>
         <input name="vehicleMileage" type="number" minlength="5" maxlength="5" class="form-control" id="zip" 
-               value="<% if (locals.Vehicle) 
+               value=<% if (locals.Vehicle) 
                            { %> <%= Vehicle.mileage%> <% } 
                          else 
-                           { " " } %>"
+                           { " " } %>
         readonly>
       </div>
       <div class="col-md-3 mb-3">

@@ -119,36 +119,36 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
   //customer that owns a vehicle for which the RO is connected
   //with so all these searches should return something.
   repairOrderModel.findOne( { repairOrderNumber: ROnumber } , function (err, RO) {
+    if (err) 
+      console.error(err);
+    if (RO) {
+      customerModel.findOne( { customerID: RO.customerID } , function (err, Customer) {
         if (err) 
           console.error(err);
-        if (RO) {
-          customerModel.findOne( { customerID: RO.customerID } , function (err, Customer) {
-                if (err) 
-                  console.error(err);
-                if (Customer) {
-                  vehicleModel.findOne( { VIN: RO.VIN } , function (err, Vehicle) {
-                        if (err) 
-                          console.error(err);
-                        if (Vehicle) {
-                          app.locals.Customer = Customer;
-                          app.locals.Vehicle = Vehicle;
-                          app.locals.RO = RO;
-                          res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} );
-                        }
-                        else {
-                          console.log("No Vehicle found, display error?");
-                        }
-                  });
-                }
-                else {
-                  console.log("No Customer found, display error?");
-                }
+        if (Customer) {
+          vehicleModel.findOne( { VIN: RO.VIN } , function (err, Vehicle) {
+            if (err) 
+              console.error(err);
+            if (Vehicle) {
+              app.locals.Customer = Customer;
+              app.locals.Vehicle = Vehicle;
+              app.locals.RO = RO;
+              res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} );
+            }
+            else {
+              console.log("No Vehicle found, display error?");
+            }
           });
         }
         else {
-          console.log("No RO found, display error?");
+          console.log("No Customer found, display error?");
         }
-    });
+      });
+    }
+    else {
+      console.log("No RO found, display error?");
+    }
+  });
 });
 
 app.post("/repairOrderForm", function(req, res) {
@@ -203,7 +203,8 @@ app.post("/repairOrderForm", function(req, res) {
 
 // Vehicle Inspection Form
 app.get("/vehicleInspectionForm", function(req, res) {
-  res.render("vehicleInspectionForm", { Customer: app.locals.Customer, Vehicle: app.locals.Vehicle, RO: app.locals.RO } );
+  res.render("vehicleInspectionForm", 
+    { Customer: app.locals.Customer, Vehicle: app.locals.Vehicle, RO: app.locals.RO } );
 });
 
 app.post('/vehicleInspectionForm', function(req,res) {
@@ -309,6 +310,7 @@ app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
 
+//search for customer by customer ID
 app.get("/customerPage/:id", function(req, res) {
   var customerID = req.params.id;
   console.log("id returned is: " + customerID);
@@ -343,8 +345,10 @@ app.post("/searchPage", function(req, res) {
   if (action == "searchByCustomerName") {
     var firstName = req.body.customerFirstName;
     var lastName = req.body.customerLastName;
+    //find() function will return a list. Regex is done so it's case insensitive
     customerModel.find( { firstName : {$regex: firstName, $options: "i" }, 
-                         lastName: {$regex: lastName, $options: "i" } } , function (err, result) {
+                          lastName: {$regex: lastName, $options: "i" } } , 
+                          function (err, result) {
           if (err) 
             console.error(err);
           if (result) {
@@ -475,6 +479,7 @@ app.get("/vehiclePage", function(req, res) {
   res.render("vehiclePage", {Vehicle:Vehicle});
 });
 
+//search for vehicle by VIN
 app.get("/vehiclePage/VIN/:VIN", function(req, res) {
   var VIN = req.params.VIN;
   //Every vehicle should have its own unique VIN
@@ -503,6 +508,7 @@ app.get("/vehiclePage/VIN/:VIN", function(req, res) {
     });
 });
 
+//search for vehicle by license
 app.get("/vehiclePage/license/:license", function(req, res) {
   var license = req.params.license;
   //Every vehicle should have its own unique license

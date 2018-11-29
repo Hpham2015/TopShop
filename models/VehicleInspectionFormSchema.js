@@ -7,7 +7,7 @@ var VehicleInspectionFormSchema = new Schema({
     Name: String,
     Mileage: Number,
     Year_Make_Model: String,
-    VIN: Number,
+    VIN: String,
     License: String,
     email: String,
     INTERIOR_EXTERIOR: {

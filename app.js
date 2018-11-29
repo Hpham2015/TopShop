@@ -6,7 +6,7 @@ var mongoURL = 'mongodb://localhost:27017/TopShop';
 
 //Set the below to true if your database is empty to populate the database
 //with dummy information.
-var databaseNeedsPopulating = false;
+var databaseNeedsPopulating = true;
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(__dirname + "/public"));
@@ -390,10 +390,12 @@ app.post("/searchPage", function(req, res) {
       });
   }
   else if (action == "searchByVIN") {
-    var vin = req.body.vin;
+    var VIN = req.body.vin;
+    res.redirect("/vehiclePage/VIN/" + VIN);
   }
   else if (action == "searchByLicense") {
     var license = req.body.license;
+    res.redirect("vehiclePage/license/" + license);
   }
   else if (action == "searchByRepairOrderNumber"){
     var key = req.body.repairOrderNumber;
@@ -473,37 +475,59 @@ app.get("/vehiclePage", function(req, res) {
   res.render("vehiclePage", {Vehicle:Vehicle});
 });
 
-app.get("/vehiclePage/:VIN", function(req, res) {
+app.get("/vehiclePage/VIN/:VIN", function(req, res) {
   var VIN = req.params.VIN;
   //Every vehicle should have its own unique VIN
-  //We are searching for this because we agreed that the 
-  //customer's profiles wouldn't hold the vehicles
   vehicleModel.findOne( { VIN : VIN } , function(err, Vehicle) {
       if (err)
           console.error(err);
       if (Vehicle) {
-          console.log("searched vehicle: " + Vehicle);
           repairOrderModel.find( { VIN: VIN } , function (err, RO) {
             if (err)
               console.log(err);
-            if (RO) {
-              //RO = ("[" + RO + "]");
-              console.log("seara ROs: " + RO);
+            if (!!!RO) { 
+              // if RO doesn't exist, then this will execute
+              // because if RO doesn't exist, then !!RO will return false
+              // if RO exists, then !!RO will return true
+              // because !!RO will return false, then !!!RO will return true
+              // if no ROs exist, then set an array of ROs that is empty
+              RO = [];
             }
-            else { //a vehicle can have no ROs yet
-              console.log("no ROs found");
-              RO = []; 
-            }
-            //console.log("formed:" + RO);
-            var result = Object.keys(RO).map(function(key) {
-              return [RO[key]];
-            });
-            console.log("result:" + result);
             res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
           });
       }
       else {
-        console.log("no result found for VIN search, display something?");
+        res.render("vehiclePage", { Err : "No vehicle Found with VIN: " + VIN});
+        console.log("No result found for VIN search. You searched for VIN: "+ VIN);
+      }
+    });
+});
+
+app.get("/vehiclePage/license/:license", function(req, res) {
+  var license = req.params.license;
+  //Every vehicle should have its own unique license
+  vehicleModel.findOne( { licenseNum : license } , function(err, Vehicle) {
+      if (err)
+          console.error(err);
+      if (Vehicle) {
+          console.log("searched vehicle: " + Vehicle);
+          repairOrderModel.find( { VIN: Vehicle.VIN } , function (err, RO) {
+            if (err)
+              console.log(err);
+            if (!!!RO) { 
+              // if RO doesn't exist, then this will execute
+              // because if RO doesn't exist, then !!RO will return false
+              // if RO exists, then !!RO will return true
+              // because !!RO will return false, then !!!RO will return true
+              // if no ROs exist, then set an array of ROs that is empty
+              RO = [];
+            }
+            res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
+          });
+      }
+      else {
+        res.render("vehiclePage", { Err : "No vehicle Found with license: " + license});
+        console.log("No result found for VIN search. You searched for license: "+ license);
       }
     });
 });

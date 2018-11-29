@@ -119,7 +119,7 @@ module.exports = {
       });
       
       var jobs1 = new jobModel({
-        repairType: "repairType1",
+        repairType: "Customer Pay",
         complaint: "Complaint11",
         cause: "Cause111",
         resolution: "Resolution1111",
@@ -127,7 +127,7 @@ module.exports = {
       });
       
       var jobs2 = new jobModel({
-        repairType: "repairType2",
+        repairType: "Warranty",
         complaint: "Complaint22",
         cause: "Cause222",
         resolution: "Resolution2222",
@@ -135,7 +135,7 @@ module.exports = {
       });
       
       var jobs3 = new jobModel({
-        repairType: "repairType3",
+        repairType: "Internal",
         complaint: "Complaint33",
         cause: "Cause333",
         resolution: "Resolution3333",
@@ -176,7 +176,7 @@ module.exports = {
       });
     
       var repairOrder1 = new repairOrderModel({
-        repairOrderNumber: "1",
+        repairOrderNumber: "11111",
         customerID: "1672548348",
         VIN: "1FAPP36X6RK192113",
         inspectionReport: vehicleInspecion1,

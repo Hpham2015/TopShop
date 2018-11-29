@@ -5,7 +5,8 @@ var bodyParser = require('body-parser');
 var mongoURL = 'mongodb://localhost:27017/TopShop';
 
 //Set the below to true if your database is empty to populate the database
-//with dummy information.
+//with dummy information. Note that if set to true, then going to the 
+//landing page will reset the database to its default hardcoded values.
 var databaseNeedsPopulating = true;
 
 app.use(bodyParser.urlencoded({extended: true})); 

@@ -188,7 +188,7 @@ module.exports = {
       });
       
       var repairOrder2 = new repairOrderModel({
-        repairOrderNumber: "2",
+        repairOrderNumber: "22222",
         customerID: "2924637168",
         VIN: "1C3CDZAG5DN749746",
         inspectionReport: vehicleInspecion2,
@@ -200,7 +200,7 @@ module.exports = {
       });
       
       var repairOrder3 = new repairOrderModel({
-        repairOrderNumber: "3",
+        repairOrderNumber: "33333",
         customerID: "3673157365",
         VIN: "1N4AL3AP7FC188988",
         inspectionReport: vehicleInspecion3,
@@ -211,115 +211,205 @@ module.exports = {
         totalCost: "$333.42"
       });
       
-      newCustomer1.save(function(error) {
-        //res.render("searchPage");
-        if (error) {
-          console.error(error);
-        }
+      // newCustomer1.save(function(error) {
+      //   //res.render("searchPage");
+      //   if (error) {
+      //     console.error(error);
+      //   }
+      // });
+      
+      customerModel.update({customerID: 1672548348}, newCustomer1, {upsert: true}, function(err, doc) {
+        if (err) console.log("Customer1 existed");
+        else console.log("Customer1 added")
       });
       
-      newCustomer2.save(function(error) {
-        //res.render("searchPage");
-        if (error) {
-          console.error(error);
-        }
+      // newCustomer2.save(function(error) {
+      //   //res.render("searchPage");
+      //   if (error) {
+      //     console.error(error);
+      //   }
+      // });
+      
+      customerModel.update({customerID: 2924637168}, newCustomer2, {upsert: true}, function(err, doc) {
+        if (err) console.log("Customer2 existed");
+        else console.log("Customer2 added")
       });
       
-      newCustomer3.save(function(error) {
-        //res.render("searchPage");
-        if (error) {
-          console.error(error);
-        }
+      // newCustomer3.save(function(error) {
+      //   //res.render("searchPage");
+      //   if (error) {
+      //     console.error(error);
+      //   }
+      // });
+      
+      customerModel.update({customerID: 3673157365}, newCustomer3, {upsert: true}, function(err, doc) {
+        if (err) console.log("Customer3 existed");
+        else console.log("Customer3 added")
       });
       
-      newVehicle1.save(function(error) {
-        if (error) {
-          console.log(error);
-        }
+      // newVehicle1.save(function(error) {
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      vehicleModel.update({VIN: "1FAPP36X6RK192113"}, newVehicle1, {upsert: true}, function(err, doc) {
+        if (err) console.log("Vehicle1 existed");
+        else console.log("Vehicle1 added")
       });
       
-      newVehicle2.save(function(error) {
-        if (error) {
-          console.log(error);
-        }
+      // newVehicle2.save(function(error) {
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      vehicleModel.update({VIN: "1C3CDZAG5DN749746"}, newVehicle2, {upsert: true}, function(err, doc) {
+        if (err) console.log("Vehicle2 existed");
+        else console.log("Vehicle2 added")
       });
       
-      newVehicle3.save(function(error) {
-        if (error) {
-          console.log(error);
-        }
+      // newVehicle3.save(function(error) {
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      vehicleModel.update({VIN: "1N4AL3AP7FC188988"}, newVehicle3, {upsert: true}, function(err, doc) {
+        if (err) console.log("Vehicle3 existed");
+        else console.log("Vehicle3 added")
       });
       
-      lastService1.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // lastService1.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      lastServiceModel.update({odometer: 11111}, lastService1, {upsert: true}, function(err, doc) {
+        if (err) console.log("lastService1 existed");
+        else console.log("lastService1 added")
       });
       
-      lastService2.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // lastServiceModel.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      lastServiceModel.update({odometer: 22222}, lastService2, {upsert: true}, function(err, doc) {
+        if (err) console.log("lastService2 existed");
+        else console.log("lastService2 added")
       });
       
-      lastService3.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // lastService3.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      vehicleModel.update({odometer: 11111}, lastService3, {upsert: true}, function(err, doc) {
+        if (err) console.log("lastService3 existed");
+        else console.log("lastService3 added")
       });
       
-      repairOrder1.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // repairOrder1.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      repairOrderModel.update({repairOrderNumber: "11111"}, repairOrder1, {upsert: true}, function(err, doc) {
+        if (err) console.log("RepairOrder1 existed");
+        else console.log("RepairOrder1 added")
       });
       
-      repairOrder2.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // repairOrder2.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      repairOrderModel.update({repairOrderNumber: "22222"}, repairOrder2, {upsert: true}, function(err, doc) {
+        if (err) console.log("RepairOrder2 existed");
+        else console.log("RepairOrder2 added")
       });
       
-      repairOrder3.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // repairOrder3.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      repairOrderModel.update({repairOrderNumber: "33333"}, repairOrder3, {upsert: true}, function(err, doc) {
+        if (err) console.log("RepairOrder3 existed");
+        else console.log("RepairOrder3 added")
       });
       
-      vehicleInspecion1.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // vehicleInspecion1.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      VehicleInspectionFormModel.update({Mileage: 13715}, vehicleInspecion1, {upsert: true}, function(err, doc) {
+        if (err) console.log("vehicleInspecion1 existed");
+        else console.log("vehicleInspecion1 added")
       });
       
-      vehicleInspecion2.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // vehicleInspecion2.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      VehicleInspectionFormModel.update({Mileage: 27314}, vehicleInspecion2, {upsert: true}, function(err, doc) {
+        if (err) console.log("vehicleInspecion2 existed");
+        else console.log("vehicleInspecion2 added")
       });
       
-      vehicleInspecion3.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // vehicleInspecion3.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      VehicleInspectionFormModel.update({rMileage: 37473}, vehicleInspecion3, {upsert: true}, function(err, doc) {
+        if (err) console.log("vehicleInspecion3 existed");
+        else console.log("vehicleInspecion3 added")
       });
       
-      jobs1.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // jobs1.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      jobModel.update({complaint: "Complaint11"}, jobs1, {upsert: true}, function(err, doc) {
+        if (err) console.log("jobs1 existed");
+        else console.log("jobs1 added")
       });
       
-      jobs2.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // jobs2.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      jobModel.update({complaint: "Complaint22"}, jobs2, {upsert: true}, function(err, doc) {
+        if (err) console.log("jobs2 existed");
+        else console.log("jobs2 added")
       });
       
-      jobs3.save(function(error){
-        if (error) {
-          console.log(error);
-        }
+      // jobs3.save(function(error){
+      //   if (error) {
+      //     console.log(error);
+      //   }
+      // });
+      
+      jobModel.update({complaint: "Complaint33"}, jobs3, {upsert: true}, function(err, doc) {
+        if (err) console.log("jobs3 existed");
+        else console.log("jobs3 added")
       });
     }
 };

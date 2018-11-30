@@ -501,19 +501,17 @@ app.get("/vehiclePage/VIN/:VIN", function(req, res) {
           repairOrderModel.find( { VIN: VIN } , function (err, RO) {
             if (err)
               console.log(err);
-            if (!!!RO) { 
-              // if RO doesn't exist, then this will execute
-              // because if RO doesn't exist, then !!RO will return false
-              // if RO exists, then !!RO will return true
-              // because !!RO will return false, then !!!RO will return true
-              // if no ROs exist, then set an array of ROs that is empty
+            if (!!RO) { 
+              // If RO doesn't exist, then this will execute
+              // because if RO doesn't exist, then !!RO will return false.
+              // If RO exists, then !!RO will return true.
               RO = [];
             }
             res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
           });
       }
       else {
-        res.render("vehiclePage", { Err : "No vehicle Found with VIN: " + VIN});
+        res.render("vehiclePage", { Err : "No vehicle found with VIN: " + VIN});
         console.log("No result found for VIN search. You searched for VIN: "+ VIN);
       }
     });
@@ -531,19 +529,17 @@ app.get("/vehiclePage/license/:license", function(req, res) {
           repairOrderModel.find( { VIN: Vehicle.VIN } , function (err, RO) {
             if (err)
               console.log(err);
-            if (!!!RO) { 
-              // if RO doesn't exist, then this will execute
-              // because if RO doesn't exist, then !!RO will return false
-              // if RO exists, then !!RO will return true
-              // because !!RO will return false, then !!!RO will return true
-              // if no ROs exist, then set an array of ROs that is empty
+            if (!!RO) { 
+              // If RO doesn't exist, then this will execute
+              // because if RO doesn't exist, then !!RO will return false.
+              // If RO exists, then !!RO will return true.
               RO = [];
             }
             res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
           });
       }
       else {
-        res.render("vehiclePage", { Err : "No vehicle Found with license: " + license});
+        res.render("vehiclePage", { Err : "No vehicle found with license: " + license});
         console.log("No result found for VIN search. You searched for license: "+ license);
       }
     });

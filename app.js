@@ -52,6 +52,7 @@ app.get("/customerInputForm", function(req, res){
 
 // adds new customer to DB
 app.post("/customerInputForm", function(req, res){
+  // Initlializes customer object with information from forms upon submit
   var newCustomerObj = new customerModel({
     customerID: req.body.customerID,
     firstName: req.body.firstname,
@@ -64,6 +65,8 @@ app.post("/customerInputForm", function(req, res){
     cell: req.body.cell,
     work: req.body.work
   });
+  
+  // saves object into database, if saving fails then output error to console, then redirect to blank input page
   newCustomerObj.save(function(err) {
     if (err) console.log(err);
     res.redirect("/customerInputForm");
@@ -77,6 +80,7 @@ app.get("/vehicleInputForm", function(req, res) {
 
 // adds new vehicle to DB
 app.post("/vehicleInputForm", function(req, res){
+  // initializes last service information instance with default values
   var lastServiceModelInstance = new lastServiceModel({ // declare with default values
     date: '1-1-00',
     odometer: 0,
@@ -84,6 +88,7 @@ app.post("/vehicleInputForm", function(req, res){
     monthlyAverageMiles: 0
   });
   
+  // initializes vehicle object with information from form upon submit
   var newVehicleObj = new vehicleModel({
     make: req.body.make,
     model: req.body.model,
@@ -93,9 +98,10 @@ app.post("/vehicleInputForm", function(req, res){
     color: req.body.color,
     type: req.body.type,
     mileage: req.body.mileage,
-    lastSrvc: lastServiceModelInstance
+    lastSrvc: lastServiceModelInstance  // sets this field to previously initialized last service object
   });
   
+  // saves vehicle object to database, if fails, outputs error to console, then redirects to blank form page
   newVehicleObj.save(function(err) {
     if (err) console.log(err);
     res.redirect("/vehicleInputForm");

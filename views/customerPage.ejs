@@ -55,11 +55,11 @@
       </div>    
       <div class="col-md-3 mb-3">
         <label for="Cell">Cell Phone</label>
-        <input name="cell" type="tel" minlength="10" maxlength="10" class="form-control" id="cell" value="<%= Customer.cellPhone %>" readonly>
+        <input name="cell" type="tel" minlength="10" maxlength="10" class="form-control" id="cell" value=<%= Customer.cell %> readonly>
       </div>    
       <div class="col-md-3 mb-3">
         <label for="Work">Work Phone</label>
-        <input name="work" type="tel" minlength="10" maxlength="10" class="form-control" id="work" value="<%= Customer.workPhone %>" readonly>
+        <input name="work" type="tel" minlength="10" maxlength="10" class="form-control" id="work" value=<%= Customer.work %> readonly>
       </div>    
     </div>
     
@@ -75,7 +75,9 @@
             <div class="col"><%= vehicle.make %></div>
             <div class="col"><%= vehicle.model %></div>
             <div class="col"><%= vehicle.color %></div>
-            <a class="col" href="/vehiclePage/">Vehicle Page</a>
+            <div class="col"><%= vehicle.VIN %></div>
+            <a class="col" href="/vehiclePage/<%= vehicle.VIN %>">Vehicle Page</a>
+            
           </div>
         <% }); %>
       </div>

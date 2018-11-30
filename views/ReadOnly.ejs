@@ -8,7 +8,7 @@
   </div>
   <button id="pdfDownload" class="btn btn-primary btn">download PDF</button>
   <!--Section for Customer Info-->
-  <div class="container border border-dark rounded mx-auto">
+  <div id="CustomerID"class="container border border-dark rounded mx-auto">
 
     <div class="form-row">
       <div class="col-md-4 mb-3">
@@ -62,8 +62,9 @@
       </div>    
     </div>
 </div>
-<div class="container border border-dark rounded mx-auto">
-      <h4 class="font-weight-bold">Vehicles</h4>
+<!--Section for Vehicles page-->
+<div id="Vehicles" class="container border border-dark rounded mx-auto">
+      <h4 class="font-weight-bold">Vehicle</h4>
       
       
       <div class="container">
@@ -73,14 +74,12 @@
           <label class="col"><strong>VIN number</strong></label>
           <label class="col"><strong>DL number</strong></label>
           </div>
-        <% ReportValues.vehicles.forEach(function(vehicle){ %>
           <div class="row">
-            <div  class="col"><%= vehicle.year %>/<%= vehicle.model %>/<%= vehicle.make %></div>
-            <div class="col"><%= vehicle.mileage %></div>
-            <div class="col"><%= vehicle.VIN %></div>
-            <div class="col"><%= vehicle.license %></div>
+            <div  class="col"><%= ReportValues.vehicles.year %>/<%= ReportValues.vehicles.model %>/<%= ReportValues.vehicles.make %></div>
+            <div class="col"><%= ReportValues.vehicles.mileage %></div>
+            <div class="col"><%= ReportValues.vehicles.VIN %></div>
+            <div class="col"><%= ReportValues.vehicles.license %></div>
           </div>
-        <% }); %>
       </div>
       
     </div>
@@ -135,11 +134,10 @@
     
 </div>
 
-<!--Interior/exterior SEGMENT-->
-<div class="container border border-dark rounded mx-auto">
+<!--Interior/exterior section-->
+<div id="Interior/Exterior" class="container border border-dark rounded mx-auto">
       <h4 class="font-weight-bold">Interior/Exterior</h4>
-      
-      
+  
       <div class="form-row">
       <div class="col-md-4 mb-3">
         <label for="Exterior body">Exterior body</label>
@@ -206,8 +204,8 @@
       
     </div>
     
-    <!--UNDER HOOD SEGMENT-->
-    <div class="container border border-dark rounded mx-auto">
+    <!--Under Hood section-->
+    <div id="Underhood" class="container border border-dark rounded mx-auto">
       <h4 class="font-weight-bold">Underhood</h4>
       
       
@@ -321,8 +319,8 @@
     </div>
     </div>
     
-    <!--Under Vehicle  SEGMENT-->
-    <div class="container border border-dark rounded mx-auto">
+    <!--Under Vehicle  Section-->
+    <div id="UnderVehicle" class="container border border-dark rounded mx-auto">
       <h4 class="font-weight-bold">Under Vehicle</h4>
       
       
@@ -394,7 +392,7 @@
       
     </div>
     <!--Tires SEGMENT-->
-    <div class="container border border-dark rounded mx-auto">
+    <div id="Tires" class="container border border-dark rounded mx-auto">
       <h4 class="font-weight-bold">Tires</h4>
       
       

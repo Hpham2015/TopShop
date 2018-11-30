@@ -1,10 +1,95 @@
 <% include partials/header %>
-  <h1>Dashboard</h1>
-  <a href="/customerInputForm">New Customer</a>
-  <a href="/repairOrderForm">Create Repair Order</a>
-  <a href="/vehicleInputForm">New Vehicle</a>
-  <a href="/vehicleInspectionForm">Vehicle Inspection</a>
-  <a href="/customerPage">Customer Page</a>
-  <a href="/searchPage">Search Page</a>
+  
+  <div class="jumbotron jumbotron-fluid border border-dark rounded">
+    <div class="container-fluid">
+      <h1 class="display-4 text-center">Dashboard</h1>
+    </div>
+  </div>
+  
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">New Customer</h5>
+            <p class="card-text">Create a new customer.</p>
+            <a href="/customerInputForm" class="btn btn-primary">Go To Page</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">New Vehicle</h5>
+            <p class="card-text">Create a new vehicle associated with a customer.</p>
+            <a href="/vehicleInputForm" class="btn btn-primary">Go To Page</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">New Repair Order</h5>
+            <p class="card-text">Create a new repair order associated with a vehicle.</p>
+            <a href="/repairOrderForm" class="btn btn-primary">Go To Page</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Vehicle Inspection</h5>
+            <p class="card-text">Navigate to the vehicle inspection form.</p>
+            <a href="/vehicleInspectionForm" class="btn btn-primary">Go To Page</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Customer Page</h5>
+            <p class="card-text">Information about a specific customer.</p>
+            <a href="/customerPage" class="btn btn-primary">Go To Page</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Search Page</h5>
+            <p class="card-text">Search for customer, vehicle, repair order.</p>
+            <a href="/searchPage" class="btn btn-primary">Go To Page</a>
+          </div>
+        </div>
+      </div>
+    </div>
+     <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Customer Page</h5>
+            <p class="card-text">Information about a specific customer.</p>
+            <a href="/customerPage" class="btn btn-primary">Go To Page</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Report Summary</h5>
+            <p class="card-text">Overview information about the customer, mechanics and car.</p>
+            <a href="/ReadOnly" class="btn btn-primary">Go To Page</a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <% include partials/footer %>

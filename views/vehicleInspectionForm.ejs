@@ -17,7 +17,12 @@
         <div class="input-group-prepend">
           <span class="input-group-text">Customer Name:</span>
         </div>
-        <input type="text" aria-label="Customer Name" class="form-control" readonly>
+        <input type="text" aria-label="Customer Name" class="form-control" 
+        value="<% if (locals.Customer) 
+                    { %> <%= Customer.firstName%> <%= Customer.lastName%> <% } 
+                  else 
+                    { " " } %>"
+        readonly>
       </div>
     </div>
       
@@ -26,16 +31,26 @@
         <div class="input-group-prepend">
           <span class="input-group-text">Year/Model/Make:</span>
         </div>
-        <input type="text" aria-label="Year/Model/Make" class="form-control" readonly>
+        <input type="text" aria-label="Year/Model/Make" class="form-control" 
+        value="<% if (locals.Vehicle) 
+                    { %> <%= Vehicle.year%> <%= Vehicle.make%> <%= Vehicle.model%> <% } 
+                  else 
+                    { " " } %>"
+        readonly>
       </div>
     </div>
       
     <div class="col-sm">
       <div class="input-group">
         <div class="input-group-prepend">
-          <span class="input-group-text">Mileage:</span>
+          <span class="input-group-text">Mileage:</span> 
         </div>
-        <input type="number" aria-label="Mileage" class="form-control" readonly>
+        <input type="number" aria-label="Mileage" class="form-control" 
+        value="<% if (locals.Vehicle) 
+                    { %> <%= Vehicle.mileage%> <% } 
+                  else 
+                    { " " } %>"
+        readonly>
       </div>
     </div>
     
@@ -50,7 +65,12 @@
         <div class="input-group-prepend">
           <span class="input-group-text">VIN:</span>
         </div>
-        <input type="text" aria-label="VIN" class="form-control" readonly>
+        <input type="text" aria-label="VIN" class="form-control" 
+        value="<% if (locals.Vehicle) 
+                    { %> <%= Vehicle.VIN %> <% } 
+                  else 
+                    { " " } %>"
+        readonly>
       </div>
     </div>
     
@@ -59,7 +79,12 @@
         <div class="input-group-prepend">
           <span class="input-group-text">License:</span>
         </div>
-        <input type="text" aria-label="License" class="form-control" readonly>
+        <input type="text" aria-label="License" class="form-control" 
+        value="<% if (locals.Vehicle) 
+                    { %> <%= Vehicle.licenseNum %> <% } 
+                  else 
+                    { " " } %>"
+        readonly>
       </div>
     </div>
       
@@ -68,7 +93,12 @@
         <div class="input-group-prepend">
           <span class="input-group-text">Email:</span>
         </div>
-        <input type="text" aria-label="Email" class="form-control" readonly>
+        <input type="text" aria-label="Email" class="form-control" 
+        value="<% if (locals.Customer) 
+                    { %> <%= Customer.email%> <% } 
+                  else 
+                    { " " } %>"
+        readonly>
       </div>
     </div>
     
@@ -798,7 +828,12 @@
         <div class="input-group-prepend">
           <span class="input-group-text">Inspected By:</span>
         </div>
-        <input type="text" name="" aria-label="Technician Name" class="form-control" readonly>
+        <input type="text" name="mechanicName"
+        value="<% if (locals.RO) 
+                    { %> <%= RO.mechanicFirstName %> <%= RO.mechanicLastName %> <% } 
+                  else 
+                    { " " } %>"
+        aria-label="Technician Name" class="form-control" readonly>
       </div>
     </div>
     <div class="col-sm">
@@ -806,7 +841,8 @@
         <div class="input-group-prepend">
           <span class="input-group-text">Date:</span>
         </div>
-        <input type="text" name="" aria-label="Technician Name" class="form-control" readonly>
+        <!-- Unsure of where this information is coming from -->
+        <input type="text" name="" value="" aria-label="Technician Name" class="form-control" readonly>
       </div>
     </div>
   </div>

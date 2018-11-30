@@ -35,11 +35,11 @@
       </div>
       <div class="col-md-3 mb-3">
         <label for="License">License Plate</label>
-        <input name="vehicleLicense" type="text" class="form-control" id="City" value="<%= Vehicle.license %>" readonly>
+        <input name="vehicleLicense" type="text" class="form-control" id="City" value="<%= Vehicle.licenseNum %>" readonly>
       </div>
       <div class="col-md-3 mb-3">
         <label for="VIN">VIN</label>
-        <input name-"vehicleVIN" type="text" class="form-control" id="State" value="<%= Vehicle.vin %>"
+        <input name-"vehicleVIN" type="text" class="form-control" id="State" value="<%= Vehicle.VIN %>"
         minlength="2" maxlength="2" readonly>
       </div>
       <div class="col-md-3 mb-3">
@@ -48,7 +48,7 @@
       </div>
       <div class="col-md-3 mb-3">
         <label for="lastService">Last Service Date</label>
-        <input name="vehicleLastService" type="email" class="form-control" id="email" value="<%= Vehicle.lastService %>" readonly>
+        <input name="vehicleLastService" type="email" class="form-control" id="email" value=<%= Vehicle.lastSrvc.date %> readonly>
       </div>    
     </div>
     
@@ -56,16 +56,15 @@
     <div class="container border border-dark rounded mx-auto">
       <div class="font-weight-bold">Repair Orders</div>
       <br>
-      
       <div class="container">
-        <% Vehicle.RO.forEach(function(ro){ %>
+        <% RO.forEach(function(ro){ %>
           <div class="row">
-            <div class="col"><%= ro.number %></div>
-            <div class="col"><%= ro.date %></div>
-            <div class="col"><%= ro.desc %></div>
-            <div class="col"><%= ro.totalCost %></div>
-            <div class="col"><%= ro.mileage %></div>
-            <a class="col" href="/repairOrderForm">Repair Order Page</a>
+            <div class="col"><%= ro.repairOrderNumber%></div>
+            <div class="col"><%= ro.inspectionReport.Inspected_on%></div>
+            <div class="col"><%= ro.inspectionReport.Comments%></div>
+            <div class="col"><%= ro.jobs[0].cost%></div> <!-- TODO: add up the cost of all jobs rather than only the first job-->
+            <div class="col"><%= ro.inspectionReport.Mileage%></div>
+            <a class="col" href="/repairOrderForm\<%= ro.repairOrderNumber%>">Repair Order Page</a>
           </div>
         <% }); %>
       </div>

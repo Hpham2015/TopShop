@@ -359,16 +359,16 @@
                 <span class="input-group-text" id="inputGroup-sizing-lg">Total Cost:</span>
                 <span class="input-group-text" id="inputGroup-sizing-lg">$</span>
               </div>
-              <input name="total_cost" type="text" class="form-control" id="total_cost" 
+              <input name="total_cost" type="text" class="form-control" id="total_cost" onload="add_number()"
               value= <% if (typeof totalCost !== 'undefined') { %><%=totalCost%> <% } else { %>""<% } %> readonly>
             </div>
           </div>
         
         <br>
     <!--<button type="submit" class="btn btn-primary btn-lg mt-2">Submit Repair Order</button>-->
-    <input type="submit" class="btn btn-primary btn">
-    <button class="btn btn-success" type="button">Update Repair Order</button>
-    <button class="btn btn-danger" type="button">Delete Repair Order</button>
+    <button class="btn btn-primary" type="submit" name="action" value="submit">Submit</button>
+    <button class="btn btn-success" type="submit" name="action" value="update">Update Repair Order</button>
+    <button class="btn btn-danger" type="submit" name="action" value="delete">Delete Repair Order</button>
 <!-- Form Ends Here -->
   </div>
   </form>
@@ -386,7 +386,7 @@
     document.getElementById("job_1_cost").value = fst.toFixed(2);
     document.getElementById("job_2_cost").value = snd.toFixed(2);
     document.getElementById("job_3_cost").value = thd.toFixed(2);
-    
+    return result.toFixed(2);
   }  
   
 </script>

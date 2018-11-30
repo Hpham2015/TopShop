@@ -6,7 +6,7 @@ var mongoURL = 'mongodb://localhost:27017/TopShop';
 
 //Set the below to true if your database is empty to populate the database
 //with dummy information.
-var databaseNeedsPopulating = false;
+var databaseNeedsPopulating = true;
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(__dirname + "/public"));
@@ -158,18 +158,18 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
 });
 
 app.post("/repairOrderForm", function(req, res) {
- 
+  var action = req.body.action;
   var repairOrderInstance = new repairOrderModel({
-    repairOrderNumber: req.body.repair_order_number,
-    customerID: req.body.customerID,
-    VIN: req.body.VIN,
-    
-    mechanicID: req.body.mechanicID,
-    mechanicFirstName: req.body.mechanicFirstName,
-    mechanicLastName: req.body.mechanicLastName,
-    
-    totalCost: req.body.total_cost
-  });
+      repairOrderNumber: req.body.repair_order_number,
+      customerID: req.body.customerID,
+      VIN: req.body.VIN,
+      
+      mechanicID: req.body.mechanicID,
+      mechanicFirstName: req.body.mechanicFirstName,
+      mechanicLastName: req.body.mechanicLastName,
+      
+      totalCost: req.body.total_cost
+    });
   repairOrderInstance.jobs.push({
     repairType: req.body.job_1_repair_type,
     complaint: req.body.job_1_complaint,
@@ -193,16 +193,25 @@ app.post("/repairOrderForm", function(req, res) {
     resolution: req.body.job_3_resolution,
     cost: req.body.job_3_cost
   });
-  
-  repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
-    repairOrderInstance, {upsert: true}, function(err, doc) {
-      if (err) console.log("Repair Order Form existed");
-      else console.log("Successfully added");
-    });
-  
-  // repairOrderInstance.save(function (err) {
-  //   if (err) console.log(err);
-  // });
+    
+  if (action == "submit") { 
+    repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+      repairOrderInstance, {upsert: true}, function(err, doc) {
+        if (err) console.log("Repair Order Form existed");
+        else console.log("Successfully added");
+      });
+  }
+  else if (action == "update") {
+    repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+      repairOrderInstance, {upsert: false}, function(err, doc) {
+        if (err) console.log("Repair Order Form existed");
+        else console.log("Successfully added");
+      });
+  }
+  // TO DELETE, JUST ENTER REPAIR ORDER ID
+  else if (action == "delete") {
+    
+  }
   res.redirect("/repairOrderForm");
 });
 

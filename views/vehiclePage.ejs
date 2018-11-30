@@ -32,7 +32,7 @@
         <label for="Model">Model</label>
         <input  name="vehicleModel" type="text" class="form-control" id="firstname" 
                 value="<% if (locals.Vehicle) 
-                            { %> <%= Vehicle.make%> <% } 
+                            { %> <%= Vehicle.model%> <% } 
                           else 
                             { " " } %>"
         readonly>
@@ -77,12 +77,12 @@
       </div>
       <div class="col-md-3 mb-3">
         <label for="Mileage">Current Mileage</label>
-        <input name="vehicleMileage" type="number" minlength="5" maxlength="5" class="form-control" id="zip" 
+        <input readonly name="vehicleMileage" type="number" minlength="5" maxlength="5" class="form-control" id="zip" 
                value=<% if (locals.Vehicle) 
                            { %> <%= Vehicle.mileage%> <% } 
                          else 
                            { " " } %>
-        readonly>
+         >
       </div>
       <div class="col-md-3 mb-3">
         <label for="lastService">Last Service Date</label>

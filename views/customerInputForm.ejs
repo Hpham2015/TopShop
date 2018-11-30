@@ -7,32 +7,27 @@
     </div>
   </div>
   
-<form class="customercreationform" action='/customerInputForm' method="POST">
-  <div class="form-row">
-    
-    <div class="col-md-4 mb-3">
+<form class="customercreationform" action='/customerInputForm' method="POST">                                                <!--Form items-->
+  <div class="form-row">  
+      
+    <div class="col-md-4 mb-3">                                                                                              <!--Customer ID-->                                   
       <label for="validationCustomUsername">Customer ID</label>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="inputGroupPrepend">ID</span>
-        </div>
-        <input type="text" class="form-control" name="customerID" placeholder="FJ39HG13KQ" 
-        style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" required>
-        <div class="invalid-feedback">
-          Please choose a customer ID.
-        </div>
+      <input type="text" class="form-control" name="customerID" placeholder="FJ39HG13KQ" 
+      style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" required>
+      <div class="invalid-feedback">
+        Please choose a customer ID.
       </div>
     </div>
     
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4 mb-3">                                                                                              <!--First Name Field-->
       <label for="validationCustom01">First name</label>
       <input type="text" class="form-control" name="firstname" placeholder="John"  required>
       <div class="valid-feedback">
         Looks good!
       </div>
     </div>
-
-    <div class="col-md-4 mb-3">
+  
+    <div class="col-md-4 mb-3">                                                                                              <!--Last Name Field-->
       <label for="validationCustom02">Last name</label>
       <input type="text" class="form-control" name="lastname" placeholder="Smith"  required>
       <div class="valid-feedback">
@@ -42,8 +37,8 @@
     
   </div>
   
-  <div class="form-row">
-    <div class="col-md-6 mb-3">
+  <div class="form-row">                                                                                                     <!--Street Name-->
+    <div class="col-md-4 mb-3">
       <label for="validationCustom03">Street</label>
       <input type="text" class="form-control" name="street" placeholder="1342 Baseline Rd" required>
       <div class="invalid-feedback">
@@ -51,7 +46,7 @@
       </div>
     </div>
 
-    <div class="col-md-6 mb-3">
+    <div class="col-md-4 mb-3">                                                                                              <!--City-->
       <label for="validationCustom03">City</label>
       <input type="text" class="form-control" name="City" placeholder="Santa Cruz" required>
       <div class="invalid-feedback">
@@ -59,7 +54,7 @@
       </div>
     </div>
     
-    <div class="col-md-3 mb-3">
+    <div class="col-md-2 mb-3">                                                                                              <!--State-->
       <label for="validationCustom04">State</label>
       <input type="text" class="form-control" name="State" placeholder="CA" 
       minlength="2" maxlength="2" required>
@@ -68,15 +63,17 @@
       </div>
     </div>
     
-    <div class="col-md-3 mb-3">
+    <div class="col-md-2 mb-3">                                                                                              <!--Zip-->
       <label for="Zip">Zip</label>
       <input type="number" minlength="5" maxlength="5" class="form-control" name="zip" placeholder="95060" required>
       <div class="invalid-feedback">
         Please provide a valid zip.
       </div>
     </div>
-    
-    <div class="col-md-3 mb-3">
+  </div>
+      
+  <div class="form-row">
+    <div class="col-md-4 mb-3">                                                                                              <!--Email-->
       <label for="email">Email</label>
       <input type="email" class="form-control" name="email" placeholder="johnsmith@email.com" required>
       <div class="invalid-feedback">
@@ -84,7 +81,7 @@
       </div>
     </div>    
     
-    <div class="col-md-3 mb-3">
+    <div class="col-md-3 mb-3">                                                                                              <!--Cell Phone-->
       <label for="Cell">Cell Phone</label>
       <input type="tel" minlength="10" maxlength="10" class="form-control" name="cell" placeholder="8312435594" required>
       <div class="invalid-feedback">
@@ -92,24 +89,22 @@
       </div>
     </div>    
     
-    <div class="col-md-3 mb-3">
+    <div class="col-md-3 mb-3">                                                                                              <!--Work Phone-->
       <label for="Work">Work Phone</label>
       <input type="tel" minlength="10" maxlength="10" class="form-control" name="work" placeholder="8312435594" required>
       <div class="invalid-feedback">
         Please provide a valid Work number.
       </div>
-    </div>    
-    
-  </div>
-  
-  
+    </div>      
+  </div>    
+      
   <button class="btn btn-primary" type="submit">Create Customer</button>
-  <button class="btn btn-primary" type="button">Update Customer</button>
-  <button class="btn btn-primary" type="button">Delete Customer</button>
+  <button class="btn btn-success" type="button">Update Customer</button>
+  <button class="btn btn-danger" type="button">Delete Customer</button>
 
 </form>
-
-<script>
+  
+<script>                                                                                                                     //Submission validation
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function() {
   'use strict';
@@ -129,7 +124,6 @@
   }, false);
 })();
 </script>
-
 
 </div>
 <% include partials/footer %>

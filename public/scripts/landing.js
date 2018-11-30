@@ -1,7 +1,7 @@
 window.setTimeout(function() {
   // your code here
 var NewCustomerButton = document.getElementById("NC");
-var READONLYBUTTON = document.getElementById("RO")
+
 var DashBoardButton = document.getElementById("VI");
 var logoHome = document.getElementById("logo");
 var ad1 = document.getElementById("firstAd");
@@ -12,7 +12,7 @@ var overlay=document.getElementsByClassName("overlay");
 
 
 NewCustomerButton.addEventListener("click",newCustomer);
-READONLYBUTTON.addEventListener("click",READ);
+
 DashBoardButton.addEventListener("click",DashBoard);
 var i=0;
 setInterval(function(){
@@ -28,7 +28,7 @@ setInterval(function(){
 
 
 function newCustomer(){location.href = "/customerInputForm";}
-function READ(){location.href="/ReadOnly"}   
+   
 function DashBoard(){location.href = "/dashboard";}   
 
  

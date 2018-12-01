@@ -6,7 +6,7 @@ var mongoURL = 'mongodb://localhost:27017/TopShop';
 
 //Set the below to true if your database is empty to populate the database
 //with dummy information.
-var databaseNeedsPopulating = true;
+var databaseNeedsPopulating = false;
 
 app.use(bodyParser.urlencoded({extended: true})); 
 app.use(express.static(__dirname + "/public"));

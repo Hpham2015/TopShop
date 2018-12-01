@@ -5,14 +5,14 @@ var bodyParser = require('body-parser');
 var mongoURL = 'mongodb://localhost:27017/TopShop';
 
 //Set the below to true if your database is empty to populate the database
-//with dummy information.
+//with dummy information. Note that if set to true, then going to the 
+//landing page will reset the database to its default hardcoded values.
 var databaseNeedsPopulating = false;
 
-app.use(bodyParser.urlencoded({extended: true})); 
-app.use(express.static(__dirname + "/public"));
-app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({extended: true}));   // used to extract data from page body
+app.use(express.static(__dirname + "/public"));     // shorten links to public folder
+app.set("view engine", "ejs");    // use ejs files
 
-// Who added these 2, why do we need it?
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(bodyParser.json());    //allows us to read data from page by looking at data
 
@@ -125,36 +125,36 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
   //customer that owns a vehicle for which the RO is connected
   //with so all these searches should return something.
   repairOrderModel.findOne( { repairOrderNumber: ROnumber } , function (err, RO) {
+    if (err) 
+      console.error(err);
+    if (RO) {
+      customerModel.findOne( { customerID: RO.customerID } , function (err, Customer) {
         if (err) 
           console.error(err);
-        if (RO) {
-          customerModel.findOne( { customerID: RO.customerID } , function (err, Customer) {
-                if (err) 
-                  console.error(err);
-                if (Customer) {
-                  vehicleModel.findOne( { VIN: RO.VIN } , function (err, Vehicle) {
-                        if (err) 
-                          console.error(err);
-                        if (Vehicle) {
-                          app.locals.Customer = Customer;
-                          app.locals.Vehicle = Vehicle;
-                          app.locals.RO = RO;
-                          res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} );
-                        }
-                        else {
-                          console.log("No Vehicle found, display error?");
-                        }
-                  });
-                }
-                else {
-                  console.log("No Customer found, display error?");
-                }
+        if (Customer) {
+          vehicleModel.findOne( { VIN: RO.VIN } , function (err, Vehicle) {
+            if (err) 
+              console.error(err);
+            if (Vehicle) {
+              app.locals.Customer = Customer;
+              app.locals.Vehicle = Vehicle;
+              app.locals.RO = RO;
+              res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} );
+            }
+            else {
+              console.log("No Vehicle found, display error?");
+            }
           });
         }
         else {
-          console.log("No RO found, display error?");
+          console.log("No Customer found, display error?");
         }
-    });
+      });
+    }
+    else {
+      console.log("No RO found, display error?");
+    }
+  });
 });
 
 app.post("/repairOrderForm", function(req, res) {
@@ -239,7 +239,8 @@ app.post("/repairOrderForm", function(req, res) {
 
 // Vehicle Inspection Form
 app.get("/vehicleInspectionForm", function(req, res) {
-  res.render("vehicleInspectionForm", { Customer: app.locals.Customer, Vehicle: app.locals.Vehicle, RO: app.locals.RO } );
+  res.render("vehicleInspectionForm", 
+    { Customer: app.locals.Customer, Vehicle: app.locals.Vehicle, RO: app.locals.RO } );
 });
 
 app.post('/vehicleInspectionForm', function(req,res) {
@@ -350,6 +351,7 @@ app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
 
+//search for customer by customer ID
 app.get("/customerPage/:id", function(req, res) {
   var customerID = req.params.id;
   console.log("id returned is: " + customerID);
@@ -384,8 +386,10 @@ app.post("/searchPage", function(req, res) {
   if (action == "searchByCustomerName") {
     var firstName = req.body.customerFirstName;
     var lastName = req.body.customerLastName;
+    //find() function will return a list. Regex is done so it's case insensitive
     customerModel.find( { firstName : {$regex: firstName, $options: "i" }, 
-                         lastName: {$regex: lastName, $options: "i" } } , function (err, result) {
+                          lastName: {$regex: lastName, $options: "i" } } , 
+                          function (err, result) {
           if (err) 
             console.error(err);
           if (result) {
@@ -431,10 +435,12 @@ app.post("/searchPage", function(req, res) {
       });
   }
   else if (action == "searchByVIN") {
-    var vin = req.body.vin;
+    var VIN = req.body.vin;
+    res.redirect("/vehiclePage/VIN/" + VIN);
   }
   else if (action == "searchByLicense") {
     var license = req.body.license;
+    res.redirect("vehiclePage/license/" + license);
   }
   else if (action == "searchByRepairOrderNumber"){
     var key = req.body.repairOrderNumber;
@@ -520,37 +526,57 @@ app.get("/vehiclePage", function(req, res) {
   res.render("vehiclePage", {Vehicle:Vehicle});
 });
 
-app.get("/vehiclePage/:VIN", function(req, res) {
+//search for vehicle by VIN
+app.get("/vehiclePage/VIN/:VIN", function(req, res) {
   var VIN = req.params.VIN;
   //Every vehicle should have its own unique VIN
-  //We are searching for this because we agreed that the 
-  //customer's profiles wouldn't hold the vehicles
   vehicleModel.findOne( { VIN : VIN } , function(err, Vehicle) {
       if (err)
           console.error(err);
       if (Vehicle) {
-          console.log("searched vehicle: " + Vehicle);
           repairOrderModel.find( { VIN: VIN } , function (err, RO) {
             if (err)
               console.log(err);
-            if (RO) {
-              //RO = ("[" + RO + "]");
-              console.log("seara ROs: " + RO);
+            if (!!RO) { 
+              // If RO doesn't exist, then this will execute
+              // because if RO doesn't exist, then !!RO will return false.
+              // If RO exists, then !!RO will return true.
+              RO = [];
             }
-            else { //a vehicle can have no ROs yet
-              console.log("no ROs found");
-              RO = []; 
-            }
-            //console.log("formed:" + RO);
-            var result = Object.keys(RO).map(function(key) {
-              return [RO[key]];
-            });
-            console.log("result:" + result);
             res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
           });
       }
       else {
-        console.log("no result found for VIN search, display something?");
+        res.render("vehiclePage", { Err : "No vehicle found with VIN: " + VIN});
+        console.log("No result found for VIN search. You searched for VIN: "+ VIN);
+      }
+    });
+});
+
+//search for vehicle by license
+app.get("/vehiclePage/license/:license", function(req, res) {
+  var license = req.params.license;
+  //Every vehicle should have its own unique license
+  vehicleModel.findOne( { licenseNum : license } , function(err, Vehicle) {
+      if (err)
+          console.error(err);
+      if (Vehicle) {
+          console.log("searched vehicle: " + Vehicle);
+          repairOrderModel.find( { VIN: Vehicle.VIN } , function (err, RO) {
+            if (err)
+              console.log(err);
+            if (!!RO) { 
+              // If RO doesn't exist, then this will execute
+              // because if RO doesn't exist, then !!RO will return false.
+              // If RO exists, then !!RO will return true.
+              RO = [];
+            }
+            res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
+          });
+      }
+      else {
+        res.render("vehiclePage", { Err : "No vehicle found with license: " + license});
+        console.log("No result found for VIN search. You searched for license: "+ license);
       }
     });
 });

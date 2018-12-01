@@ -7,13 +7,12 @@ var mongoURL = 'mongodb://localhost:27017/TopShop';
 //Set the below to true if your database is empty to populate the database
 //with dummy information. Note that if set to true, then going to the 
 //landing page will reset the database to its default hardcoded values.
-var databaseNeedsPopulating = true;
+var databaseNeedsPopulating = false;
 
-app.use(bodyParser.urlencoded({extended: true})); 
-app.use(express.static(__dirname + "/public"));
-app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({extended: true}));   // used to extract data from page body
+app.use(express.static(__dirname + "/public"));     // shorten links to public folder
+app.set("view engine", "ejs");    // use ejs files
 
-// Who added these 2, why do we need it?
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(bodyParser.json());    //allows us to read data from page by looking at data
 

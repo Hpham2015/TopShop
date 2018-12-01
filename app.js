@@ -158,74 +158,80 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
 });
 
 app.post("/repairOrderForm", function(req, res) {
-  var action = req.body.action;
-  var repairOrderInstance = new repairOrderModel({
-      repairOrderNumber: req.body.repair_order_number,
-      customerID: req.body.customerID,
-      VIN: req.body.VIN,
-      
-      mechanicID: req.body.mechanicID,
-      mechanicFirstName: req.body.mechanicFirstName,
-      mechanicLastName: req.body.mechanicLastName,
-      
-      totalCost: req.body.total_cost
-    });
-  repairOrderInstance.jobs.push({
-    repairType: req.body.job_1_repair_type,
-    complaint: req.body.job_1_complaint,
-    cause: req.body.job_1_cause,
-    resolution: req.body.job_1_resolution,
-    cost: req.body.job_1_cost
-  });
-  
-  repairOrderInstance.jobs.push({
-    repairType: req.body.job_2_repair_type,
-    complaint: req.body.job_2_complaint,
-    cause: req.body.job_2_cause,
-    resolution: req.body.job_2_resolution,
-    cost: req.body.job_2_cost
-  });
-  
-  repairOrderInstance.jobs.push({
-    repairType: req.body.job_3_repair_type,
-    complaint: req.body.job_3_complaint,
-    cause: req.body.job_3_cause,
-    resolution: req.body.job_3_resolution,
-    cost: req.body.job_3_cost
-  });
-    
-  if (action == "submit") { 
-    repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
-      repairOrderInstance, {upsert: true}, function(err, doc) {
-        if (err) console.log("Repair Order Form existed");
-        else console.log("Successfully added");
+  var n = req.body.repair_order_number;
+  if (n.length !== 5) {
+    console.log("Invalid ROF #");
+  }
+  else {
+    var action = req.body.action;
+    var repairOrderInstance = new repairOrderModel({
+        repairOrderNumber: req.body.repair_order_number,
+        customerID: req.body.customerID,
+        VIN: req.body.VIN,
+        
+        mechanicID: req.body.mechanicID,
+        mechanicFirstName: req.body.mechanicFirstName,
+        mechanicLastName: req.body.mechanicLastName,
+        
+        totalCost: req.body.total_cost
       });
-  }
-  else if (action == "update") {
-    let found;
-    repairOrderModel.find({repairOrderNumber: req.body.repair_order_number}, function(err, doc) {
-      if (err) console.log(err);
-      if (!doc.length) {
-        found = false;
-        console.log("Cannot find ROF");
-      }
-      else {
-        found = true;
-        repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
-        repairOrderInstance, {upsert: true}, function(err, doc) {
-          if (err) console.log("Cannot update Repair Order Form");
-          else console.log("Successfully updated");
-        });
-      }
-    }).remove().exec();
-    
-  }
-  // TO DELETE, JUST ENTER REPAIR ORDER ID
-  else if (action == "delete") {
-    repairOrderModel.find({repairOrderNumber: req.body.repair_order_number}).remove(function(err) {
-    if (err) console.log("Cannot delete ROF");
-    else console.log("ROF deleted");
+    repairOrderInstance.jobs.push({
+      repairType: req.body.job_1_repair_type,
+      complaint: req.body.job_1_complaint,
+      cause: req.body.job_1_cause,
+      resolution: req.body.job_1_resolution,
+      cost: req.body.job_1_cost
     });
+    
+    repairOrderInstance.jobs.push({
+      repairType: req.body.job_2_repair_type,
+      complaint: req.body.job_2_complaint,
+      cause: req.body.job_2_cause,
+      resolution: req.body.job_2_resolution,
+      cost: req.body.job_2_cost
+    });
+    
+    repairOrderInstance.jobs.push({
+      repairType: req.body.job_3_repair_type,
+      complaint: req.body.job_3_complaint,
+      cause: req.body.job_3_cause,
+      resolution: req.body.job_3_resolution,
+      cost: req.body.job_3_cost
+    });
+      
+    if (action == "submit") { 
+      repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+        repairOrderInstance, {upsert: true}, function(err, doc) {
+          if (err) console.log("Repair Order Form existed");
+          else console.log("Successfully added");
+        });
+    }
+    else if (action == "update") {
+      let found;
+      repairOrderModel.find({repairOrderNumber: req.body.repair_order_number}, function(err, doc) {
+        if (err) console.log(err);
+        if (!doc.length) {
+          found = false;
+          console.log("Cannot find ROF");
+        }
+        else {
+          found = true;
+          repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+          repairOrderInstance, {upsert: true}, function(err, doc) {
+            if (err) console.log("Cannot update Repair Order Form");
+            else console.log("Successfully updated");
+          });
+        }
+      }).remove().exec();
+      
+    }
+    // TO DELETE, JUST ENTER REPAIR ORDER ID
+    else if (action == "delete") {
+      repairOrderModel.find({repairOrderNumber: req.body.repair_order_number}).remove(function(err) {
+      if (err) console.log("Cannot delete ROF");
+      else console.log("ROF deleted");
+      });
+    }
   }
   res.redirect("/repairOrderForm");
 });

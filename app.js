@@ -202,15 +202,30 @@ app.post("/repairOrderForm", function(req, res) {
       });
   }
   else if (action == "update") {
-    repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
-      repairOrderInstance, {upsert: false}, function(err, doc) {
-        if (err) console.log("Repair Order Form existed");
-        else console.log("Successfully added");
-      });
+    let found;
+    repairOrderModel.find({repairOrderNumber: req.body.repair_order_number}, function(err, doc) {
+      if (err) console.log(err);
+      if (!doc.length) {
+        found = false;
+        console.log("Cannot find ROF");
+      }
+      else {
+        found = true;
+        repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+        repairOrderInstance, {upsert: true}, function(err, doc) {
+          if (err) console.log("Cannot update Repair Order Form");
+          else console.log("Successfully updated");
+        });
+      }
+    }).remove().exec();
+    
   }
   // TO DELETE, JUST ENTER REPAIR ORDER ID
   else if (action == "delete") {
-    
+    repairOrderModel.find({repairOrderNumber: req.body.repair_order_number}).remove(function(err) {
+    if (err) console.log("Cannot delete ROF");
+    else console.log("ROF deleted");
+    });
   }
   res.redirect("/repairOrderForm");
 });
@@ -423,6 +438,7 @@ app.post("/searchPage", function(req, res) {
       }
       else {
         if (doc === undefined || doc.length == 0) {
+          console.log("ROF not existed");
           res.redirect("/searchPage");
           return;
         }

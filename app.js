@@ -354,8 +354,8 @@ app.get("/searchPage", function(req, res) {
 app.post("/searchPage", function(req, res) {
   var action = req.body.action;
   if (action == "searchByCustomerName") {
-    var firstName = req.body.customerFirstName;
-    var lastName = req.body.customerLastName;
+    var firstName = req.body.customerFirstName.trim();
+    var lastName = req.body.customerLastName.trim();
     //find() function will return a list. Regex is done so it's case insensitive
     customerModel.find( { firstName : {$regex: firstName, $options: "i" }, 
                           lastName: {$regex: lastName, $options: "i" } } , 
@@ -373,7 +373,7 @@ app.post("/searchPage", function(req, res) {
       });
   }
   else if (action == "searchByCustomerEmail") {
-    var email = req.body.customerEmail;
+    var email = req.body.customerEmail.trim();
     customerModel.find( { email : email } , function(err, result) {
         if (err)
             console.error(err);

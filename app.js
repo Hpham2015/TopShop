@@ -206,29 +206,20 @@ app.post("/repairOrderForm", function(req, res) {
           else console.log("Successfully added");
         });
     }
+    // If RO does not exist, it will be added
     else if (action == "update") {
-      let found;
-      repairOrderModel.find({repairOrderNumber: req.body.repair_order_number}, function(err, doc) {
-        if (err) console.log(err);
-        if (!doc.length) {
-          found = false;
-          console.log("Cannot find ROF");
-        }
-        else {
-          found = true;
-          repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
-          repairOrderInstance, {upsert: true}, function(err, doc) {
-            if (err) console.log("Cannot update Repair Order Form");
-            else console.log("Successfully updated");
-          });
-        }
-      }).remove().exec();
+      repairOrderModel.findOneAndDelete({repairOrderNumber: req.body.repair_order_number}).exec();
+      repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+        repairOrderInstance, {upsert: true}, function(err, doc) {
+          if (err) console.log(err);
+          else console.log("Successfully updated");
+        });
       
     }
     // TO DELETE, JUST ENTER REPAIR ORDER ID
     else if (action == "delete") {
       repairOrderModel.find({repairOrderNumber: req.body.repair_order_number}).remove(function(err) {
-      if (err) console.log("Cannot delete ROF");
+      if (err) console.log(err);
       else console.log("ROF deleted");
       });
     }

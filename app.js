@@ -52,11 +52,13 @@ app.get("/customerInputForm", function(req, res){
 
 app.post("/customerInputForm", function(req, res){
   var customerID = req.body.customerID;
-  if (customerID.length !== 10) {
+  if (customerID.length !== 10) { //validation
     console.log("Invalid Customer ID");
   }
   else {
     var action = req.body.action;
+    //We don't use a model here because everytime we make a model, it generates
+    //a new _id. This messes with the update function because the _id is new.
     let customerInstance = ({
       customerID: customerID,
       firstName: req.body.firstname,
@@ -70,6 +72,8 @@ app.post("/customerInputForm", function(req, res){
       work: req.body.work
     });
     if (action == "create") {
+      //We use a model here because when creating a new customer, there is no
+      //_id to compare to. Therefore, we can safely make a new model here.
       var newCustomer = new customerModel(customerInstance);
       newCustomer.save(function(err){
         if (err) console.log(err);
@@ -78,6 +82,7 @@ app.post("/customerInputForm", function(req, res){
       res.redirect("/customerInputForm");
     }
     else if (action == "update") {
+      //Search for a customer with the same customerID, then update it with new values
       customerModel.findOneAndUpdate({customerID: customerID}, customerInstance,
         {upsert: true}, function(err) {
           if (err) console.log(err);
@@ -86,6 +91,7 @@ app.post("/customerInputForm", function(req, res){
       res.redirect("/customerInputForm");
     }
     else if (action == "delete") {
+      //search and delete a customer with the same customerID inputted.
       customerModel.findOneAndDelete({customerID: customerID}, function(err, Customer) {
         if (err) console.log(err);
         else console.log("Deleted Customer with ID: " + customerID);
@@ -126,11 +132,13 @@ app.get("/vehicleInputForm", function(req, res) {
 // adds new vehicle to DB
 app.post("/vehicleInputForm", function(req, res){
   var VIN = req.body.vin;
-  if (VIN.length !== 17) {
+  if (VIN.length !== 17) { //validation
     console.log("Invalid VIN");
   }
   else {
     var action = req.body.action;
+    //We don't use a model here because everytime we make a model, it generates
+    //a new _id. This messes with the update function because the _id is new.
     var vehicleInstance = ({
       make: req.body.make,
       model: req.body.model,

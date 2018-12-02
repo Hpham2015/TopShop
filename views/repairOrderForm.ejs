@@ -126,24 +126,25 @@
 <!-- Section for Vehicle Info -->
     <h3 class="group-label">Vehicle Info</h3>    
       <div class="form-row">
-        <div class="col-md-3 mb-3">
+        <div class="col-md-8 mb-3">
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">Year/Model/Make:</span>
             </div>
-              <input name="yearModelMake" type="text" aria-label="Year/Model/Mak" class="form-control" 
+              <input name="yearModelMake" type="text" aria-label="Year/Model/Make" class="form-control" 
                value="<% if (locals.Vehicle) { %><%= Vehicle.year%> <%= Vehicle.make%> <%= Vehicle.model%><% } else { " " } %>"  readonly>          
           </div>          
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-4 mb-3">
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">Mileage:</span>
             </div>
             <input type="text" aria-label="Mileage" class="form-control" 
             value="<% if (locals.Vehicle) { %><%= Vehicle.mileage%> <% } else { " " } %>"readonly>
+          </div>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-4 mb-3">
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">VIN:</span>
@@ -152,7 +153,7 @@
             value="<% if (locals.Vehicle) { %> <%= Vehicle.VIN%> <% } else { " " } %>" readonly>            
           </div>          
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-4 mb-3">
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">License:</span>
@@ -162,7 +163,6 @@
           </div>          
         </div>
       </div>
-      
 <!-- Section for Mechanic Info -->
     <h3 class="group-label">Mechanic Info</h3>    
       <div class="form-row">

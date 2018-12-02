@@ -5,14 +5,14 @@ var bodyParser = require('body-parser');
 var mongoURL = 'mongodb://localhost:27017/TopShop';
 
 //Set the below to true if your database is empty to populate the database
-//with dummy information.
+//with dummy information. Note that if set to true, then going to the 
+//landing page will reset the database to its default hardcoded values.
 var databaseNeedsPopulating = false;
 
-app.use(bodyParser.urlencoded({extended: true})); 
-app.use(express.static(__dirname + "/public"));
-app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({extended: true}));   // used to extract data from page body
+app.use(express.static(__dirname + "/public"));     // shorten links to public folder
+app.set("view engine", "ejs");    // use ejs files
 
-// Who added these 2, why do we need it?
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(bodyParser.json());    //allows us to read data from page by looking at data
 
@@ -52,6 +52,7 @@ app.get("/customerInputForm", function(req, res){
 
 // adds new customer to DB
 app.post("/customerInputForm", function(req, res){
+  // Initlializes customer object with information from forms upon submit
   var newCustomerObj = new customerModel({
     customerID: req.body.customerID,
     firstName: req.body.firstname,
@@ -64,6 +65,8 @@ app.post("/customerInputForm", function(req, res){
     cell: req.body.cell,
     work: req.body.work
   });
+  
+  // saves object into database, if saving fails then output error to console, then redirect to blank input page
   newCustomerObj.save(function(err) {
     if (err) console.log(err);
     res.redirect("/customerInputForm");
@@ -77,6 +80,7 @@ app.get("/vehicleInputForm", function(req, res) {
 
 // adds new vehicle to DB
 app.post("/vehicleInputForm", function(req, res){
+  // initializes last service information instance with default values
   var lastServiceModelInstance = new lastServiceModel({ // declare with default values
     date: '1-1-00',
     odometer: 0,
@@ -84,6 +88,7 @@ app.post("/vehicleInputForm", function(req, res){
     monthlyAverageMiles: 0
   });
   
+  // initializes vehicle object with information from form upon submit
   var newVehicleObj = new vehicleModel({
     make: req.body.make,
     model: req.body.model,
@@ -93,9 +98,10 @@ app.post("/vehicleInputForm", function(req, res){
     color: req.body.color,
     type: req.body.type,
     mileage: req.body.mileage,
-    lastSrvc: lastServiceModelInstance
+    lastSrvc: lastServiceModelInstance  // sets this field to previously initialized last service object
   });
   
+  // saves vehicle object to database, if fails, outputs error to console, then redirects to blank form page
   newVehicleObj.save(function(err) {
     if (err) console.log(err);
     res.redirect("/vehicleInputForm");
@@ -119,36 +125,36 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
   //customer that owns a vehicle for which the RO is connected
   //with so all these searches should return something.
   repairOrderModel.findOne( { repairOrderNumber: ROnumber } , function (err, RO) {
+    if (err) 
+      console.error(err);
+    if (RO) {
+      customerModel.findOne( { customerID: RO.customerID } , function (err, Customer) {
         if (err) 
           console.error(err);
-        if (RO) {
-          customerModel.findOne( { customerID: RO.customerID } , function (err, Customer) {
-                if (err) 
-                  console.error(err);
-                if (Customer) {
-                  vehicleModel.findOne( { VIN: RO.VIN } , function (err, Vehicle) {
-                        if (err) 
-                          console.error(err);
-                        if (Vehicle) {
-                          app.locals.Customer = Customer;
-                          app.locals.Vehicle = Vehicle;
-                          app.locals.RO = RO;
-                          res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} );
-                        }
-                        else {
-                          console.log("No Vehicle found, display error?");
-                        }
-                  });
-                }
-                else {
-                  console.log("No Customer found, display error?");
-                }
+        if (Customer) {
+          vehicleModel.findOne( { VIN: RO.VIN } , function (err, Vehicle) {
+            if (err) 
+              console.error(err);
+            if (Vehicle) {
+              app.locals.Customer = Customer;
+              app.locals.Vehicle = Vehicle;
+              app.locals.RO = RO;
+              res.render("repairOrderForm", { Customer: Customer, Vehicle: Vehicle} );
+            }
+            else {
+              console.log("No Vehicle found, display error?");
+            }
           });
         }
         else {
-          console.log("No RO found, display error?");
+          console.log("No Customer found, display error?");
         }
-    });
+      });
+    }
+    else {
+      console.log("No RO found, display error?");
+    }
+  });
 });
 
 app.post("/repairOrderForm", function(req, res) {
@@ -203,7 +209,8 @@ app.post("/repairOrderForm", function(req, res) {
 
 // Vehicle Inspection Form
 app.get("/vehicleInspectionForm", function(req, res) {
-  res.render("vehicleInspectionForm", { Customer: app.locals.Customer, Vehicle: app.locals.Vehicle, RO: app.locals.RO } );
+  res.render("vehicleInspectionForm", 
+    { Customer: app.locals.Customer, Vehicle: app.locals.Vehicle, RO: app.locals.RO } );
 });
 
 app.post('/vehicleInspectionForm', function(req,res) {
@@ -275,6 +282,24 @@ app.post('/vehicleInspectionForm', function(req,res) {
 
 
 // Customer Page
+var lastService1 = new lastServiceModel({
+    date: new Date('December 1, 2011 01:11:11'),
+    odometer: 11111,
+    dailyAverageMiles: 30,
+    monthlyAverageMiles: 900
+});
+var newVehicle1 = new vehicleModel({
+    customerID: 1672548348,
+    make: "Toyota",
+    model: "Camry",
+    year: 2019,
+    licenseNum: "9J1JB12",
+    VIN: "1FAPP36X6RK192113",
+    color: "Red",
+    type: "Midsize",
+    mileage: 11111,
+    lastSrvc: lastService1
+});
 var Customer = {
     customerID: "123457",
     firstName: "John", 
@@ -287,20 +312,7 @@ var Customer = {
     cellPhone: 1234561234,
     workPhone: 7891231475,
     vehicles: [
-      { 
-        year: 2007,
-        make: "Honda",
-        model: "S2000",
-        color: "Red",
-        id: 3513513
-      },
-      { 
-        year: 2015,
-        make: "Lexus",
-        model: "IS350",
-        color: "Gray",
-        id: 1351351
-      }
+      newVehicle1
     ]
 };
 
@@ -309,6 +321,7 @@ app.get("/customerPage", function(req, res) {
   res.render("customerPage", {Customer:Customer});
 });
 
+//search for customer by customer ID
 app.get("/customerPage/:id", function(req, res) {
   var customerID = req.params.id;
   console.log("id returned is: " + customerID);
@@ -341,10 +354,12 @@ app.get("/searchPage", function(req, res) {
 app.post("/searchPage", function(req, res) {
   var action = req.body.action;
   if (action == "searchByCustomerName") {
-    var firstName = req.body.customerFirstName;
-    var lastName = req.body.customerLastName;
+    var firstName = req.body.customerFirstName.trim();
+    var lastName = req.body.customerLastName.trim();
+    //find() function will return a list. Regex is done so it's case insensitive
     customerModel.find( { firstName : {$regex: firstName, $options: "i" }, 
-                         lastName: {$regex: lastName, $options: "i" } } , function (err, result) {
+                          lastName: {$regex: lastName, $options: "i" } } , 
+                          function (err, result) {
           if (err) 
             console.error(err);
           if (result) {
@@ -358,7 +373,7 @@ app.post("/searchPage", function(req, res) {
       });
   }
   else if (action == "searchByCustomerEmail") {
-    var email = req.body.customerEmail;
+    var email = req.body.customerEmail.trim();
     customerModel.find( { email : email } , function(err, result) {
         if (err)
             console.error(err);
@@ -390,10 +405,12 @@ app.post("/searchPage", function(req, res) {
       });
   }
   else if (action == "searchByVIN") {
-    var vin = req.body.vin;
+    var VIN = req.body.vin;
+    res.redirect("/vehiclePage/VIN/" + VIN);
   }
   else if (action == "searchByLicense") {
     var license = req.body.license;
+    res.redirect("vehiclePage/license/" + license);
   }
   else if (action == "searchByRepairOrderNumber"){
     var key = req.body.repairOrderNumber;
@@ -411,24 +428,29 @@ app.post("/searchPage", function(req, res) {
         app.locals.vin = doc[0].VIN;
         app.locals.customerID = doc[0].customerID;
         
-        app.locals.job_1_type = doc[0].jobs[0].repairType;
-        app.locals.job_1_complaint = doc[0].jobs[0].complaint;
-        app.locals.job_1_cause = doc[0].jobs[0].cause;
-        app.locals.job_1_resolution = doc[0].jobs[0].resolution;
-        app.locals.job_1_cost = doc[0].jobs[0].cost;
+        if (typeof doc[0].jobs[0] !== 'undefined') {
+          app.locals.job_1_type = doc[0].jobs[0].repairType;
+          app.locals.job_1_complaint = doc[0].jobs[0].complaint;
+          app.locals.job_1_cause = doc[0].jobs[0].cause;
+          app.locals.job_1_resolution = doc[0].jobs[0].resolution;
+          app.locals.job_1_cost = doc[0].jobs[0].cost;
+        }
         
-        app.locals.job_2_type = doc[0].jobs[1].repairType;
-        app.locals.job_2_complaint = doc[0].jobs[1].complaint;
-        app.locals.job_2_cause = doc[0].jobs[1].cause;
-        app.locals.job_2_resolution = doc[0].jobs[1].resolution;
-        app.locals.job_2_cost = doc[0].jobs[1].cost;
+        if (typeof doc[0].jobs[1] !== 'undefined') {
+          app.locals.job_2_type = doc[0].jobs[1].repairType;
+          app.locals.job_2_complaint = doc[0].jobs[1].complaint;
+          app.locals.job_2_cause = doc[0].jobs[1].cause;
+          app.locals.job_2_resolution = doc[0].jobs[1].resolution;
+          app.locals.job_2_cost = doc[0].jobs[1].cost;
+        }
         
-        app.locals.job_3_type = doc[0].jobs[2].repairType;
-        app.locals.job_3_complaint = doc[0].jobs[2].complaint;
-        app.locals.job_3_cause = doc[0].jobs[2].cause;
-        app.locals.job_3_resolution = doc[0].jobs[2].resolution;
-        app.locals.job_3_cost = doc[0].jobs[2].cost;
-        
+        if (typeof doc[0].jobs[2] !== 'undefined') {
+          app.locals.job_3_type = doc[0].jobs[2].repairType;
+          app.locals.job_3_complaint = doc[0].jobs[2].complaint;
+          app.locals.job_3_cause = doc[0].jobs[2].cause;
+          app.locals.job_3_resolution = doc[0].jobs[2].resolution;
+          app.locals.job_3_cost = doc[0].jobs[2].cost;
+        }
         app.locals.totalCost = doc[0].totalCost;
       }
     });
@@ -473,37 +495,57 @@ app.get("/vehiclePage", function(req, res) {
   res.render("vehiclePage", {Vehicle:Vehicle});
 });
 
-app.get("/vehiclePage/:VIN", function(req, res) {
+//search for vehicle by VIN
+app.get("/vehiclePage/VIN/:VIN", function(req, res) {
   var VIN = req.params.VIN;
   //Every vehicle should have its own unique VIN
-  //We are searching for this because we agreed that the 
-  //customer's profiles wouldn't hold the vehicles
   vehicleModel.findOne( { VIN : VIN } , function(err, Vehicle) {
       if (err)
           console.error(err);
       if (Vehicle) {
-          console.log("searched vehicle: " + Vehicle);
           repairOrderModel.find( { VIN: VIN } , function (err, RO) {
             if (err)
               console.log(err);
-            if (RO) {
-              //RO = ("[" + RO + "]");
-              console.log("seara ROs: " + RO);
+            if (!!RO) { 
+              // If RO doesn't exist, then this will execute
+              // because if RO doesn't exist, then !!RO will return false.
+              // If RO exists, then !!RO will return true.
+              RO = [];
             }
-            else { //a vehicle can have no ROs yet
-              console.log("no ROs found");
-              RO = []; 
-            }
-            //console.log("formed:" + RO);
-            var result = Object.keys(RO).map(function(key) {
-              return [RO[key]];
-            });
-            console.log("result:" + result);
             res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
           });
       }
       else {
-        console.log("no result found for VIN search, display something?");
+        res.render("vehiclePage", { Err : "No vehicle found with VIN: " + VIN});
+        console.log("No result found for VIN search. You searched for VIN: "+ VIN);
+      }
+    });
+});
+
+//search for vehicle by license
+app.get("/vehiclePage/license/:license", function(req, res) {
+  var license = req.params.license;
+  //Every vehicle should have its own unique license
+  vehicleModel.findOne( { licenseNum : license } , function(err, Vehicle) {
+      if (err)
+          console.error(err);
+      if (Vehicle) {
+          console.log("searched vehicle: " + Vehicle);
+          repairOrderModel.find( { VIN: Vehicle.VIN } , function (err, RO) {
+            if (err)
+              console.log(err);
+            if (!!RO) { 
+              // If RO doesn't exist, then this will execute
+              // because if RO doesn't exist, then !!RO will return false.
+              // If RO exists, then !!RO will return true.
+              RO = [];
+            }
+            res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
+          });
+      }
+      else {
+        res.render("vehiclePage", { Err : "No vehicle found with license: " + license});
+        console.log("No result found for VIN search. You searched for license: "+ license);
       }
     });
 });

@@ -55,30 +55,41 @@
       </div>    
       <div class="col-md-3 mb-3">
         <label for="Cell">Cell Phone</label>
-        <input name="cell" type="tel" minlength="10" maxlength="10" class="form-control" id="cell" value=<%= Customer.cell %> readonly>
+        <input name="cell" type="tel" minlength="10" maxlength="10" class="form-control" id="cell" value="<%= Customer.cell %>" readonly>
       </div>    
       <div class="col-md-3 mb-3">
         <label for="Work">Work Phone</label>
-        <input name="work" type="tel" minlength="10" maxlength="10" class="form-control" id="work" value=<%= Customer.work %> readonly>
+        <input name="work" type="tel" minlength="10" maxlength="10" class="form-control" id="work" value="<%= Customer.work %>" readonly>
       </div>    
     </div>
-    
-    
+
     <div class="container border border-dark rounded mx-auto">
-      <div class="font-weight-bold">Vehicles</div>
-      <br>
-      
+      <h3>Vehicles</h3>
       <div class="container">
-        <% Customer.vehicles.forEach(function(vehicle){ %>
-          <div class="row">
-            <div class="col"><%= vehicle.year %></div>
-            <div class="col"><%= vehicle.make %></div>
-            <div class="col"><%= vehicle.model %></div>
-            <div class="col"><%= vehicle.color %></div>
-            <div class="col"><%= vehicle.VIN %></div>
-            <a class="col" href="/vehiclePage/<%= vehicle.VIN %>">Vehicle Page</a>
-          </div>
-        <% }); %>
+        <table class="table table-striped">
+          <thread>
+            <tr>
+              <th style=:width:17% scope="col">Year</th>
+              <th style=:width:17% scope="col">Make</th>
+              <th style=:width:17% scope="col">Model</th>
+              <th style=:width:17% scope="col">Color</th>
+              <th style=:width:17% scope="col">VIN</th>
+              <th style=:width:17% scope="col">Vehicle Page</th>
+            </tr>
+          </thread>
+          <tbody>
+            <% Customer.vehicles.forEach(function(vehicle){ %>
+              <tr>
+                <td> <div class="col"><%= vehicle.year %></div></td>
+                <td> <div class="col"><%= vehicle.make %></div></td>
+                <td> <div class="col"><%= vehicle.model %></div></td>
+                <td> <div class="col"><%= vehicle.color %></div></td>
+                <td> <div class="col"><%= vehicle.VIN %></div></td>
+                <td> <a class="col" href="/vehiclePage/VIN/<%= vehicle.VIN %>">Vehicle Page</a></td>
+              </tr>
+            <% }); %>
+           </tbody>
+        </table>
       </div>
       
     </div>

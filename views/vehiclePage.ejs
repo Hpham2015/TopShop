@@ -1,7 +1,12 @@
 <% include partials/header %>
 
 <div class="container-fluid">
-  
+  <!-- The below will detect if there is a Vehicle. If there is no vehicle,
+  then we check if there is an Err object passed. If Err object exists, then
+  display the Err object -->
+  <% if (!locals.Vehicle) {
+   %> <h1><p class="bg-danger"> <% if (locals.Err) { %> <%=Err%> <% } %> </p></h1> <%
+  } %>
   <div class="jumbotron jumbotron-fluid border border-dark rounded">
     <div class="container-fluid">
       <h1 class="display-4 text-center">Vehicle Information</h1>
@@ -15,58 +20,98 @@
       <div class="col-md-4 mb-3">
         <label for="Make">Make</label>
         <div class="input-group">
-          <input name="vehicleMake" type="text" class="form-control" id="customerID" value="<%= Vehicle.make %>" 
+          <input name="vehicleMake" type="text" class="form-control" id="customerID" 
+                 value="<% if (locals.Vehicle) 
+                             { %> <%= Vehicle.make%> <% } 
+                           else 
+                             { " " } %>"
           style="text-transform:uppercase" minlength="10" maxlength="10" aria-describedby="inputGroupPrepend" readonly>
         </div>
       </div>
       <div class="col-md-4 mb-3">
         <label for="Model">Model</label>
-        <input  name="vehicleModel" type="text" class="form-control" id="firstname" value="<%= Vehicle.model %>" readonly>
+        <input  name="vehicleModel" type="text" class="form-control" id="firstname" 
+                value="<% if (locals.Vehicle) 
+                            { %> <%= Vehicle.model%> <% } 
+                          else 
+                            { " " } %>"
+        readonly>
       </div>
       <div class="col-md-4 mb-3">
         <label for="Year">Year</label>
-        <input name="vehicleYear" type="text" class="form-control" id="lastname" value="<%= Vehicle.year %>" readonly>
+        <input name="vehicleYear" type="text" class="form-control" id="lastname" 
+              value="<% if (locals.Vehicle) 
+                          { %> <%= Vehicle.year%> <% } 
+                        else 
+                          { " " } %>"
+        readonly>
       </div>
     </div>
     <div class="form-row">
       <div class="col-md-3 mb-3">
         <label for="Color">Color</label>
-        <input name="vehicleColor" type="text" class="form-control" id="Street" value="<%= Vehicle.color %>" readonly>
+        <input name="vehicleColor" type="text" class="form-control" id="Street" 
+              value="<% if (locals.Vehicle) 
+                          { %> <%= Vehicle.color%> <% } 
+                        else 
+                          { " " } %>"
+        readonly>
       </div>
       <div class="col-md-3 mb-3">
         <label for="License">License Plate</label>
-        <input name="vehicleLicense" type="text" class="form-control" id="City" value="<%= Vehicle.licenseNum %>" readonly>
+        <input name="vehicleLicense" type="text" class="form-control" id="City" 
+               value="<% if (locals.Vehicle) 
+                           { %> <%= Vehicle.licenseNum%> <% } 
+                         else 
+                           { " " } %>"
+        readonly>
       </div>
       <div class="col-md-3 mb-3">
         <label for="VIN">VIN</label>
-        <input name-"vehicleVIN" type="text" class="form-control" id="State" value="<%= Vehicle.VIN %>"
+        <input name-"vehicleVIN" type="text" class="form-control" id="State" 
+               value="<% if (locals.Vehicle) 
+                           { %> <%= Vehicle.VIN%> <% } 
+                         else 
+                           { " " } %>"
         minlength="2" maxlength="2" readonly>
       </div>
       <div class="col-md-3 mb-3">
         <label for="Mileage">Current Mileage</label>
-        <input name="vehicleMileage" type="number" minlength="5" maxlength="5" class="form-control" id="zip" value="<%= Vehicle.mileage %>" readonly>
+        <input readonly name="vehicleMileage" type="number" minlength="5" maxlength="5" class="form-control" id="zip" 
+               value=<% if (locals.Vehicle) 
+                           { %> <%= Vehicle.mileage%> <% } 
+                         else 
+                           { " " } %>
+         >
       </div>
       <div class="col-md-3 mb-3">
         <label for="lastService">Last Service Date</label>
-        <input name="vehicleLastService" type="email" class="form-control" id="email" value=<%= Vehicle.lastSrvc.date %> readonly>
+        <input name="vehicleLastService" type="email" class="form-control" id="email" 
+               value="<% if (locals.Vehicle) 
+                           { %> <%= Vehicle.lastSrvc.date%> <% } 
+                         else 
+                           { " " } %>"
+        readonly>
       </div>    
     </div>
     
-    
     <div class="container border border-dark rounded mx-auto">
-      <div class="font-weight-bold">Repair Orders</div>
-      <br>
+      <h3>Repair Orders</h3>
       <div class="container">
-        <% RO.forEach(function(ro){ %>
-          <div class="row">
-            <div class="col"><%= ro.repairOrderNumber%></div>
-            <div class="col"><%= ro.inspectionReport.Inspected_on%></div>
-            <div class="col"><%= ro.inspectionReport.Comments%></div>
-            <div class="col"><%= ro.jobs[0].cost%></div> <!-- TODO: add up the cost of all jobs rather than only the first job-->
-            <div class="col"><%= ro.inspectionReport.Mileage%></div>
-            <a class="col" href="/repairOrderForm\<%= ro.repairOrderNumber%>">Repair Order Page</a>
-          </div>
-        <% }); %>
+        <% if (locals.RO) { %>
+          <% RO.forEach(function(ro){ %>
+            <div class="row">
+              <div class="col"><%= ro.repairOrderNumber%></div>
+              <div class="col"><%= ro.inspectionReport.Inspected_on%></div>
+              <div class="col"><%= ro.inspectionReport.Comments%></div>
+              <div class="col"><%= ro.jobs[0].cost%></div> <!-- TODO: add up the cost of all jobs rather than only the first job-->
+              <div class="col"><%= ro.inspectionReport.Mileage%></div>
+              <a class="col" href="/repairOrderForm\<%= ro.repairOrderNumber%>">Repair Order Page</a>
+            </div>
+          <% }); %>
+        <% }
+        else
+          { " " } %>
       </div>
       
     </div>

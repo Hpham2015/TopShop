@@ -21,42 +21,53 @@
   </div>
   
   <form class="vehiclecreationform" action="/vehicleInputForm" method="POST">
-    <div class="form-group">
-      <label for="Make">Make</label>
-      <input type="text" class="form-control" name="make" placeholder="Ex. Honda" required>
+    
+    <div class="form-row">  
+      <div class="col-md-4 mb-3">                                                                                            
+        <label for="Make">Make</label>
+        <input type="text" class="form-control" name="make" placeholder="Ex. Honda" required>
+      </div>
+      
+      <div class="col-md-4 mb-3">                                                                                            
+        <label for="Model">Model</label>
+        <input type="text" class="form-control" name="model" placeholder="Ex. S2000" required>
+      </div>
+      
+      <div class="col-md-4 mb-3">                                                                                            
+        <label for="Year">Year</label>
+        <input type="number" class="form-control" name="year" placeholder="Ex. 2007" min="1970" max="2020" required>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="Model">Model</label>
-      <input type="text" class="form-control" name="model" placeholder="Ex. S2000" required>
+
+    <div class="form-row">  
+      <div class="col-md-6 mb-3">                                                                                            
+        <label for="License">License Plate</label>
+        <input type="text" class="form-control" name="license" placeholder="Ex. 2SOONJR" 
+          style="text-transform:uppercase" required>
+      </div>
+      <div class="col-md-6 mb-3">                                                                                            
+        <label for="Vehicle Identification Number">Vehicle Identification Number</label>
+        <input type="text" class="form-control" name="vin" placeholder="Ex. 1C6RR7GT2DS631484" style="text-transform:uppercase" 
+          minlength="17" maxlength="17" required>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="Year">Year</label>
-      <input type="number" class="form-control" name="year" placeholder="Ex. 2007" min="1970" max="2020" required>
+
+    <div class="form-row">  
+      <div class="col-md-6 mb-3">                                                                                            
+        <label for="Color">Color</label>
+        <input type="text" class="form-control" name="color" placeholder="Ex. Red" required>
+      </div>
+      <div class="col-md-6 mb-3">                                                                                            
+        <label for="Current Mileage">Current Mileage</label>
+        <input type="number" class="form-control" name="mileage" placeholder="Ex. 11025" required>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="Color">Color</label>
-      <input type="text" class="form-control" name="color" placeholder="Ex. Red" required>
-    </div>
-    <div class="form-group">
-      <label for="License">License Plate</label>
-      <input type="text" class="form-control" name="license" placeholder="Ex. 2SOONJR" 
-        style="text-transform:uppercase" required>
-    </div>
-    <div class="form-group">
-      <label for="Vehicle Identification Number">Vehicle Identification Number</label>
-      <input type="text" class="form-control" name="vin" placeholder="Ex. 1C6RR7GT2DS631484" style="text-transform:uppercase" 
-        minlength="17" maxlength="17" required>
-    </div>
-    <div class="form-group">
-      <label for="Current Mileage">Current Mileage</label>
-      <input type="number" class="form-control" name="mileage" placeholder="Ex. 11025" required>
-    </div>
+
     <button class="btn btn-primary" type="submit">Create Vehicle</button>
-    <button class="btn btn-primary" type="button">Update Vehicle</button>
-    <button class="btn btn-primary" type="button">Delete Vehicle</button>
+    <button class="btn btn-success" type="button">Update Vehicle</button>
+    <button class="btn btn-danger" type="button">Delete Vehicle</button>
+
   </form>
-
 </div>
-
 
 <% include partials/footer %>

@@ -45,90 +45,6 @@ app.get("/dashboard", function(req, res) {
   res.render("dashboard");
 });
 
-//reportObject for read only
-var ReportValues = { 
-  //customer information
-    customerID: 123456,
-    firstName: "John", 
-    lastName: "Wick",
-    street: "666 Nonya Business",
-    city: "New York",
-    state: "NY",
-    zip: 45672,
-    email: "johnwick@youdied.com",
-    cellPhone: 1234561234,
-    workPhone: 7891231475,
-    //vechicle information
-    vehicles: 
-      { 
-        year: 2007,
-        make: "Honda",
-        model: "S2000",
-        mileage: 100000,
-        VIN: 20872031206534892,
-        license: "F8905438"
-      },
-    //mechanic information  
-    Mechanics:[
-      {
-        ID:12345678910,
-        FirstName: "Dominic",
-        LastName: "Toreto"
-      },
-      {
-        ID:57482093723,
-        FirstName: "Harry",
-        LastName: "Potter"
-      }
-      ],
-      //repairs information
-      Repairs:[
-        {
-        RepairType:"CustomerPay",
-        Repair:{
-          complaint:"too expensive",
-          cause:"car crash",
-          resolution:"it got fixed"
-          },
-        cost:1234
-        },
-        {
-        RepairType:"warranty",
-        Repair:{
-          complaint:"none",
-          cause:"panel over laod",
-          resolution:"paid in full"
-          },
-        cost:2000
-        }
-        ],
-        //Vehicle Inspeciton information
-        VehicleInspection:
-        {
-          RequiresImmediate:"require immediate",
-          MayRequire:"may require",
-          Checked:"checked and ok",
-          LFTreadDepth:12,
-          RFTreadDepth:16,
-          LRTreadDepth:10,
-          RRTreachDepth:12,
-          LFPreasure:50,
-          RFPreasure:70,
-          LRPreasure:50,
-          RRPreasure:50
-          
-        },
-        Comments:"Jack the vehicle up using the jack points closest to the tire. Slowly rotate the tire to find the problem. If you don’t see an object sticking out of the tire or a hole, there’s a trick to discovering the leak. Make a mixture of liquid soap and water. As you brush the water on the tire, the mixture will create bubbles where the hole is located. If you mark the hole with chalk or white shoe polish you can easily find it again."
-};
-
-app.get("/ReadOnly", function(req, res) {
-  res.render("ReadOnly", {ReportValues:ReportValues});
-});
-
-app.get("/about", function(req, res) {
-  res.render("about", {ReportValues:ReportValues});
-});
-
 // Customer Input
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
@@ -241,6 +157,20 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
   });
 });
 
+//  Add, update and delete repair order form
+//  
+//  First, it will check length of ROF# whether is equal to 5 or not
+//  
+//  Adding:
+//    If RO exists, it won't be added
+//    If RO does not exist, it will be created and added to db
+//    
+//  Updating:
+//    If RO exists, its old version will be deleted and its new version is added
+//    If RO does not exist. nothing will happen
+//
+//  Deleting:
+//    Find RO and delete, if not found, nothing will happen
 app.post("/repairOrderForm", function(req, res) {
   var n = req.body.repair_order_number;
   if (n.length !== 5) {
@@ -303,12 +233,12 @@ app.post("/repairOrderForm", function(req, res) {
     // TO DELETE, JUST ENTER REPAIR ORDER ID
     else if (action == "delete") {
       repairOrderModel.find({repairOrderNumber: req.body.repair_order_number}).remove(function(err) {
-      if (err) console.log(err);
-      else console.log("ROF deleted");
+        if (err) console.log(err);
+        else console.log("ROF deleted");
       });
     }
   }
-  res.redirect("/repairOrderForm");
+  res.redirect("/searchPage");
 });
 
 
@@ -456,6 +386,25 @@ app.get("/searchPage", function(req, res) {
   res.render("searchPage", {DupCustomers:DupCustomers});
 });
 
+//---  There are 6 actions from searchPage
+//
+//    searchByCustomerName
+//      Search for customers by their first and last name
+//
+//    searchByCustomerEmail
+//      Search for customers by their email
+//
+//    searchByCustomerID
+//      Search for a customer by their ID
+//
+//    searchByVIN
+//      Search for a vehicle by its VIN
+//
+//    searchByLicense
+//      Search for a vehicle by its license
+// 
+//    searchByRepairOrderNumber
+//      Search for a repair order by its number (ID)
 app.post("/searchPage", function(req, res) {
   var action = req.body.action;
   if (action == "searchByCustomerName") {

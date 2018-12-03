@@ -88,3 +88,75 @@ body {
 }
 
 /* End styling for landing page */
+/*style for About starts here */
+
+.faint:hover  { 
+    
+   background-color:#fed136;
+   border-style: solid;
+   animation-fill-mode: forwards;
+   animation-name: on;
+    animation-duration: 0.5s
+    
+    
+    
+}
+.faint:not(:hover)
+{
+  
+  background-color:white;
+  border-style: solid;
+  animation-fill-mode: forwards;
+  animation-name: off;
+    animation-duration: 0.1s;
+  
+ 
+}
+
+
+@keyframes on {
+    0%   { border-radius:2px;}
+    10%   { border-radius:2px;}
+    20%   { border-radius:4px;}
+    30%   { border-radius:6px;}
+    40%   { border-radius:8px;}
+    50%   { border-radius:10px;}
+    60%   { border-radius:12px;}
+    70%   { border-radius:14px;}
+    80%   { border-radius:16px;}
+    90%   { border-radius:18px;}
+    100%   { border-radius:20px;}
+}
+@keyframes off {
+     0%   { border-radius:20px;}
+     10%   { border-radius:18px;}
+     20%   { border-radius:16px;}
+     30%   { border-radius:14px;}
+     40%   { border-radius:12px;}
+     50%   { border-radius:10px;}
+     60%   { border-radius:8px;}
+     70%   { border-radius:6px;}
+     80%   { border-radius:4px;}
+     90%   { border-radius:2px;}
+     100%   { border-radius:2px;}
+}
+
+
+
+
+/*About ends here*/
+
+/*Read Only Starts here*/
+.RequiresImmediate
+{
+    border-color:red;
+}
+.MayRequire
+{
+    border-color:yellow;
+}
+.checkedAndOk
+{
+    border-color:red;
+}
+/*Read Only ends here*/

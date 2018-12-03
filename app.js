@@ -667,10 +667,11 @@ app.get("/vehiclePage/VIN/:VIN", function(req, res) {
           repairOrderModel.find( { VIN: VIN } , function (err, RO) {
             if (err)
               console.log(err);
-            if (!!RO) { 
+            if (!RO) { 
               // If RO doesn't exist, then this will execute
-              // because if RO doesn't exist, then !!RO will return false.
-              // If RO exists, then !!RO will return true.
+              // because if RO doesn't exist, then !RO will return true.
+              // If RO exists, then !RO will return false.
+              // This is done because a RO must be passed into the page.
               RO = [];
             }
             res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});

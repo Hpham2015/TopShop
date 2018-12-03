@@ -90,8 +90,8 @@
           <div class="input-group-prepend">
             <span class="input-group-text">Zip:</span>
           </div>
-          <input name="zip" type="number" minlength="5" maxlength="5" class="form-control" id="zip" 
-          value="<% if (locals.Customer) { %><%=Customer.zip%> <% } else { " " } %>" readonly>          
+          <input name="zip" type="number" minlength="5" maxlength="5" class="form-control" id="zip" readonly
+          value=<% if (locals.Customer) { %><%=Customer.zip%> <% } else { " " } %>>          
         </div>        
       </div>
       <div class="col-md-3 mb-3">
@@ -358,16 +358,16 @@
                 <span class="input-group-text" id="inputGroup-sizing-lg">Total Cost:</span>
                 <span class="input-group-text" id="inputGroup-sizing-lg">$</span>
               </div>
-              <input name="total_cost" type="text" class="form-control" id="total_cost" 
+              <input name="total_cost" type="text" class="form-control" id="total_cost" onload="add_number()"
               value= <% if (typeof totalCost !== 'undefined') { %><%=totalCost%> <% } else { %>""<% } %> readonly>
             </div>
           </div>
         
         <br>
     <!--<button type="submit" class="btn btn-primary btn-lg mt-2">Submit Repair Order</button>-->
-    <input type="submit" class="btn btn-primary btn">
-    <button class="btn btn-success" type="button">Update Repair Order</button>
-    <button class="btn btn-danger" type="button">Delete Repair Order</button>
+    <button class="btn btn-primary" type="submit" name="action" value="submit" formnovalidate>Submit</button>
+    <button class="btn btn-success" type="submit" name="action" value="update" formnovalidate>Update Repair Order</button>
+    <button class="btn btn-danger" type="submit" name="action" value="delete" formnovalidate>Delete Repair Order</button>
 <!-- Form Ends Here -->
   </div>
   </form>
@@ -385,7 +385,7 @@
     document.getElementById("job_1_cost").value = fst.toFixed(2);
     document.getElementById("job_2_cost").value = snd.toFixed(2);
     document.getElementById("job_3_cost").value = thd.toFixed(2);
-    
+    return result.toFixed(2);
   }  
   
 </script>

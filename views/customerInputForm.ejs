@@ -21,7 +21,7 @@
     
     <div class="col-md-4 mb-3">                                                                                              <!--First Name Field-->
       <label for="validationCustom01">First name</label>
-      <input type="text" class="form-control" name="firstname" placeholder="John"  required>
+      <input type="text" class="form-control" name="firstname" placeholder="John" required>
       <div class="valid-feedback">
         Looks good!
       </div>
@@ -29,7 +29,7 @@
   
     <div class="col-md-4 mb-3">                                                                                              <!--Last Name Field-->
       <label for="validationCustom02">Last name</label>
-      <input type="text" class="form-control" name="lastname" placeholder="Smith"  required>
+      <input type="text" class="form-control" name="lastname" placeholder="Smith" required>
       <div class="valid-feedback">
         Looks good!
       </div>
@@ -98,9 +98,9 @@
     </div>      
   </div>    
       
-  <button class="btn btn-primary" type="submit">Create Customer</button>
-  <button class="btn btn-success" type="button">Update Customer</button>
-  <button class="btn btn-danger" type="button">Delete Customer</button>
+  <button class="btn btn-primary" type="submit" name="action" value="create" >Create Customer</button>
+  <button class="btn btn-success" type="submit" name="action" value="update" >Update Customer</button>
+  <button class="btn btn-danger" type="submit"  name="action" value="delete" formnovalidate>Delete Customer</button>
 
 </form>
   

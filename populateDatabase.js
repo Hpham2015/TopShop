@@ -123,7 +123,7 @@ module.exports = {
         complaint: "Complaint11",
         cause: "Cause111",
         resolution: "Resolution1111",
-        cost: "$111.25"
+        cost: "111.25"
       });
       
       var jobs2 = new jobModel({
@@ -131,7 +131,7 @@ module.exports = {
         complaint: "Complaint22",
         cause: "Cause222",
         resolution: "Resolution2222",
-        cost: "$222.15"
+        cost: "222.15"
       });
       
       var jobs3 = new jobModel({
@@ -139,7 +139,7 @@ module.exports = {
         complaint: "Complaint33",
         cause: "Cause333",
         resolution: "Resolution3333",
-        cost: "$333.42"
+        cost: "333.42"
       });
       
       var vehicleInspecion1 = new VehicleInspectionFormModel({
@@ -184,7 +184,7 @@ module.exports = {
         mechanicFirstName: "Tressa",
         mechanicLastName: "Manthey",
         jobs: jobs1,
-        totalCost: "$111.25"
+        totalCost: "111.25"
       });
       
       var repairOrder2 = new repairOrderModel({
@@ -196,7 +196,7 @@ module.exports = {
         mechanicFirstName: "Cleta",
         mechanicLastName: "Isenberg",
         jobs: jobs2,
-        totalCost: "$222.15"
+        totalCost: "222.15"
       });
       
       var repairOrder3 = new repairOrderModel({
@@ -208,7 +208,7 @@ module.exports = {
         mechanicFirstName: "Jacques",
         mechanicLastName: "Cryer",
         jobs: jobs3,
-        totalCost: "$333.42"
+        totalCost: "333.42"
       });
       
       // newCustomer1.save(function(error) {

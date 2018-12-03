@@ -31,7 +31,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // ------- Routes -------
 
-// Landing Page
+/// Landing Page
 app.get("/", function(req, res){
   if (databaseNeedsPopulating) {
     var populateDatabaseFunction = require("./populateDatabase.js");
@@ -134,6 +134,57 @@ app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
 });
 
+app.post("/customerInputForm", function(req, res){
+  var customerID = req.body.customerID;
+  if (customerID.length !== 10) { //validation
+    console.log("Invalid Customer ID");
+  }
+  else {
+    var action = req.body.action;
+    //We don't use a model here because everytime we make a model, it generates
+    //a new _id. This messes with the update function because the _id is new.
+    let customerInstance = ({
+      customerID: customerID,
+      firstName: req.body.firstname,
+      lastName: req.body.lastname,
+      street: req.body.street,
+      city: req.body.City,
+      state: req.body.State,
+      zip: req.body.zip,
+      email: req.body.email,
+      cell: req.body.cell,
+      work: req.body.work
+    });
+    if (action == "create") {
+      //We use a model here because when creating a new customer, there is no
+      //_id to compare to. Therefore, we can safely make a new model here.
+      var newCustomer = new customerModel(customerInstance);
+      newCustomer.save(function(err){
+        if (err) console.log(err);
+      });
+      console.log("Created Customer");
+      res.redirect("/customerInputForm");
+    }
+    else if (action == "update") {
+      //Search for a customer with the same customerID, then update it with new values
+      customerModel.findOneAndUpdate({customerID: customerID}, customerInstance,
+        {upsert: true}, function(err) {
+          if (err) console.log(err);
+          else console.log("Successfully updated Vehicle");
+        });
+      res.redirect("/customerInputForm");
+    }
+    else if (action == "delete") {
+      //search and delete a customer with the same customerID inputted.
+      customerModel.findOneAndDelete({customerID: customerID}, function(err, Customer) {
+        if (err) console.log(err);
+        else console.log("Deleted Customer with ID: " + customerID);
+      });
+      res.redirect("/customerInputForm");
+    }
+  }
+});
+
 // adds new customer to DB
 app.post("/customerInputForm", function(req, res){
   // Initlializes customer object with information from forms upon submit
@@ -164,33 +215,59 @@ app.get("/vehicleInputForm", function(req, res) {
 
 // adds new vehicle to DB
 app.post("/vehicleInputForm", function(req, res){
-  // initializes last service information instance with default values
-  var lastServiceModelInstance = new lastServiceModel({ // declare with default values
-    date: '1-1-00',
-    odometer: 0,
-    dailyAverageMiles: 0,
-    monthlyAverageMiles: 0
-  });
-  
-  // initializes vehicle object with information from form upon submit
-  var newVehicleObj = new vehicleModel({
-    make: req.body.make,
-    model: req.body.model,
-    year: req.body.year,
-    licenseNum: req.body.license,
-    VIN: req.body.vin,
-    color: req.body.color,
-    type: req.body.type,
-    mileage: req.body.mileage,
-    lastSrvc: lastServiceModelInstance  // sets this field to previously initialized last service object
-  });
-  
-  // saves vehicle object to database, if fails, outputs error to console, then redirects to blank form page
-  newVehicleObj.save(function(err) {
-    if (err) console.log(err);
-    res.redirect("/vehicleInputForm");
-  });
-
+  var VIN = req.body.vin;
+  if (VIN.length !== 17) { //validation
+    console.log("Invalid VIN");
+  }
+  else {
+    var action = req.body.action;
+    //We don't use a model here because everytime we make a model, it generates
+    //a new _id. This messes with the update function because the _id is new.
+    var vehicleInstance = ({
+      make: req.body.make,
+      model: req.body.model,
+      year: req.body.year,
+      licenseNum: req.body.license,
+      VIN: req.body.vin,
+      color: req.body.color,
+      type: req.body.type,
+      mileage: req.body.mileage,
+      lastSrvc: lastServiceModelInstance  // sets this field to previously initialized last service object
+    });
+    if (action == "create") {
+      // initializes last service information instance with default values
+      var lastServiceModelInstance = new lastServiceModel({ // declare with default values
+        date: '1-1-00',
+        odometer: 0,
+        dailyAverageMiles: 0,
+        monthlyAverageMiles: 0
+      });
+      
+      // initializes vehicle object with information from form upon submit
+      var newVehicleObj = new vehicleModel({vehicleInstance});
+      
+      // saves vehicle object to database, if fails, outputs error to console, then redirects to blank form page
+      newVehicleObj.save(function(err) {
+        if (err) console.log(err);
+        res.redirect("/vehicleInputForm");
+      });
+    }
+    if (action == "update") {
+      vehicleModel.findOneAndUpdate({VIN: VIN}, vehicleInstance,
+        {upsert: true}, function(err) {
+          if (err) console.log(err);
+          else console.log("Sucessfully updated Vehicle");
+        });
+      res.redirect("/vehicleInputForm");
+    }
+    else if (action == "delete") {
+      vehicleModel.findOneAndDelete({VIN: VIN}, function(err, Vehicle) {
+        if (err) console.log(err);
+        else console.log("Deleted Vehicle with VIN: " + VIN);
+      });
+      res.redirect("/vehicleInputForm");
+    }
+  }
 });
 
 // Repair Order Form
@@ -241,53 +318,88 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
   });
 });
 
+//  Add, update and delete repair order form
+//  
+//  First, it will check length of ROF# whether is equal to 5 or not
+//  
+//  Adding:
+//    If RO exists, it won't be added
+//    If RO does not exist, it will be created and added to db
+//    
+//  Updating:
+//    If RO exists, its old version will be deleted and its new version is added
+//    If RO does not exist. nothing will happen
+//
+//  Deleting:
+//    Find RO and delete, if not found, nothing will happen
 app.post("/repairOrderForm", function(req, res) {
- 
-  var repairOrderInstance = new repairOrderModel({
-    repairOrderNumber: req.body.repair_order_number,
-    customerID: req.body.customerID,
-    VIN: req.body.VIN,
-    
-    mechanicID: req.body.mechanicID,
-    mechanicFirstName: req.body.mechanicFirstName,
-    mechanicLastName: req.body.mechanicLastName,
-    
-    totalCost: req.body.total_cost
-  });
-  repairOrderInstance.jobs.push({
-    repairType: req.body.job_1_repair_type,
-    complaint: req.body.job_1_complaint,
-    cause: req.body.job_1_cause,
-    resolution: req.body.job_1_resolution,
-    cost: req.body.job_1_cost
-  });
-  
-  repairOrderInstance.jobs.push({
-    repairType: req.body.job_2_repair_type,
-    complaint: req.body.job_2_complaint,
-    cause: req.body.job_2_cause,
-    resolution: req.body.job_2_resolution,
-    cost: req.body.job_2_cost
-  });
-  
-  repairOrderInstance.jobs.push({
-    repairType: req.body.job_3_repair_type,
-    complaint: req.body.job_3_complaint,
-    cause: req.body.job_3_cause,
-    resolution: req.body.job_3_resolution,
-    cost: req.body.job_3_cost
-  });
-  
-  repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
-    repairOrderInstance, {upsert: true}, function(err, doc) {
-      if (err) console.log("Repair Order Form existed");
-      else console.log("Successfully added");
+  var n = req.body.repair_order_number;
+  if (n.length !== 5) {
+    console.log("Invalid ROF #");
+  }
+  else {
+    var action = req.body.action;
+    var repairOrderInstance = new repairOrderModel({
+        repairOrderNumber: req.body.repair_order_number,
+        customerID: req.body.customerID,
+        VIN: req.body.VIN,
+        
+        mechanicID: req.body.mechanicID,
+        mechanicFirstName: req.body.mechanicFirstName,
+        mechanicLastName: req.body.mechanicLastName,
+        
+        totalCost: req.body.total_cost
+      });
+    repairOrderInstance.jobs.push({
+      repairType: req.body.job_1_repair_type,
+      complaint: req.body.job_1_complaint,
+      cause: req.body.job_1_cause,
+      resolution: req.body.job_1_resolution,
+      cost: req.body.job_1_cost
     });
-  
-  // repairOrderInstance.save(function (err) {
-  //   if (err) console.log(err);
-  // });
-  res.redirect("/repairOrderForm");
+    
+    repairOrderInstance.jobs.push({
+      repairType: req.body.job_2_repair_type,
+      complaint: req.body.job_2_complaint,
+      cause: req.body.job_2_cause,
+      resolution: req.body.job_2_resolution,
+      cost: req.body.job_2_cost
+    });
+    
+    repairOrderInstance.jobs.push({
+      repairType: req.body.job_3_repair_type,
+      complaint: req.body.job_3_complaint,
+      cause: req.body.job_3_cause,
+      resolution: req.body.job_3_resolution,
+      cost: req.body.job_3_cost
+    });
+      
+    if (action == "submit") { 
+      repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+        repairOrderInstance, {upsert: true}, function(err, doc) {
+          if (err) console.log("Repair Order Form existed");
+          else console.log("Successfully added");
+        });
+    }
+    // If RO does not exist, it will be added
+    else if (action == "update") {
+      repairOrderModel.findOneAndDelete({repairOrderNumber: req.body.repair_order_number}).exec();
+      repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+        repairOrderInstance, {upsert: true}, function(err, doc) {
+          if (err) console.log(err);
+          else console.log("Successfully updated");
+        });
+      
+    }
+    // TO DELETE, JUST ENTER REPAIR ORDER ID
+    else if (action == "delete") {
+      repairOrderModel.find({repairOrderNumber: req.body.repair_order_number}).remove(function(err) {
+        if (err) console.log(err);
+        else console.log("ROF deleted");
+      });
+    }
+  }
+  res.redirect("/searchPage");
 });
 
 
@@ -435,6 +547,25 @@ app.get("/searchPage", function(req, res) {
   res.render("searchPage", {DupCustomers:DupCustomers});
 });
 
+//---  There are 6 actions from searchPage
+//
+//    searchByCustomerName
+//      Search for customers by their first and last name
+//
+//    searchByCustomerEmail
+//      Search for customers by their email
+//
+//    searchByCustomerID
+//      Search for a customer by their ID
+//
+//    searchByVIN
+//      Search for a vehicle by its VIN
+//
+//    searchByLicense
+//      Search for a vehicle by its license
+// 
+//    searchByRepairOrderNumber
+//      Search for a repair order by its number (ID)
 app.post("/searchPage", function(req, res) {
   var action = req.body.action;
   if (action == "searchByCustomerName") {
@@ -504,6 +635,7 @@ app.post("/searchPage", function(req, res) {
       }
       else {
         if (doc === undefined || doc.length == 0) {
+          console.log("ROF not existed");
           res.redirect("/searchPage");
           return;
         }
@@ -590,10 +722,11 @@ app.get("/vehiclePage/VIN/:VIN", function(req, res) {
           repairOrderModel.find( { VIN: VIN } , function (err, RO) {
             if (err)
               console.log(err);
-            if (!!RO) { 
+            if (!RO) { 
               // If RO doesn't exist, then this will execute
-              // because if RO doesn't exist, then !!RO will return false.
-              // If RO exists, then !!RO will return true.
+              // because if RO doesn't exist, then !RO will return true.
+              // If RO exists, then !RO will return false.
+              // This is done because a RO must be passed into the page.
               RO = [];
             }
             res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
@@ -618,10 +751,11 @@ app.get("/vehiclePage/license/:license", function(req, res) {
           repairOrderModel.find( { VIN: Vehicle.VIN } , function (err, RO) {
             if (err)
               console.log(err);
-            if (!!RO) { 
+            if (!RO) { 
               // If RO doesn't exist, then this will execute
-              // because if RO doesn't exist, then !!RO will return false.
-              // If RO exists, then !!RO will return true.
+              // because if RO doesn't exist, then !RO will return true.
+              // If RO exists, then !RO will return false.
+              // This is done because a RO must be passed into the page.
               RO = [];
             }
             res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});

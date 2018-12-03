@@ -46,10 +46,10 @@
           <span class="input-group-text">Mileage:</span> 
         </div>
         <input type="number" aria-label="Mileage" class="form-control" 
-        value=<% if (locals.Vehicle) 
+        value="<% if (locals.Vehicle) 
                     { %> <%= Vehicle.mileage%> <% } 
                   else 
-                    { " " } %>
+                    { " " } %>"
         readonly>
       </div>
     </div>

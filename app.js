@@ -45,6 +45,90 @@ app.get("/dashboard", function(req, res) {
   res.render("dashboard");
 });
 
+//reportObject for read only
+var ReportValues = { 
+  //customer information
+    customerID: 123456,
+    firstName: "John", 
+    lastName: "Wick",
+    street: "666 Nonya Business",
+    city: "New York",
+    state: "NY",
+    zip: 45672,
+    email: "johnwick@youdied.com",
+    cellPhone: 1234561234,
+    workPhone: 7891231475,
+    //vechicle information
+    vehicles: 
+      { 
+        year: 2007,
+        make: "Honda",
+        model: "S2000",
+        mileage: 100000,
+        VIN: 20872031206534892,
+        license: "F8905438"
+      },
+    //mechanic information  
+    Mechanics:[
+      {
+        ID:12345678910,
+        FirstName: "Dominic",
+        LastName: "Toreto"
+      },
+      {
+        ID:57482093723,
+        FirstName: "Harry",
+        LastName: "Potter"
+      }
+      ],
+      //repairs information
+      Repairs:[
+        {
+        RepairType:"CustomerPay",
+        Repair:{
+          complaint:"too expensive",
+          cause:"car crash",
+          resolution:"it got fixed"
+          },
+        cost:1234
+        },
+        {
+        RepairType:"warranty",
+        Repair:{
+          complaint:"none",
+          cause:"panel over laod",
+          resolution:"paid in full"
+          },
+        cost:2000
+        }
+        ],
+        //Vehicle Inspeciton information
+        VehicleInspection:
+        {
+          RequiresImmediate:"require immediate",
+          MayRequire:"may require",
+          Checked:"checked and ok",
+          LFTreadDepth:12,
+          RFTreadDepth:16,
+          LRTreadDepth:10,
+          RRTreachDepth:12,
+          LFPreasure:50,
+          RFPreasure:70,
+          LRPreasure:50,
+          RRPreasure:50
+          
+        },
+        Comments:"Jack the vehicle up using the jack points closest to the tire. Slowly rotate the tire to find the problem. If you don’t see an object sticking out of the tire or a hole, there’s a trick to discovering the leak. Make a mixture of liquid soap and water. As you brush the water on the tire, the mixture will create bubbles where the hole is located. If you mark the hole with chalk or white shoe polish you can easily find it again."
+};
+
+app.get("/ReadOnly", function(req, res) {
+  res.render("ReadOnly", {ReportValues:ReportValues});
+});
+
+app.get("/about", function(req, res) {
+  res.render("about", {ReportValues:ReportValues});
+});
+
 // Customer Input
 app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
@@ -431,8 +515,8 @@ app.get("/searchPage", function(req, res) {
 app.post("/searchPage", function(req, res) {
   var action = req.body.action;
   if (action == "searchByCustomerName") {
-    var firstName = req.body.customerFirstName;
-    var lastName = req.body.customerLastName;
+    var firstName = req.body.customerFirstName.trim();
+    var lastName = req.body.customerLastName.trim();
     //find() function will return a list. Regex is done so it's case insensitive
     customerModel.find( { firstName : {$regex: firstName, $options: "i" }, 
                           lastName: {$regex: lastName, $options: "i" } } , 
@@ -450,7 +534,7 @@ app.post("/searchPage", function(req, res) {
       });
   }
   else if (action == "searchByCustomerEmail") {
-    var email = req.body.customerEmail;
+    var email = req.body.customerEmail.trim();
     customerModel.find( { email : email } , function(err, result) {
         if (err)
             console.error(err);

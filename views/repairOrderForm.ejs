@@ -91,7 +91,7 @@
             <span class="input-group-text">Zip:</span>
           </div>
           <input name="zip" type="number" minlength="5" maxlength="5" class="form-control" id="zip" 
-          value=<% if (locals.Customer) { %><%=Customer.zip%> <% } else { " " } %> readonly>          
+          value="<% if (locals.Customer) { %><%=Customer.zip%> <% } else { " " } %>" readonly>          
         </div>        
       </div>
       <div class="col-md-3 mb-3">

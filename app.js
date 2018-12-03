@@ -31,7 +31,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // ------- Routes -------
 
-// Landing Page
+/// Landing Page
 app.get("/", function(req, res){
   if (databaseNeedsPopulating) {
     var populateDatabaseFunction = require("./populateDatabase.js");
@@ -318,53 +318,88 @@ app.get('/repairOrderForm/:ROnumber', function(req,res) {
   });
 });
 
+//  Add, update and delete repair order form
+//  
+//  First, it will check length of ROF# whether is equal to 5 or not
+//  
+//  Adding:
+//    If RO exists, it won't be added
+//    If RO does not exist, it will be created and added to db
+//    
+//  Updating:
+//    If RO exists, its old version will be deleted and its new version is added
+//    If RO does not exist. nothing will happen
+//
+//  Deleting:
+//    Find RO and delete, if not found, nothing will happen
 app.post("/repairOrderForm", function(req, res) {
- 
-  var repairOrderInstance = new repairOrderModel({
-    repairOrderNumber: req.body.repair_order_number,
-    customerID: req.body.customerID,
-    VIN: req.body.VIN,
-    
-    mechanicID: req.body.mechanicID,
-    mechanicFirstName: req.body.mechanicFirstName,
-    mechanicLastName: req.body.mechanicLastName,
-    
-    totalCost: req.body.total_cost
-  });
-  repairOrderInstance.jobs.push({
-    repairType: req.body.job_1_repair_type,
-    complaint: req.body.job_1_complaint,
-    cause: req.body.job_1_cause,
-    resolution: req.body.job_1_resolution,
-    cost: req.body.job_1_cost
-  });
-  
-  repairOrderInstance.jobs.push({
-    repairType: req.body.job_2_repair_type,
-    complaint: req.body.job_2_complaint,
-    cause: req.body.job_2_cause,
-    resolution: req.body.job_2_resolution,
-    cost: req.body.job_2_cost
-  });
-  
-  repairOrderInstance.jobs.push({
-    repairType: req.body.job_3_repair_type,
-    complaint: req.body.job_3_complaint,
-    cause: req.body.job_3_cause,
-    resolution: req.body.job_3_resolution,
-    cost: req.body.job_3_cost
-  });
-  
-  repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
-    repairOrderInstance, {upsert: true}, function(err, doc) {
-      if (err) console.log("Repair Order Form existed");
-      else console.log("Successfully added");
+  var n = req.body.repair_order_number;
+  if (n.length !== 5) {
+    console.log("Invalid ROF #");
+  }
+  else {
+    var action = req.body.action;
+    var repairOrderInstance = new repairOrderModel({
+        repairOrderNumber: req.body.repair_order_number,
+        customerID: req.body.customerID,
+        VIN: req.body.VIN,
+        
+        mechanicID: req.body.mechanicID,
+        mechanicFirstName: req.body.mechanicFirstName,
+        mechanicLastName: req.body.mechanicLastName,
+        
+        totalCost: req.body.total_cost
+      });
+    repairOrderInstance.jobs.push({
+      repairType: req.body.job_1_repair_type,
+      complaint: req.body.job_1_complaint,
+      cause: req.body.job_1_cause,
+      resolution: req.body.job_1_resolution,
+      cost: req.body.job_1_cost
     });
-  
-  // repairOrderInstance.save(function (err) {
-  //   if (err) console.log(err);
-  // });
-  res.redirect("/repairOrderForm");
+    
+    repairOrderInstance.jobs.push({
+      repairType: req.body.job_2_repair_type,
+      complaint: req.body.job_2_complaint,
+      cause: req.body.job_2_cause,
+      resolution: req.body.job_2_resolution,
+      cost: req.body.job_2_cost
+    });
+    
+    repairOrderInstance.jobs.push({
+      repairType: req.body.job_3_repair_type,
+      complaint: req.body.job_3_complaint,
+      cause: req.body.job_3_cause,
+      resolution: req.body.job_3_resolution,
+      cost: req.body.job_3_cost
+    });
+      
+    if (action == "submit") { 
+      repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+        repairOrderInstance, {upsert: true}, function(err, doc) {
+          if (err) console.log("Repair Order Form existed");
+          else console.log("Successfully added");
+        });
+    }
+    // If RO does not exist, it will be added
+    else if (action == "update") {
+      repairOrderModel.findOneAndDelete({repairOrderNumber: req.body.repair_order_number}).exec();
+      repairOrderModel.update({repairOrderNumber: req.body.repair_order_number},
+        repairOrderInstance, {upsert: true}, function(err, doc) {
+          if (err) console.log(err);
+          else console.log("Successfully updated");
+        });
+      
+    }
+    // TO DELETE, JUST ENTER REPAIR ORDER ID
+    else if (action == "delete") {
+      repairOrderModel.find({repairOrderNumber: req.body.repair_order_number}).remove(function(err) {
+        if (err) console.log(err);
+        else console.log("ROF deleted");
+      });
+    }
+  }
+  res.redirect("/searchPage");
 });
 
 
@@ -512,6 +547,25 @@ app.get("/searchPage", function(req, res) {
   res.render("searchPage", {DupCustomers:DupCustomers});
 });
 
+//---  There are 6 actions from searchPage
+//
+//    searchByCustomerName
+//      Search for customers by their first and last name
+//
+//    searchByCustomerEmail
+//      Search for customers by their email
+//
+//    searchByCustomerID
+//      Search for a customer by their ID
+//
+//    searchByVIN
+//      Search for a vehicle by its VIN
+//
+//    searchByLicense
+//      Search for a vehicle by its license
+// 
+//    searchByRepairOrderNumber
+//      Search for a repair order by its number (ID)
 app.post("/searchPage", function(req, res) {
   var action = req.body.action;
   if (action == "searchByCustomerName") {
@@ -581,6 +635,7 @@ app.post("/searchPage", function(req, res) {
       }
       else {
         if (doc === undefined || doc.length == 0) {
+          console.log("ROF not existed");
           res.redirect("/searchPage");
           return;
         }

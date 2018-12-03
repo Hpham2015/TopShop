@@ -134,6 +134,57 @@ app.get("/customerInputForm", function(req, res){
   res.render("customerInputForm");
 });
 
+app.post("/customerInputForm", function(req, res){
+  var customerID = req.body.customerID;
+  if (customerID.length !== 10) { //validation
+    console.log("Invalid Customer ID");
+  }
+  else {
+    var action = req.body.action;
+    //We don't use a model here because everytime we make a model, it generates
+    //a new _id. This messes with the update function because the _id is new.
+    let customerInstance = ({
+      customerID: customerID,
+      firstName: req.body.firstname,
+      lastName: req.body.lastname,
+      street: req.body.street,
+      city: req.body.City,
+      state: req.body.State,
+      zip: req.body.zip,
+      email: req.body.email,
+      cell: req.body.cell,
+      work: req.body.work
+    });
+    if (action == "create") {
+      //We use a model here because when creating a new customer, there is no
+      //_id to compare to. Therefore, we can safely make a new model here.
+      var newCustomer = new customerModel(customerInstance);
+      newCustomer.save(function(err){
+        if (err) console.log(err);
+      });
+      console.log("Created Customer");
+      res.redirect("/customerInputForm");
+    }
+    else if (action == "update") {
+      //Search for a customer with the same customerID, then update it with new values
+      customerModel.findOneAndUpdate({customerID: customerID}, customerInstance,
+        {upsert: true}, function(err) {
+          if (err) console.log(err);
+          else console.log("Successfully updated Vehicle");
+        });
+      res.redirect("/customerInputForm");
+    }
+    else if (action == "delete") {
+      //search and delete a customer with the same customerID inputted.
+      customerModel.findOneAndDelete({customerID: customerID}, function(err, Customer) {
+        if (err) console.log(err);
+        else console.log("Deleted Customer with ID: " + customerID);
+      });
+      res.redirect("/customerInputForm");
+    }
+  }
+});
+
 // adds new customer to DB
 app.post("/customerInputForm", function(req, res){
   // Initlializes customer object with information from forms upon submit
@@ -164,33 +215,59 @@ app.get("/vehicleInputForm", function(req, res) {
 
 // adds new vehicle to DB
 app.post("/vehicleInputForm", function(req, res){
-  // initializes last service information instance with default values
-  var lastServiceModelInstance = new lastServiceModel({ // declare with default values
-    date: '1-1-00',
-    odometer: 0,
-    dailyAverageMiles: 0,
-    monthlyAverageMiles: 0
-  });
-  
-  // initializes vehicle object with information from form upon submit
-  var newVehicleObj = new vehicleModel({
-    make: req.body.make,
-    model: req.body.model,
-    year: req.body.year,
-    licenseNum: req.body.license,
-    VIN: req.body.vin,
-    color: req.body.color,
-    type: req.body.type,
-    mileage: req.body.mileage,
-    lastSrvc: lastServiceModelInstance  // sets this field to previously initialized last service object
-  });
-  
-  // saves vehicle object to database, if fails, outputs error to console, then redirects to blank form page
-  newVehicleObj.save(function(err) {
-    if (err) console.log(err);
-    res.redirect("/vehicleInputForm");
-  });
-
+  var VIN = req.body.vin;
+  if (VIN.length !== 17) { //validation
+    console.log("Invalid VIN");
+  }
+  else {
+    var action = req.body.action;
+    //We don't use a model here because everytime we make a model, it generates
+    //a new _id. This messes with the update function because the _id is new.
+    var vehicleInstance = ({
+      make: req.body.make,
+      model: req.body.model,
+      year: req.body.year,
+      licenseNum: req.body.license,
+      VIN: req.body.vin,
+      color: req.body.color,
+      type: req.body.type,
+      mileage: req.body.mileage,
+      lastSrvc: lastServiceModelInstance  // sets this field to previously initialized last service object
+    });
+    if (action == "create") {
+      // initializes last service information instance with default values
+      var lastServiceModelInstance = new lastServiceModel({ // declare with default values
+        date: '1-1-00',
+        odometer: 0,
+        dailyAverageMiles: 0,
+        monthlyAverageMiles: 0
+      });
+      
+      // initializes vehicle object with information from form upon submit
+      var newVehicleObj = new vehicleModel({vehicleInstance});
+      
+      // saves vehicle object to database, if fails, outputs error to console, then redirects to blank form page
+      newVehicleObj.save(function(err) {
+        if (err) console.log(err);
+        res.redirect("/vehicleInputForm");
+      });
+    }
+    if (action == "update") {
+      vehicleModel.findOneAndUpdate({VIN: VIN}, vehicleInstance,
+        {upsert: true}, function(err) {
+          if (err) console.log(err);
+          else console.log("Sucessfully updated Vehicle");
+        });
+      res.redirect("/vehicleInputForm");
+    }
+    else if (action == "delete") {
+      vehicleModel.findOneAndDelete({VIN: VIN}, function(err, Vehicle) {
+        if (err) console.log(err);
+        else console.log("Deleted Vehicle with VIN: " + VIN);
+      });
+      res.redirect("/vehicleInputForm");
+    }
+  }
 });
 
 // Repair Order Form
@@ -590,10 +667,11 @@ app.get("/vehiclePage/VIN/:VIN", function(req, res) {
           repairOrderModel.find( { VIN: VIN } , function (err, RO) {
             if (err)
               console.log(err);
-            if (!!RO) { 
+            if (!RO) { 
               // If RO doesn't exist, then this will execute
-              // because if RO doesn't exist, then !!RO will return false.
-              // If RO exists, then !!RO will return true.
+              // because if RO doesn't exist, then !RO will return true.
+              // If RO exists, then !RO will return false.
+              // This is done because a RO must be passed into the page.
               RO = [];
             }
             res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});
@@ -618,10 +696,11 @@ app.get("/vehiclePage/license/:license", function(req, res) {
           repairOrderModel.find( { VIN: Vehicle.VIN } , function (err, RO) {
             if (err)
               console.log(err);
-            if (!!RO) { 
+            if (!RO) { 
               // If RO doesn't exist, then this will execute
-              // because if RO doesn't exist, then !!RO will return false.
-              // If RO exists, then !!RO will return true.
+              // because if RO doesn't exist, then !RO will return true.
+              // If RO exists, then !RO will return false.
+              // This is done because a RO must be passed into the page.
               RO = [];
             }
             res.render("vehiclePage", {Vehicle:Vehicle, RO:RO});

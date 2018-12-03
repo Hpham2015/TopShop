@@ -31,7 +31,7 @@
       <div class="col-md-6 mb-3">                                                                                            
         <label for="License">License Plate</label>
         <input type="text" class="form-control" name="license" placeholder="Ex. 2SOONJR" 
-          style="text-transform:uppercase" required>
+          style="text-transform:uppercase" minlength="5" maxlength="7"required>
       </div>
       <div class="col-md-6 mb-3">                                                                                            
         <label for="Vehicle Identification Number">Vehicle Identification Number</label>
@@ -47,7 +47,8 @@
       </div>
       <div class="col-md-6 mb-3">                                                                                            
         <label for="Current Mileage">Current Mileage</label>
-        <input type="number" class="form-control" name="mileage" placeholder="Ex. 11025" required>
+        <input type="number" class="form-control" name="mileage" placeholder="Ex. 11025" 
+          min=0 required>
       </div>
     </div>
 
